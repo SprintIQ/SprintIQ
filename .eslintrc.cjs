@@ -55,5 +55,11 @@ const config = {
     "jsx-a11y/click-events-have-key-events": "off",
     "react-hooks/exhaustive-deps": "off",
   },
+  ignorePatterns: ["node_modules", ".next", "template"],
+  settings: {
+    tailwindcss: {
+      config: "tailwind.config.cjs",
+    },
+  },
 };
 module.exports = config;
