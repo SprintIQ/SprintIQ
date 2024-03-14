@@ -1,9 +1,8 @@
-import { type AppType } from "next/app";
-import { Inter } from "next/font/google";
+import "@src/styles/globals.css";
 
 import { api } from "@src/utils/api";
-
-import "@src/styles/globals.css";
+import { type AppType } from "next/app";
+import { Inter } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
