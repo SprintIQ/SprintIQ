@@ -1,42 +1,59 @@
 /** @type {import("eslint").Linter.Config} */
 const config = {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": true
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: true,
   },
-  "plugins": [
-    "@typescript-eslint"
+  plugins: [
+    "@typescript-eslint",
+    "simple-import-sort",
+    "prettier",
+    "tailwindcss",
   ],
-  "extends": [
+  extends: [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:@typescript-eslint/stylistic-type-checked"
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:tailwindcss/recommended",
+    "plugin:json/recommended",
+    "prettier",
   ],
-  "rules": {
+  rules: {
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
-        "prefer": "type-imports",
-        "fixStyle": "inline-type-imports"
-      }
+        prefer: "type-imports",
+        fixStyle: "inline-type-imports",
+      },
     ],
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
-        "argsIgnorePattern": "^_"
-      }
+        argsIgnorePattern: "^_",
+      },
     ],
     "@typescript-eslint/require-await": "off",
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
-        "checksVoidReturn": {
-          "attributes": false
-        }
-      }
-    ]
-  }
-}
+        checksVoidReturn: {
+          attributes: false,
+        },
+      },
+    ],
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "react/no-children-prop": "off",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "jsx-a11y/accessible-emoji": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "react-hooks/exhaustive-deps": "off",
+  },
+};
 module.exports = config;
