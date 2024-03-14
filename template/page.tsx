@@ -1,8 +1,7 @@
-import * as React from "react";
 import type { NextPage } from "next";
-import { DashboardLayout } from "@src/components";
+import * as React from "react";
 
 const Page: NextPage = () => {
-  return <DashboardLayout>blockName</DashboardLayout>;
+  return <div>blockName</div>;
 };
 export default Page;
