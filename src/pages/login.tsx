@@ -10,7 +10,6 @@ export default function Page() {
   const createUser = api.auth.create.useMutation();
   const { login } = useContext(ProfileContext);
   const { push } = useRouter();
-  const [isCreator, setIsCreator] = React.useState(false);
   const { buttonState, onConnect, publicKey } = useWalletMultiButton({
     onSelectWallet({ wallets, onSelectWallet }) {
       setModalVisible(true);
@@ -69,7 +68,7 @@ export default function Page() {
         <div className="rounded-3xl border border-grey-300 p-4 transition-colors duration-300 group-hover:border-secondary-700">
           <PlayerIn />
         </div>
-        <span>{content ?? "Player"}</span>
+        <span>Player</span>
       </button>
       <button
         onClick={handleSignIn}
@@ -78,7 +77,7 @@ export default function Page() {
         <div className="rounded-3xl border border-grey-300 p-4 transition-colors  duration-300 group-hover:border-secondary-700">
           <CreatorIn />
         </div>
-        <span>{content ?? "Creator"}</span>
+        <span>Creator</span>
       </button>
     </section>
   );
