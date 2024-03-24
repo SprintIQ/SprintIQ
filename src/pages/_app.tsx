@@ -6,11 +6,7 @@ import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import {
-  WalletDisconnectButton,
-  WalletModalProvider,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import {
   AlphaWalletAdapter,
   AvanaWalletAdapter,
@@ -45,12 +41,13 @@ import {
   TorusWalletAdapter,
   TrezorWalletAdapter,
   TrustWalletAdapter,
-  UnsafeBurnerWalletAdapter,
   WalletConnectWalletAdapter,
   XDEFIWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
+import { ProfileProvider } from "@src/provider/ProfileProvider";
 import { api } from "@src/utils/api";
+import { COOKIE_KEY } from "@src/utils/constants/constants";
 import { type AppType } from "next/app";
 import { Inter } from "next/font/google";
 import { useMemo } from "react";
@@ -64,11 +61,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   // You can also provide a custom RPC endpoint.
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-  console.log({ endpoint });
   // TODO select wallets we're to use only 5
   const wallets = useMemo(
     () => [
-      new UnsafeBurnerWalletAdapter(),
       new AlphaWalletAdapter(),
       new AvanaWalletAdapter(),
       new BitgetWalletAdapter(),
@@ -111,12 +106,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
+      <WalletProvider wallets={wallets} localStorageKey={COOKIE_KEY}>
         <WalletModalProvider>
-          <WalletMultiButton className="bg-white">Connect</WalletMultiButton>
-          <WalletDisconnectButton />
-          <main className={`font-sans ${inter.variable}`}>
-            <Component {...pageProps} />
+          <main
+            className={`font-sans ${inter.variable} min-h-screen bg-primary-700 text-white`}
+          >
+            <ProfileProvider>
+              <Component {...pageProps} />
+            </ProfileProvider>
           </main>
         </WalletModalProvider>
       </WalletProvider>

@@ -6,10 +6,12 @@ import {
 import { z } from "zod";
 
 export const gameRouter = createTRPCRouter({
-  create: protectedProcedure.input(
-    z.object({
-      title: z.string(),
-      description: z.string(),
-    }),
-  ),
+  create: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {}),
 });
