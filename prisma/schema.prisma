@@ -2,17 +2,94 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mongodb"
-    url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
-// Add schemas here
-model User {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String  @unique
-  name  String?
+model Profile {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  wallet_address String           @unique
+  username       String
+  nonce          Int              @default(0) // Nonce for the user 
+  avatar_url     String?
+  created_at     DateTime         @default(now())
+  is_subscribed  Boolean          @default(false)
+  Game           Game[]
+  ProfileHistory ProfileHistory[]
+}
+
+enum Type {
+  Test
+  Image
+  Video
+}
+
+enum Status {
+  drafted
+  created
+  completed
+  ongoing
+  cancelled
+}
+
+model Game {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  description    String
+  creator_id     String
+  creator        Profile          @relation(fields: [creator_id], references: [wallet_address])
+  game_code      String
+  status         Status
+  rewards        String
+  created_at     DateTime @default(now())
+  Percentages    Percentages[]
+  Question       Question[]
+  ProfileHistory ProfileHistory[]
+}
+
+// The percentage of reward for each position i.e first 30% second 15%, e.t.c
+model Percentages {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  game_id    String   @db.ObjectId
+  game       Game     @relation(fields: [game_id], references: [id])
+  position   Int
+  percentage Int
+  created_at DateTime
+}
+
+model Question {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  type        Type
+  question    String
+  description String
+  game_id     String    @db.ObjectId
+  game        Game      @relation(fields: [game_id], references: [id])
+  anwser      String
+  point       String
+  duration    String
+  created_at  DateTime
+  Options     Options[]
+}
+
+model Options {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  question_id String   @db.ObjectId
+  question    Question @relation(fields: [question_id], references: [id])
+  value       String
+  created_at  DateTime
+}
+
+model ProfileHistory {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String
+  user       Profile  @relation(fields: [user_id], references: [wallet_address])
+  game_id    String   @db.ObjectId
+  game       Game     @relation(fields: [game_id], references: [id])
+  points     String
+  position   Int
+  created_at DateTime
 }
