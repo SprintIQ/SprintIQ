@@ -7,8 +7,13 @@
  * need to use are documented accordingly near the end.
  */
 import { db } from "@src/server/db";
-import { initTRPC } from "@trpc/server";
+import { HelperService } from "@src/utils/class/helper.service";
+import { COOKIE_KEY } from "@src/utils/constants/constants";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { sealData, unsealData } from "iron-session";
+import { type RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { NextRequest } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -32,9 +37,13 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+const createInnerTRPCContext = (_opts: CreateNextContextOptions): Context => {
+  const session: string | undefined = _opts?.req.cookies[COOKIE_KEY];
   return {
     db,
+    helper: HelperService,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    _session: session ? session : undefined,
   };
 };
 
@@ -45,7 +54,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+  return createInnerTRPCContext(_opts);
 };
 
 /**
@@ -91,4 +100,59 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
+// TODO configure type
+type SessionUser = {
+  wallet_address: string;
+  id: string;
+  nonce: number;
+};
+interface Context {
+  db: typeof db;
+  helper: typeof HelperService;
+  _session?: string;
+  user?: SessionUser;
+}
 export const publicProcedure = t.procedure;
+export const loginProcedure = publicProcedure.use(
+  t.middleware(async ({ ctx, next }) => {
+    const result = await next({ ctx });
+    const resultCtx = "ctx" in result ? (result.ctx as Context) : undefined;
+    console.log(resultCtx?.user, result);
+    if (resultCtx?.user) {
+      // update nonce on sign in
+      await db.profile.update({
+        where: {
+          id: resultCtx.user.id,
+        },
+        data: {
+          nonce: resultCtx.user.nonce + 1,
+        },
+      });
+      ctx._session = await sealData(
+        {
+          wallet_address: resultCtx.user.wallet_address,
+          id: resultCtx.user.id,
+          nonce: resultCtx.user.nonce,
+        } satisfies SessionUser,
+        { password: process.env.SECRET!, ttl: 60 * 60 * 24 * 7 }, // 7 days
+      );
+    }
+    return result;
+  }),
+);
+export const protectedProcedure = t.procedure.use(
+  t.middleware(async ({ ctx, next }) => {
+    if (!ctx._session) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    const decoded_session = await unsealData<SessionUser>(ctx._session, {
+      password: process.env.SECRET!,
+    });
+    const user = await ctx.db.profile.findUnique({
+      where: {
+        wallet_address: decoded_session.wallet_address,
+      },
+    });
+    return next({ ctx: { ...ctx, user } });
+  }),
+);
