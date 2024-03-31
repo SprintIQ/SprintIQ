@@ -23,9 +23,9 @@ model Profile {
 }
 
 enum Type {
-  Test
-  Image
-  Video
+  text
+  image
+  video
 }
 
 enum Status {
@@ -42,12 +42,12 @@ model Game {
   description    String
   creator_id     String
   creator        Profile          @relation(fields: [creator_id], references: [wallet_address])
-  game_code      String
-  status         Status
-  rewards        String
-  created_at     DateTime @default(now())
-  Percentages    Percentages[]
-  Question       Question[]
+  game_code      String?
+  status         Status           @default(drafted)
+  reward         Int?
+  created_at     DateTime         @default(now())
+  percentages    Percentages[]
+  questions      Question[]
   ProfileHistory ProfileHistory[]
 }
 
@@ -58,21 +58,21 @@ model Percentages {
   game       Game     @relation(fields: [game_id], references: [id])
   position   Int
   percentage Int
-  created_at DateTime
+  created_at DateTime @default(now())
 }
 
 model Question {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  type        Type
+  type        Type      @default(text)
   question    String
-  description String
+  description String?
   game_id     String    @db.ObjectId
   game        Game      @relation(fields: [game_id], references: [id])
-  anwser      String
-  point       String
-  duration    String
-  created_at  DateTime
-  Options     Options[]
+  answer      String
+  points      Int
+  duration    Int
+  created_at  DateTime  @default(now())
+  options     Options[]
 }
 
 model Options {
@@ -80,7 +80,7 @@ model Options {
   question_id String   @db.ObjectId
   question    Question @relation(fields: [question_id], references: [id])
   value       String
-  created_at  DateTime
+  created_at  DateTime @default(now())
 }
 
 model ProfileHistory {
@@ -89,7 +89,7 @@ model ProfileHistory {
   user       Profile  @relation(fields: [user_id], references: [wallet_address])
   game_id    String   @db.ObjectId
   game       Game     @relation(fields: [game_id], references: [id])
-  points     String
+  points     Int
   position   Int
-  created_at DateTime
+  created_at DateTime @default(now())
 }
