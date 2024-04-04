@@ -20,6 +20,10 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    domains: ["firebasestorage.googleapis.com"],
+    dangerouslyAllowSVG: true,
+  },
 };
 
 export default config;
