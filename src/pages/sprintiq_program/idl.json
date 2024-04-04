@@ -1,0 +1,67 @@
+{
+  "version": "0.1.0",
+  "name": "sprintiq_escrow_program",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        { "name": "tokenAccountOwnerPda", "isMut": true, "isSigner": false },
+        { "name": "vaultTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "mintOfTokenBeingSent", "isMut": false, "isSigner": false },
+        { "name": "signer", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    },
+    {
+      "name": "sendFunds",
+      "accounts": [
+        { "name": "tokenAccountOwnerPda", "isMut": true, "isSigner": false },
+        { "name": "vaultTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "senderTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "mintOfTokenBeingSent", "isMut": false, "isSigner": false },
+        { "name": "signer", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false }
+      ],
+      "args": [{ "name": "amount", "type": "u64" }]
+    },
+    {
+      "name": "withdrawFundsToSender",
+      "accounts": [
+        { "name": "tokenAccountOwnerPda", "isMut": true, "isSigner": false },
+        { "name": "vaultTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "senderTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "mintOfTokenBeingSent", "isMut": false, "isSigner": false },
+        { "name": "signer", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false }
+      ],
+      "args": [{ "name": "amount", "type": "u64" }]
+    },
+    {
+      "name": "sendFundsToPlayers",
+      "accounts": [
+        { "name": "tokenAccountOwnerPda", "isMut": true, "isSigner": false },
+        { "name": "vaultTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "firstWinnerTokenAccount", "isMut": true, "isSigner": false },
+        {
+          "name": "secondWinnerTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        { "name": "thirdWinnerTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "mintOfTokenBeingSent", "isMut": false, "isSigner": false },
+        { "name": "signer", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false }
+      ],
+      "args": [{ "name": "amount", "type": "u64" }]
+    }
+  ]
+}
