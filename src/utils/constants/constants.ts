@@ -12,3 +12,8 @@ export const LABELS = {
 export enum Routes {
   GAME = "game",
 }
+export enum QuestionType {
+  TEXT = "text",
+  IMAGE = "image",
+  VIDEO = "video",
+}
