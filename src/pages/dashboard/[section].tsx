@@ -1,26 +1,19 @@
-import DashboardContainer from "@src/components/atoms/DashboardContainer";
-import DashboardLayout from "@src/components/atoms/DashboardLayout";
-import { type Routes } from "@src/utils/constants/constants";
-import { type NextPage } from "next";
-import React, { useEffect } from "react";
-import idl from "../sprintiq_program/idl.json";
+import { AnchorProvider, Idl, Program, setProvider } from "@coral-xyz/anchor";
+import { getAssociatedTokenAddress } from "@solana/spl-token";
 //import { Sprintiq_Program } from "./sprintiq_program/sprintiq_program";
 import {
   useAnchorWallet,
   useConnection,
   useWallet,
 } from "@solana/wallet-adapter-react";
-import { AnchorProvider, setProvider, Program, Idl } from "@coral-xyz/anchor";
-import { PublicKey, Transaction } from "@solana/web3.js";
-import {
-  getAccount,
-  getOrCreateAssociatedTokenAccount,
-  getAssociatedTokenAddress,
-  createAssociatedTokenAccountInstruction,
-  Account,
-  TokenAccountNotFoundError,
-  TokenInvalidAccountOwnerError,
-} from "@solana/spl-token";
+import { PublicKey } from "@solana/web3.js";
+import DashboardContainer from "@src/components/atoms/DashboardContainer";
+import DashboardLayout from "@src/components/atoms/DashboardLayout";
+import { type Routes } from "@src/utils/constants/constants";
+import { type NextPage } from "next";
+import React, { useEffect } from "react";
+
+import idl from "../sprintiq_program/idl.json";
 
 const usdcDevCoinMintAddress = new PublicKey(
   "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
@@ -111,7 +104,7 @@ const Dashboard: NextPage<DashboardProps> = props => {
         skipPreflight: true,
       };
 
-      let txHash = await program.methods
+      const txHash = await program.methods
         .initialize()
         .accounts({
           tokenAccountOwnerPda: tokenAccountOwnerPda,
