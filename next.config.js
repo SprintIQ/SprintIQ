@@ -17,6 +17,13 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    domains: ["firebasestorage.googleapis.com"],
+    dangerouslyAllowSVG: true,
+  },
 };
 
 export default config;

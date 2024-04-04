@@ -1,6 +1,7 @@
 import {
   createTRPCRouter,
   loginProcedure,
+  protectedProcedure,
   publicProcedure,
 } from "@src/server/api/trpc";
 import { z } from "zod";
@@ -27,18 +28,16 @@ export const authRouter = createTRPCRouter({
         });
         if (!user) {
           const generatedUserName = ctx.helper.generateUserName();
+          const userImage =
+            await ctx.helper.generateUserNameImage(generatedUserName);
           user = await ctx.db.profile.create({
             data: {
               wallet_address: input.wallet_address,
               username: generatedUserName,
+              avatar_url: userImage,
             },
           });
         }
-        ctx.user = {
-          wallet_address: input.wallet_address,
-          id: user.id,
-          nonce: user.nonce,
-        };
         return {
           success: true,
           user: user,
@@ -80,4 +79,36 @@ export const authRouter = createTRPCRouter({
       };
     }
   }),
+  update_details: protectedProcedure
+    .input(
+      z.object({
+        username: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const usernameExists = await ctx.db.profile.findFirst({
+        where: {
+          username: input.username,
+        },
+      });
+      if (usernameExists) {
+        return {
+          success: false,
+          error: "Username already exists",
+        };
+      } else {
+        const user = await ctx.db.profile.update({
+          where: {
+            id: ctx.user.id,
+          },
+          data: {
+            username: input.username,
+          },
+        });
+        return {
+          success: true,
+          user: user,
+        };
+      }
+    }),
 });

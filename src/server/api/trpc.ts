@@ -117,7 +117,6 @@ export const loginProcedure = publicProcedure.use(
   t.middleware(async ({ ctx, next }) => {
     const result = await next({ ctx });
     const resultCtx = "ctx" in result ? (result.ctx as Context) : undefined;
-    console.log(resultCtx?.user, result);
     if (resultCtx?.user) {
       // update nonce on sign in
       await db.profile.update({
@@ -153,6 +152,9 @@ export const protectedProcedure = t.procedure.use(
         wallet_address: decoded_session.wallet_address,
       },
     });
+    if (!user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
     return next({ ctx: { ...ctx, user } });
   }),
 );

@@ -104,9 +104,17 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     [network],
   );
 
+  const connectionErrorHandler = () => {
+    // add toast here
+  };
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} localStorageKey={COOKIE_KEY}>
+      <WalletProvider
+        wallets={wallets}
+        localStorageKey={COOKIE_KEY}
+        autoConnect
+        onError={connectionErrorHandler}
+      >
         <WalletModalProvider>
           <main
             className={`font-sans ${inter.variable} min-h-screen bg-primary-700 text-white`}
