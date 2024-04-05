@@ -94,17 +94,29 @@ export const gameRouter = createTRPCRouter({
         games: games,
       };
     }),
-  get_created_games: protectedProcedure.query(async ({ ctx }) => {
-    const games = await ctx.db.game.findMany({
-      where: {
-        creator_id: ctx.user.wallet_address,
-      },
-    });
-    return {
-      success: true,
-      games: games,
-    };
-  }),
+  get_created_games: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        skip: z.number().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const games = await ctx.db.game.findMany({
+        take: input.limit + 1,
+        skip: input.skip,
+        where: {
+          creator_id: ctx.user.wallet_address,
+        },
+        orderBy: {
+          created_at: "desc",
+        },
+      });
+      return {
+        success: true,
+        games: games,
+      };
+    }),
   get_game: publicProcedure
     .input(
       z.object({
