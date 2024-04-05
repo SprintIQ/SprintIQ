@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useMemo, type CSSProperties } from "react";
+import { type CSSProperties, useMemo } from "react";
 
 export type ButtonPrimaryType = {
   addQuestion?: string;
@@ -45,27 +45,27 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
 
   return (
     <div
-      className="w-[1090px] flex flex-row items-start justify-center py-0 px-5 box-border max-w-full"
+      className="box-border flex w-[1090px] max-w-full flex-row items-start justify-center px-5 py-0"
       style={buttonPrimaryStyle}
     >
-      <div className="w-[834px] flex flex-row flex-wrap items-start justify-start gap-[38px] max-w-full mq450:gap-[19px]">
+      <div className="mq450:gap-[19px] flex w-[834px] max-w-full flex-row flex-wrap items-start justify-start gap-[38px]">
         <button
-          className="cursor-pointer [border:none] py-4 px-5 bg-limegreen flex-1 rounded-81xl flex flex-row items-start justify-center box-border min-w-[193px] whitespace-nowrap max-w-full hover:bg-forestgreen"
+          className="bg-limegreen rounded-81xl hover:bg-forestgreen box-border flex min-w-[193px] max-w-full flex-1 cursor-pointer flex-row items-start justify-center whitespace-nowrap px-5 py-4 [border:none]"
           style={buttonPrimary1Style}
           onClick={onButtonPrimaryClick}
         >
           <div
-            className="w-[193px] relative text-11xl font-inter text-white text-center inline-block"
+            className="text-11xl font-inter relative inline-block w-[193px] text-center text-white"
             style={addQuestionStyle}
           >
             {addQuestion}
           </div>
         </button>
         <button
-          className="cursor-pointer [border:none] py-4 px-5 bg-limegreen w-[335px] rounded-81xl flex flex-row items-start justify-center box-border max-w-full hover:bg-forestgreen"
+          className="bg-limegreen rounded-81xl hover:bg-forestgreen box-border flex w-[335px] max-w-full cursor-pointer flex-row items-start justify-center px-5 py-4 [border:none]"
           onClick={onButtonPrimary1Click}
         >
-          <div className="w-[83px] relative text-11xl font-inter text-white text-center inline-block min-w-[83px] mq450:text-lg mq1050:text-5xl">
+          <div className="text-11xl font-inter mq450:text-lg mq1050:text-5xl relative inline-block w-[83px] min-w-[83px] text-center text-white">
             Finish
           </div>
         </button>

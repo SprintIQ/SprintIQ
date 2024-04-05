@@ -1,38 +1,39 @@
 import type { NextPage } from "next";
-import { useCallback } from "react";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
+
 import FrameComponent7 from "./frame-component7";
 
 const FrameComponent6: NextPage = () => {
   const router = useRouter();
 
   const onPolygonIconClick = useCallback(() => {
-    router.push("/landing-page");
+    void router.push("/landing-page");
   }, [router]);
 
   return (
-    <section className="w-[1456px] flex flex-col items-end justify-start gap-[50px] max-w-full text-center text-41xl text-white font-inter mq750:gap-[25px_50px]">
-      <header className="self-stretch h-[133px] flex flex-row items-start justify-between gap-[20px] text-center text-9xl text-limegreen font-inter">
-        <div className="h-[51.1px] w-[314px] flex flex-row items-start justify-start gap-[43.9px] mq450:gap-[43.9px_22px]">
-          <div className="self-stretch flex flex-col items-start justify-start pt-[3px] px-0 pb-0">
+    <section className="text-41xl font-inter mq750:gap-[25px_50px] flex w-[1456px] max-w-full flex-col items-end justify-start gap-[50px] text-center text-white">
+      <header className="text-limegreen font-inter flex h-[133px] flex-row items-start justify-between gap-[20px] self-stretch text-center text-9xl">
+        <div className="mq450:gap-[43.9px_22px] flex h-[51.1px] w-[314px] flex-row items-start justify-start gap-[43.9px]">
+          <div className="flex flex-col items-start justify-start self-stretch px-0 pb-0 pt-[3px]">
             <img
-              className="w-[48.1px] h-[48.1px] relative object-contain cursor-pointer"
+              className="relative h-[48.1px] w-[48.1px] cursor-pointer object-contain"
               loading="lazy"
               alt=""
               src="/polygon-4.svg"
               onClick={onPolygonIconClick}
             />
           </div>
-          <div className="h-[45.1px] flex-1 flex flex-row items-end justify-start gap-[10.4px]">
+          <div className="flex h-[45.1px] flex-1 flex-row items-end justify-start gap-[10.4px]">
             <img
-              className="h-[45.1px] w-[40.6px] relative object-cover"
+              className="relative h-[45.1px] w-[40.6px] object-cover"
               loading="lazy"
               alt=""
               src="/group-1124@2x.png"
             />
-            <div className="h-[31.1px] flex-1 flex flex-col items-start justify-end pt-0 px-0 pb-[1.1px] box-border">
+            <div className="box-border flex h-[31.1px] flex-1 flex-col items-start justify-end px-0 pb-[1.1px] pt-0">
               <img
-                className="self-stretch h-[30px] relative max-w-full overflow-hidden shrink-0"
+                className="relative h-[30px] max-w-full shrink-0 self-stretch overflow-hidden"
                 loading="lazy"
                 alt=""
                 src="/sprint-iq.svg"
@@ -42,14 +43,14 @@ const FrameComponent6: NextPage = () => {
         </div>
         <FrameComponent7 />
       </header>
-      <div className="w-[1415px] flex flex-row items-start justify-center py-0 px-5 box-border max-w-full">
-        <div className="w-[1089px] flex flex-col items-start justify-start gap-[36px] max-w-full mq750:gap-[18px_36px]">
-          <div className="self-stretch flex flex-row items-start justify-center py-0 pr-[21px] pl-5 box-border max-w-full">
-            <h1 className="m-0 h-[76px] w-[482px] relative text-inherit leading-[22.53px] font-normal font-inherit flex items-center justify-center shrink-0 max-w-full mq450:text-17xl mq450:leading-[14px] mq1050:text-29xl mq1050:leading-[18px]">
+      <div className="box-border flex w-[1415px] max-w-full flex-row items-start justify-center px-5 py-0">
+        <div className="mq750:gap-[18px_36px] flex w-[1089px] max-w-full flex-col items-start justify-start gap-[36px]">
+          <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch py-0 pl-5 pr-[21px]">
+            <h1 className="font-inherit mq450:text-17xl mq450:leading-[14px] mq1050:text-29xl mq1050:leading-[18px] relative m-0 flex h-[76px] w-[482px] max-w-full shrink-0 items-center justify-center font-normal leading-[22.53px] text-inherit">
               Input Game Title
             </h1>
           </div>
-          <div className="self-stretch h-px relative box-border border-t-[1px] border-solid border-darkslategray" />
+          <div className="border-darkslategray relative box-border h-px self-stretch border-t-[1px] border-solid" />
         </div>
       </div>
     </section>

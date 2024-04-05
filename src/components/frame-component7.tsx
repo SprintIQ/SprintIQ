@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useMemo, type CSSProperties } from "react";
+import { type CSSProperties, useMemo } from "react";
 
 export type FrameComponent7Type = {
   /** Style props */
@@ -44,30 +44,30 @@ const FrameComponent7: NextPage<FrameComponent7Type> = ({
 
   return (
     <div
-      className="self-stretch w-[307px] flex flex-col items-start justify-start pt-3.5 px-0 pb-0 box-border text-center text-9xl text-limegreen font-inter"
+      className="text-limegreen font-inter box-border flex w-[307px] flex-col items-start justify-start self-stretch px-0 pb-0 pt-3.5 text-center text-9xl"
       style={frameDivStyle}
     >
       <div
-        className="self-stretch flex-1 rounded-11xl bg-darkgreen flex flex-row items-start justify-start pt-[29px] pb-7 pr-9 pl-[37px] gap-[9px] border-[1px] border-solid border-limegreen"
+        className="rounded-11xl bg-darkgreen border-limegreen flex flex-1 flex-row items-start justify-start gap-[9px] self-stretch border-[1px] border-solid pb-7 pl-[37px] pr-9 pt-[29px]"
         style={titleInputStyle}
       >
-        <div className="h-[119px] w-[307px] relative rounded-11xl bg-darkgreen box-border hidden border-[1px] border-solid border-limegreen" />
+        <div className="rounded-11xl bg-darkgreen border-limegreen relative box-border hidden h-[119px] w-[307px] border-[1px] border-solid" />
         <button
-          className="cursor-pointer pt-[13px] pb-3.5 pr-[15px] pl-4 bg-[transparent] self-stretch w-[68px] rounded-3xl [background:radial-gradient(50%_50%_at_50%_50%,_#023e0a,_#007205)] box-border flex flex-row items-start justify-start z-[1] border-[0.5px] border-solid border-limegreen"
+          className="border-limegreen z-[1] box-border flex w-[68px] cursor-pointer flex-row items-start justify-start self-stretch rounded-3xl border-[0.5px] border-solid bg-[transparent] pb-3.5 pl-4 pr-[15px] pt-[13px] [background:radial-gradient(50%_50%_at_50%_50%,_#023e0a,_#007205)]"
           style={frameButtonStyle}
         >
-          <div className="h-[62px] w-[68px] relative rounded-3xl [background:radial-gradient(50%_50%_at_50%_50%,_#023e0a,_#007205)] box-border hidden border-[0.5px] border-solid border-limegreen" />
+          <div className="border-limegreen relative box-border hidden h-[62px] w-[68px] rounded-3xl border-[0.5px] border-solid [background:radial-gradient(50%_50%_at_50%_50%,_#023e0a,_#007205)]" />
           <img
-            className="h-[35px] w-[35px] relative z-[2]"
+            className="relative z-[2] h-[35px] w-[35px]"
             alt=""
             src="/option-buttons.svg"
           />
         </button>
         <div
-          className="flex-1 flex flex-col items-start justify-start pt-[19px] px-0 pb-0"
+          className="flex flex-1 flex-col items-start justify-start px-0 pb-0 pt-[19px]"
           style={frameDiv1Style}
         >
-          <div className="self-stretch h-[23px] relative leading-[15px] flex items-center justify-center shrink-0 whitespace-nowrap z-[1]">
+          <div className="relative z-[1] flex h-[23px] shrink-0 items-center justify-center self-stretch whitespace-nowrap leading-[15px]">
             New Game
           </div>
         </div>
