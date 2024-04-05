@@ -17,7 +17,7 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
   const renderSelected = () => {
     switch (currentSection) {
       case Routes.GAME:
-        return <Home currentProfile={currentProfile!} />;
+        return <Home />;
     }
   };
   return <section>{renderSelected()}</section>;
