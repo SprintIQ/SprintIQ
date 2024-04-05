@@ -1,130 +1,130 @@
 import type { NextPage } from "next";
-import { useCallback } from "react";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 const Leaderboard: NextPage = () => {
   const router = useRouter();
 
   const onPolygonIconClick = useCallback(() => {
-    router.push("/home-page-for-created-question");
+    void router.push("/home-page-for-created-question");
   }, [router]);
 
   return (
-    <div className="w-full relative [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] overflow-hidden flex flex-col items-end justify-end pt-[92px] pb-0 pr-[215px] pl-[116px] box-border gap-[1px] tracking-[normal] text-center text-xl text-gray-300 font-inter mq450:pl-5 mq450:pr-5 mq450:box-border mq1050:pl-[58px] mq1050:pr-[107px] mq1050:box-border">
-      <main className="self-stretch flex flex-row flex-wrap items-start justify-start gap-[50.9px] max-w-full shrink-0 mq750:gap-[25px]">
-        <div className="h-[73.1px] flex flex-col items-start justify-start pt-[25px] px-0 pb-0 box-border">
+    <div className="font-inter mq450:pl-5 mq450:pr-5 mq450:box-border mq1050:pl-[58px] mq1050:pr-[107px] mq1050:box-border relative box-border flex w-full flex-col items-end justify-end gap-[1px] overflow-hidden pb-0 pl-[116px] pr-[215px] pt-[92px] text-center text-xl tracking-[normal] text-gray-300 [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
+      <main className="mq750:gap-[25px] flex max-w-full shrink-0 flex-row flex-wrap items-start justify-start gap-[50.9px] self-stretch">
+        <div className="box-border flex h-[73.1px] flex-col items-start justify-start px-0 pb-0 pt-[25px]">
           <img
-            className="w-[48.1px] h-[48.1px] relative object-contain shrink-0 [debug_commit:f6aba90] cursor-pointer"
+            className="relative h-[48.1px] w-[48.1px] shrink-0 cursor-pointer object-contain [debug_commit:f6aba90]"
             loading="lazy"
             alt=""
             src="/polygon-4.svg"
             onClick={onPolygonIconClick}
           />
         </div>
-        <section className="flex-1 flex flex-col items-start justify-start pt-[146px] px-0 pb-[73px] box-border relative gap-[70px] min-w-[844px] shrink-0 [debug_commit:f6aba90] text-center text-41xl text-limegreen font-inter mq1225:min-w-full mq450:gap-[17px_70px] mq750:gap-[35px_70px] mq750:pt-[62px] mq750:pb-[31px] mq750:box-border mq1050:pt-[95px] mq1050:pb-[47px] mq1050:box-border">
-          <div className="self-stretch flex flex-row items-start justify-center py-0 pr-[21px] pl-5 box-border max-w-full">
-            <h3 className="m-0 w-[425px] relative text-inherit leading-[23px] font-black font-inherit flex items-center justify-center shrink-0 max-w-full mq450:text-17xl mq450:leading-[14px] mq750:text-29xl mq750:leading-[18px]">
+        <section className="text-41xl text-limegreen font-inter mq1225:min-w-full mq450:gap-[17px_70px] mq750:gap-[35px_70px] mq750:pt-[62px] mq750:pb-[31px] mq750:box-border mq1050:pt-[95px] mq1050:pb-[47px] mq1050:box-border relative box-border flex min-w-[844px] flex-1 shrink-0 flex-col items-start justify-start gap-[70px] px-0 pb-[73px] pt-[146px] text-center [debug_commit:f6aba90]">
+          <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch py-0 pl-5 pr-[21px]">
+            <h3 className="font-inherit mq450:text-17xl mq450:leading-[14px] mq750:text-29xl mq750:leading-[18px] relative m-0 flex w-[425px] max-w-full shrink-0 items-center justify-center font-black leading-[23px] text-inherit">
               Leaderboard
             </h3>
           </div>
-          <div className="w-full h-[1108px] absolute !m-[0] right-[0px] bottom-[-83px] left-[0px] rounded-11xl bg-darkgreen box-border z-[1] border-[1px] border-solid border-limegreen" />
-          <div className="self-stretch flex flex-col items-start justify-start gap-[40px] max-w-full text-21xl text-white mq750:gap-[20px_40px]">
-            <div className="self-stretch h-px relative box-border z-[2] border-t-[1px] border-solid border-lime" />
-            <div className="self-stretch flex flex-row items-start justify-center py-0 px-5 box-border max-w-full">
-              <div className="w-[1028px] flex flex-col items-end justify-start gap-[68.5px] max-w-full mq750:gap-[17px_68.5px] mq1050:gap-[34px_68.5px]">
-                <div className="self-stretch flex flex-col items-start justify-start gap-[56px] max-w-full mq750:gap-[28px_56px]">
-                  <div className="self-stretch flex flex-row items-end justify-between max-w-full gap-[20px] mq1050:flex-wrap">
-                    <div className="w-[395px] flex flex-col items-start justify-end pt-0 px-0 pb-3 box-border max-w-full">
-                      <div className="self-stretch flex flex-row items-start justify-start gap-[19px] mq450:flex-wrap">
-                        <div className="h-[72px] w-[73px] relative">
-                          <div className="absolute top-[0px] left-[0px] rounded-[50%] [background:radial-gradient(50%_50%_at_50%_50%,_#b78f00,_rgba(218,_105,_0,_0.65))] w-full h-full z-[2]" />
-                          <div className="absolute w-[calc(100%_-_8px)] top-[3px] left-[5px] leading-[22.53px] font-medium flex items-center justify-center h-[67px] z-[3] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+          <div className="rounded-11xl bg-darkgreen border-limegreen absolute bottom-[-83px] left-[0px] right-[0px] z-[1] !m-[0] box-border h-[1108px] w-full border-[1px] border-solid" />
+          <div className="text-21xl mq750:gap-[20px_40px] flex max-w-full flex-col items-start justify-start gap-[40px] self-stretch text-white">
+            <div className="border-lime relative z-[2] box-border h-px self-stretch border-t-[1px] border-solid" />
+            <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch px-5 py-0">
+              <div className="mq750:gap-[17px_68.5px] mq1050:gap-[34px_68.5px] flex w-[1028px] max-w-full flex-col items-end justify-start gap-[68.5px]">
+                <div className="mq750:gap-[28px_56px] flex max-w-full flex-col items-start justify-start gap-[56px] self-stretch">
+                  <div className="mq1050:flex-wrap flex max-w-full flex-row items-end justify-between gap-[20px] self-stretch">
+                    <div className="box-border flex w-[395px] max-w-full flex-col items-start justify-end px-0 pb-3 pt-0">
+                      <div className="mq450:flex-wrap flex flex-row items-start justify-start gap-[19px] self-stretch">
+                        <div className="relative h-[72px] w-[73px]">
+                          <div className="absolute left-[0px] top-[0px] z-[2] h-full w-full rounded-[50%] [background:radial-gradient(50%_50%_at_50%_50%,_#b78f00,_rgba(218,_105,_0,_0.65))]" />
+                          <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] absolute left-[5px] top-[3px] z-[3] flex h-[67px] w-[calc(100%_-_8px)] items-center justify-center font-medium leading-[22.53px]">
                             1
                           </div>
                         </div>
-                        <div className="flex-1 flex flex-col items-start justify-start pt-[3px] px-0 pb-0 box-border min-w-[197px]">
-                          <div className="self-stretch h-[66px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                        <div className="box-border flex min-w-[197px] flex-1 flex-col items-start justify-start px-0 pb-0 pt-[3px]">
+                          <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[66px] shrink-0 items-center justify-center self-stretch font-medium leading-[22.53px]">
                             JayLove
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="h-[67px] w-[324px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 max-w-full z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                    <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] w-[324px] max-w-full shrink-0 items-center justify-center font-medium leading-[22.53px]">
                       30 points
                     </div>
                   </div>
-                  <div className="self-stretch flex flex-col items-start justify-start gap-[67px] max-w-full mq750:gap-[17px_67px] mq1050:gap-[33px_67px]">
-                    <div className="self-stretch flex flex-row items-end justify-between max-w-full gap-[20px] mq1050:flex-wrap">
-                      <div className="w-[395px] flex flex-col items-start justify-end pt-0 px-0 pb-1.5 box-border max-w-full">
-                        <div className="self-stretch flex flex-row items-start justify-start gap-[19px] mq450:flex-wrap">
-                          <div className="h-[73px] w-[73px] relative">
-                            <div className="absolute top-[0px] left-[0px] rounded-[50%] [background:radial-gradient(50%_50%_at_50%_50%,_#51b700,_rgba(0,_165,_218,_0.65))] w-full h-full z-[2]" />
-                            <div className="absolute w-[calc(100%_-_8px)] top-[3px] left-[5px] leading-[22.53px] font-medium flex items-center justify-center h-[68px] z-[3] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                  <div className="mq750:gap-[17px_67px] mq1050:gap-[33px_67px] flex max-w-full flex-col items-start justify-start gap-[67px] self-stretch">
+                    <div className="mq1050:flex-wrap flex max-w-full flex-row items-end justify-between gap-[20px] self-stretch">
+                      <div className="box-border flex w-[395px] max-w-full flex-col items-start justify-end px-0 pb-1.5 pt-0">
+                        <div className="mq450:flex-wrap flex flex-row items-start justify-start gap-[19px] self-stretch">
+                          <div className="relative h-[73px] w-[73px]">
+                            <div className="absolute left-[0px] top-[0px] z-[2] h-full w-full rounded-[50%] [background:radial-gradient(50%_50%_at_50%_50%,_#51b700,_rgba(0,_165,_218,_0.65))]" />
+                            <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] absolute left-[5px] top-[3px] z-[3] flex h-[68px] w-[calc(100%_-_8px)] items-center justify-center font-medium leading-[22.53px]">
                               2
                             </div>
                           </div>
-                          <div className="h-[67px] flex-1 relative leading-[22.53px] font-medium flex items-center justify-center min-w-[124px] z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                          <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] min-w-[124px] flex-1 items-center justify-center font-medium leading-[22.53px]">
                             JayLove
                           </div>
                         </div>
                       </div>
-                      <div className="h-[68px] w-[324px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 max-w-full z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                      <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[68px] w-[324px] max-w-full shrink-0 items-center justify-center font-medium leading-[22.53px]">
                         25 points
                       </div>
                     </div>
-                    <div className="self-stretch flex flex-row items-end justify-between max-w-full gap-[20px] mq1050:flex-wrap">
-                      <div className="w-[395px] flex flex-col items-start justify-end pt-0 px-0 pb-[7px] box-border max-w-full">
-                        <div className="self-stretch flex flex-row items-start justify-start gap-[19px] mq450:flex-wrap">
-                          <div className="h-[74px] w-[73px] relative">
-                            <div className="absolute top-[0px] left-[0px] rounded-[50%] [background:radial-gradient(50%_50%_at_50%_50%,_#1b8f7a,_#0033b7,_#eb00ff_0.01%,_rgba(148,_0,_218,_0.65))] w-full h-full z-[2]" />
-                            <div className="absolute h-[calc(100%_-_6px)] top-[2px] left-[0px] leading-[22.53px] font-medium flex items-center justify-center w-[65px] z-[3] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                    <div className="mq1050:flex-wrap flex max-w-full flex-row items-end justify-between gap-[20px] self-stretch">
+                      <div className="box-border flex w-[395px] max-w-full flex-col items-start justify-end px-0 pb-[7px] pt-0">
+                        <div className="mq450:flex-wrap flex flex-row items-start justify-start gap-[19px] self-stretch">
+                          <div className="relative h-[74px] w-[73px]">
+                            <div className="absolute left-[0px] top-[0px] z-[2] h-full w-full rounded-[50%] [background:radial-gradient(50%_50%_at_50%_50%,_#1b8f7a,_#0033b7,_#eb00ff_0.01%,_rgba(148,_0,_218,_0.65))]" />
+                            <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] absolute left-[0px] top-[2px] z-[3] flex h-[calc(100%_-_6px)] w-[65px] items-center justify-center font-medium leading-[22.53px]">
                               3
                             </div>
                           </div>
-                          <div className="flex-1 flex flex-col items-start justify-start pt-0.5 px-0 pb-0 box-border min-w-[197px]">
-                            <div className="self-stretch h-[68px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                          <div className="box-border flex min-w-[197px] flex-1 flex-col items-start justify-start px-0 pb-0 pt-0.5">
+                            <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[68px] shrink-0 items-center justify-center self-stretch font-medium leading-[22.53px]">
                               JayLove
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="h-[67px] w-[324px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 max-w-full z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                      <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] w-[324px] max-w-full shrink-0 items-center justify-center font-medium leading-[22.53px]">
                         20 points
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="self-stretch flex flex-row items-end justify-between max-w-full gap-[20px] mq1050:flex-wrap">
-                  <div className="w-[390px] flex flex-col items-start justify-end pt-0 px-0 pb-[11px] box-border max-w-full">
-                    <div className="self-stretch flex flex-row items-start justify-start gap-[22px] mq450:flex-wrap">
-                      <div className="h-[67px] w-[65px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                <div className="mq1050:flex-wrap flex max-w-full flex-row items-end justify-between gap-[20px] self-stretch">
+                  <div className="box-border flex w-[390px] max-w-full flex-col items-start justify-end px-0 pb-[11px] pt-0">
+                    <div className="mq450:flex-wrap flex flex-row items-start justify-start gap-[22px] self-stretch">
+                      <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] w-[65px] shrink-0 items-center justify-center font-medium leading-[22.53px]">
                         4
                       </div>
-                      <div className="flex-1 flex flex-col items-start justify-start pt-1 px-0 pb-0 box-border min-w-[197px]">
-                        <div className="self-stretch h-[67px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                      <div className="box-border flex min-w-[197px] flex-1 flex-col items-start justify-start px-0 pb-0 pt-1">
+                        <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] shrink-0 items-center justify-center self-stretch font-medium leading-[22.53px]">
                           JayLove
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="h-[67px] w-[324px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 max-w-full z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                  <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] w-[324px] max-w-full shrink-0 items-center justify-center font-medium leading-[22.53px]">
                     15 points
                   </div>
                 </div>
-                <div className="self-stretch flex flex-row items-end justify-between max-w-full gap-[20px] mq1050:flex-wrap">
-                  <div className="w-[390px] flex flex-col items-start justify-end pt-0 px-0 pb-3 box-border max-w-full">
-                    <div className="self-stretch flex flex-row items-start justify-start gap-[22px] mq450:flex-wrap">
-                      <div className="h-[67px] w-[65px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                <div className="mq1050:flex-wrap flex max-w-full flex-row items-end justify-between gap-[20px] self-stretch">
+                  <div className="box-border flex w-[390px] max-w-full flex-col items-start justify-end px-0 pb-3 pt-0">
+                    <div className="mq450:flex-wrap flex flex-row items-start justify-start gap-[22px] self-stretch">
+                      <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] w-[65px] shrink-0 items-center justify-center font-medium leading-[22.53px]">
                         5
                       </div>
-                      <div className="flex-1 flex flex-col items-start justify-start pt-[7px] px-0 pb-0 box-border min-w-[197px]">
-                        <div className="self-stretch h-[67px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                      <div className="box-border flex min-w-[197px] flex-1 flex-col items-start justify-start px-0 pb-0 pt-[7px]">
+                        <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] shrink-0 items-center justify-center self-stretch font-medium leading-[22.53px]">
                           JayLove
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="h-[67px] w-[324px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 max-w-full z-[2] mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px]">
+                  <div className="mq450:text-5xl mq450:leading-[14px] mq750:text-13xl mq750:leading-[18px] relative z-[2] flex h-[67px] w-[324px] max-w-full shrink-0 items-center justify-center font-medium leading-[22.53px]">
                     10 points
                   </div>
                 </div>
@@ -133,21 +133,21 @@ const Leaderboard: NextPage = () => {
           </div>
         </section>
       </main>
-      <div className="w-[1374px] flex flex-row items-start justify-center max-w-full">
-        <div className="w-[864px] flex flex-row items-end justify-between max-w-full gap-[20px] mq1050:flex-wrap">
-          <div className="w-[327px] flex flex-col items-start justify-end pt-0 px-0 pb-3 box-border max-w-full">
-            <div className="self-stretch flex flex-row items-end justify-start gap-[15px]">
-              <div className="w-[55px] flex flex-col items-start justify-end pt-0 px-0 pb-0.5 box-border">
-                <div className="self-stretch h-[68px] relative leading-[22.53px] font-medium flex items-center justify-center shrink-0 z-[2] mq450:text-base mq450:leading-[18px]">
+      <div className="flex w-[1374px] max-w-full flex-row items-start justify-center">
+        <div className="mq1050:flex-wrap flex w-[864px] max-w-full flex-row items-end justify-between gap-[20px]">
+          <div className="box-border flex w-[327px] max-w-full flex-col items-start justify-end px-0 pb-3 pt-0">
+            <div className="flex flex-row items-end justify-start gap-[15px] self-stretch">
+              <div className="box-border flex w-[55px] flex-col items-start justify-end px-0 pb-0.5 pt-0">
+                <div className="mq450:text-base mq450:leading-[18px] relative z-[2] flex h-[68px] shrink-0 items-center justify-center self-stretch font-medium leading-[22.53px]">
                   6
                 </div>
               </div>
-              <div className="h-[67px] flex-1 relative leading-[22.53px] font-medium text-white flex items-center justify-center mq450:text-base mq450:leading-[18px]">
+              <div className="mq450:text-base mq450:leading-[18px] relative flex h-[67px] flex-1 items-center justify-center font-medium leading-[22.53px] text-white">
                 JayLove
               </div>
             </div>
           </div>
-          <div className="h-[67px] w-[275px] relative leading-[22.53px] font-medium text-white flex items-center justify-center shrink-0 z-[2] mq450:text-base mq450:leading-[18px]">
+          <div className="mq450:text-base mq450:leading-[18px] relative z-[2] flex h-[67px] w-[275px] shrink-0 items-center justify-center font-medium leading-[22.53px] text-white">
             5 points
           </div>
         </div>

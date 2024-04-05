@@ -1,26 +1,27 @@
 import type { NextPage } from "next";
-import { useCallback } from "react";
-import FrameComponent9 from "../components/frame-component9";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
+
+import FrameComponent9 from "../components/frame-component9";
 
 const YouAreSet: NextPage = () => {
   const router = useRouter();
 
   const onPolygonIconClick = useCallback(() => {
-    router.push("/");
+    void router.push("/");
   }, [router]);
 
   return (
-    <div className="w-full h-[1117px] relative [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] overflow-hidden tracking-[normal]">
+    <div className="relative h-[1117px] w-full overflow-hidden tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
       <FrameComponent9 />
-      <div className="absolute h-full top-[0px] bottom-[0px] left-[109px] w-[1509.4px]">
+      <div className="absolute bottom-[0px] left-[109px] top-[0px] h-full w-[1509.4px]">
         <img
-          className="absolute top-[-145px] left-[0px] w-[1509.4px] h-[1677px] object-cover"
+          className="absolute left-[0px] top-[-145px] h-[1677px] w-[1509.4px] object-cover"
           alt=""
           src="/group-1143@2x.png"
         />
         <img
-          className="absolute top-[117px] left-[7px] w-[48.1px] h-[48.1px] object-contain cursor-pointer z-[1]"
+          className="absolute left-[7px] top-[117px] z-[1] h-[48.1px] w-[48.1px] cursor-pointer object-contain"
           loading="lazy"
           alt=""
           src="/polygon-4.svg"
