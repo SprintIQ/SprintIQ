@@ -20,6 +20,6 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <Home currentProfile={currentProfile!} />;
     }
   };
-  return <section>DashboardContainer</section>;
+  return <section>{renderSelected()}</section>;
 };
 export default DashboardContainer;

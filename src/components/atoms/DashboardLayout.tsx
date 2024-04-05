@@ -6,11 +6,6 @@ export interface IDashboardLayoutProps {
 }
 
 const DashboardLayout: React.FC<IDashboardLayoutProps> = ({ children }) => {
-  return (
-    <section>
-      DashboardLayout
-      {children}
-    </section>
-  );
+  return <section>{children}</section>;
 };
 export default DashboardLayout;
