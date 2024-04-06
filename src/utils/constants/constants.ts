@@ -11,6 +11,7 @@ export const LABELS = {
 } as const;
 export enum Routes {
   GAME = "game",
+  CREATE = "create"
 }
 export enum QuestionType {
   TEXT = "text",

@@ -8,9 +8,9 @@ const ConnectWallet: NextPage = () => {
 
   return (
     <div className="text-45xl font-inter mq1550:pl-5 mq1550:pr-5 mq1550:box-border relative box-border flex w-full flex-row items-start justify-between gap-[20px] overflow-hidden py-0 pl-[174px] pr-0 text-center tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
-      <div className="mq825:pt-[120px] mq825:box-border mq1550:flex-1 mq1250:pt-[185px] mq1250:box-border box-border flex w-[463px] min-w-[463px] max-w-full flex-col items-start justify-start px-0 pb-0 pt-[284px]">
+      <div className="mq825:pt-[120px] mq825:box-border  mq1550:flex-1 mq1250:pt-[185px] mq1250:box-border box-border flex w-[463px] min-w-[463px] max-w-full flex-col items-start justify-start px-0 pb-0 pt-[5.25rem]">
         <div className="mq450:gap-[35px_70px] flex max-w-full flex-col items-start justify-start gap-[70px] self-stretch">
-          <h1 className="font-inherit mq450:text-19xl mq450:leading-[54px] mq825:text-32xl mq825:leading-[72px] relative m-0 flex h-[158px] shrink-0 items-center justify-center self-stretch font-normal leading-[90px] text-inherit">
+          <h1 className="font-inherit text-[2.5rem] mq825:leading-[72px] relative m-0 flex h-[158px] shrink-0 items-center justify-center self-stretch font-normal leading-[90px] text-inherit">
             Connect wallet
           </h1>
           <div className="box-border flex h-[497px] max-w-full flex-row items-start justify-start self-stretch py-0 pl-[7px] pr-[9px]">

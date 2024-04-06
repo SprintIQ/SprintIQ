@@ -44,11 +44,11 @@ const FrameComponent7: NextPage<FrameComponent7Type> = ({
 
   return (
     <div
-      className="text-limegreen font-inter box-border flex w-[307px] flex-col items-start justify-start self-stretch px-0 pb-0 pt-3.5 text-center text-9xl"
+      className="text-[#1FC04D] font-inter box-border flex w-[307px] flex-col items-start justify-start  px-0 pb-0  text-center "
       style={frameDivStyle}
     >
       <div
-        className="rounded-11xl bg-darkgreen border-limegreen flex flex-1 flex-row items-start justify-start gap-[9px] self-stretch border-[1px] border-solid pb-7 pl-[37px] pr-9 pt-[29px]"
+        className="rounded-[1.875rem] bg-darkgreen border-[#1FC04D] flex flex-1 flex-row items-start justify-start gap-[1.25rem]  border-[1px] border-solid px-7 py-6 "
         style={titleInputStyle}
       >
         <div className="rounded-11xl bg-darkgreen border-limegreen relative box-border hidden h-[119px] w-[307px] border-[1px] border-solid" />

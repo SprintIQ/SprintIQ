@@ -60,7 +60,24 @@ export default function Page() {
     }
   };
   return (
-    <section className="flex h-screen w-full flex-col content-center items-center justify-center space-y-24">
+    <div className=" flex flex-row justify-between item-center " >
+       <div className=" box-border flex w-[463px] min-w-[463px] max-w-full flex-col items-start justify-start px-0 pb-0 pt-[3.75rem] ml-[12.5rem] ">
+        <div className=" flex max-w-full flex-col items-start justify-start gap-[70px] self-stretch">
+          <h1 className="font-inherit text-[2.5rem] mq825:leading-[72px] relative m-0 flex h-[158px] shrink-0 items-center justify-center self-stretch font-normal leading-[90px] text-inherit">
+            Connect wallet
+          </h1>
+          <div className="box-border -mt-[5rem] flex h-[497px] max-w-full flex-row items-start justify-start  py-0 pl-[7px] pr-[9px]">
+            <img
+              className="relative h-[497px] max-w-full flex-1 overflow-hidden object-cover"
+              loading="lazy"
+              alt=""
+              src="/group-1143@2x.png"
+            />
+          </div>
+        </div>
+      </div>
+   
+    <section className="flex h-screen w-full flex-col content-center items-center justify-center space-y-24  ">
       <button
         onClick={handleSignIn}
         className="group flex flex-col space-y-3 text-grey-300 transition-colors duration-300 hover:text-secondary-700"
@@ -80,5 +97,6 @@ export default function Page() {
         <span>Creator</span>
       </button>
     </section>
+    </div>
   );
 }

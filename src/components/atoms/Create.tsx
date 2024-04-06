@@ -208,9 +208,3 @@ const CreateGame: NextPage = () => {
 };
 
 export default CreateGame;
-
-
-
-
-
-
