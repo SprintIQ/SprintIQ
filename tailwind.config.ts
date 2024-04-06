@@ -18,6 +18,7 @@ export default {
         secondary: {
           700: "#1FC04D",
           300: "#175611",
+          100: "#96C4CE",
         },
         grey: {
           300: "#D9D9D9",
@@ -25,7 +26,21 @@ export default {
           100: "#373737",
         },
       },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;

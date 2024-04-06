@@ -10,8 +10,9 @@ export const LABELS = {
   "no-wallet": "Select Wallet",
 } as const;
 export enum Routes {
+  HOME = "home",
   GAME = "game",
-  CREATE = "create"
+  JOIN = "join",
 }
 export enum QuestionType {
   TEXT = "text",
