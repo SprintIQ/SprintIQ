@@ -110,6 +110,8 @@ export const playerRouter = createTRPCRouter({
         return {
           success: false,
           error: "Already answered Question",
+          details: questionAnswered,
+          option_id: input.option_id,
         };
       } else {
         const points = question.answer === option.value ? question.points : 0;
@@ -126,6 +128,8 @@ export const playerRouter = createTRPCRouter({
         return {
           success: true,
           message: "Answered Question",
+          details: anwsered,
+          option_id: input.question_id,
         };
       }
     }),
@@ -142,6 +146,7 @@ export const playerRouter = createTRPCRouter({
           game_id: input.game_id,
         },
         select: {
+          id: true,
           description: true,
           question: true,
           points: true,

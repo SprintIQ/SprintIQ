@@ -15,7 +15,11 @@ const Game: React.FC<IGameProps> = props => {
     game_id: props.gameId,
     page: parseInt(props.page),
   });
-  const { mutateAsync } = api.player.answer_question.useMutation();
+  const {
+    mutateAsync,
+    isLoading: isAnswering,
+    data: answer,
+  } = api.player.answer_question.useMutation();
 
   const [count, setCount] = React.useState(-1);
   React.useEffect(() => {
@@ -30,11 +34,12 @@ const Game: React.FC<IGameProps> = props => {
 
     return () => clearInterval(timerId); // cleanup on unmount
   }, [data?.current_question]);
-  const handleAnwser = () => {
-    mutateAsync({
+  const handleAnswer = (option_id: string) => {
+  void mutateAsync({
       game_id: props.gameId,
-      question_id: data?.current_question?.id,
-    });
+      question_id: data?.current_question?.id!,
+      option_id,
+    }).then(console.log);
   };
   return isLoading ? (
     <section className="grid items-center text-center">
@@ -61,7 +66,18 @@ const Game: React.FC<IGameProps> = props => {
         </h2>
         <div className="mx-auto mt-6 flex w-10/12 flex-col space-y-6">
           {data?.current_question?.options.map(option => (
-            <Option data-wrong="true" key={option.id} option={option} />
+            <Option
+              data-wrong={
+                answer?.option_id === option.id && answer.details.points === 0
+              }
+              data-correct={
+                answer?.option_id === option.id && answer.details.points > 0
+              }
+              key={option.id}
+              onClick={() => handleAnswer(option.id)}
+              option={option}
+              disabled={isAnswering}
+            />
           ))}
         </div>
       </div>
