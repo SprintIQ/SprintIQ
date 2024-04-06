@@ -133,6 +133,46 @@ export const playerRouter = createTRPCRouter({
         };
       }
     }),
+  get_anwsered: protectedProcedure
+    .input(
+      z.object({
+        game_id: z.string(),
+        question_id: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const question = await ctx.db.question.findUnique({
+        where: {
+          id: input.question_id,
+        },
+      });
+      if (!question) {
+        return {
+          success: false,
+          error: "Question not found",
+        };
+      }
+      const questionAnswered = await ctx.db.profileHistory.findFirst({
+        where: {
+          game_id: input.game_id,
+          user_id: ctx.user.id,
+          question_id: input.question_id,
+          status: HistoryType.answered,
+        },
+      });
+      if (questionAnswered) {
+        return {
+          success: true,
+          message: "Already answered Question",
+          details: questionAnswered,
+        };
+      } else {
+        return {
+          success: false,
+          message: "Question Not Anwsered",
+        };
+      }
+    }),
   get_questions: protectedProcedure
     .input(
       z.object({
@@ -140,7 +180,7 @@ export const playerRouter = createTRPCRouter({
         page: z.number(),
       }),
     )
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const questions = await ctx.db.question.findMany({
         where: {
           game_id: input.game_id,
@@ -172,7 +212,7 @@ export const playerRouter = createTRPCRouter({
         current_question = questions.at(-1);
         is_last = true;
       } else {
-        current_question = questions[input.page];
+        current_question = questions[input.page - 1];
       }
       return {
         success: true,
