@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import { type CSSProperties, useMemo } from "react";
 
 export type FrameComponent7Type = {
@@ -57,11 +58,13 @@ const FrameComponent7: NextPage<FrameComponent7Type> = ({
           style={frameButtonStyle}
         >
           <div className="border-limegreen relative box-border hidden h-[62px] w-[68px] rounded-3xl border-[0.5px] border-solid [background:radial-gradient(50%_50%_at_50%_50%,_#023e0a,_#007205)]" />
-          <img
-            className="relative z-[2] h-[35px] w-[35px]"
+<div   className="relative z-[2] h-[35px] w-[35px]" >
+          <Image
+            fill
             alt=""
             src="/option-buttons.svg"
-          />
+            />
+            </div>          
         </button>
         <div
           className="flex flex-1 flex-col items-start justify-start px-0 pb-0 pt-[19px]"

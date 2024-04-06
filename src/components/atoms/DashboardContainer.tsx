@@ -5,6 +5,10 @@ import * as React from "react";
 import Game from "./Game";
 import Home from "./Home";
 import JoinGame from "./JoinGame";
+import CreateGame from "./Create";
+import GenerateCode from "./GenerateCode";
+import GetCode from "./GetCode";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IDashboardContainerProps {
@@ -28,6 +32,12 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <JoinGame />;
       case Routes.GAME:
         return <Game gameId={gameId} page={page} />;
+        case Routes.CREATE :
+          return <CreateGame />;
+          case Routes.GENERATE_CODE: 
+           return <GenerateCode />;
+           case Routes.GET_CODE:
+            return <GetCode/>
     }
     
   };

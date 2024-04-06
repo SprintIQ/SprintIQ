@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import FrameComponent7 from "@src/components/frame-component7";
 import ButtonPrimary from "@src/components/button-primary";
+import Image from "next/image";
 
 const CreateGame: NextPage = () => {
   const router = useRouter();
@@ -11,6 +12,10 @@ const CreateGame: NextPage = () => {
 
   const onPolygonIconClick = useCallback(() => {
     void router.push("/dashboard/game");
+  }, [router]);
+
+  const onFinish = useCallback(() => {
+    void router.push("/dashboard/generate_code");
   }, [router]);
 
   const onUploadImagevideoTextClick = useCallback(() => {
@@ -64,28 +69,35 @@ const CreateGame: NextPage = () => {
       <header className="text-[#1FC04D] font-inter flex h-[133px] flex-row items-start justify-between gap-[20px] self-stretch text-center">
         <div className="flex h-[51.1px] w-[314px] flex-row items-center justify-start gap-[43.9px]">
           <div className="flex flex-col items-center justify-start  px-0 pb-0 pt-[3px]">
-            <img
-              className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain"
+            <div  className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain" >
+            <Image
+             fill
               loading="lazy"
               alt=""
               src="/polygon-4.svg"
               onClick={onPolygonIconClick}
-            />
+              />
+              </div>
           </div>
           <div className="flex h-[45.1px] flex-1 flex-row items-end justify-start gap-[10.4px]">
-            <img
-              className="relative h-[45.1px] w-[40.6px] object-cover"
+            <div className="relative h-[45.1px] w-[40.6px] object-contain" >
+            <Image
+              fill
               loading="lazy"
               alt=""
               src="/group-1124@2x.png"
-            />
+              />
+              </div>
             <div className="box-border flex h-[31.1px] flex-1 flex-col items-start justify-end px-0 pb-[1.1px] pt-0">
-              <img
-                className="relative h-[30px] max-w-full shrink-0 self-stretch overflow-hidden"
+              <div className="relative h-[30px] max-w-full shrink-0 self-stretch overflow-hidden" >
+
+              <Image
+                fill
                 loading="lazy"
                 alt=""
                 src="/sprint-iq.svg"
-              />
+                />
+                </div>
             </div>
           </div>
         </div>
@@ -200,7 +212,7 @@ const CreateGame: NextPage = () => {
     <ButtonPrimary
           addQuestion="Add Question"
           onButtonPrimaryClick={onAddQuestionClick}
-          //onButtonPrimary1Click={onAddQuestionClick}
+          onButtonPrimary1Click={onFinish}
         />
     </div>
     </div>

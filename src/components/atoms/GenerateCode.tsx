@@ -14,8 +14,8 @@ const GenerateCode: NextPage = () => {
   }, [router]);
 
   const onContinue = useCallback(() => {
-    void router.push("/dashboard/getCode")
-  }, [router])
+    void router.push("/dashboard/get-code");
+  }, [router]);
 
   return (
     <div className="text-[3.75rem] font-inter relative h-[1117px] w-full overflow-hidden text-center tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
