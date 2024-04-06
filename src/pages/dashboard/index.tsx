@@ -7,7 +7,7 @@ const Dashboard: NextPage = () => {
   return <></>;
 };
 Dashboard.getInitialProps = async ctx => {
-  return redirectTo(`/dashboard/${Routes.GAME}`, ctx);
+  return redirectTo(`/dashboard/${Routes.HOME}`, ctx);
 };
 
 export default Dashboard;

@@ -45,6 +45,7 @@ import {
   XDEFIWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
+import { Toaster } from "@src/components/ui/sonner";
 import { ProfileProvider } from "@src/provider/ProfileProvider";
 import { api } from "@src/utils/api";
 import { COOKIE_KEY } from "@src/utils/constants/constants";
@@ -121,6 +122,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           >
             <ProfileProvider>
               <Component {...pageProps} />
+              <Toaster />
             </ProfileProvider>
           </main>
         </WalletModalProvider>

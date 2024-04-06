@@ -3,6 +3,7 @@ import { api } from "@src/utils/api";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 import Badge from "../icons/Badge.icon";
@@ -17,6 +18,7 @@ const Home: NextPage = () => {
   const [firstFetch, setFirstFetch] = useState(true);
   const [games, setGames] = useState<Array<Game>>([]);
   const { mutateAsync, isLoading } = api.game.get_created_games.useMutation();
+  const { push } = useRouter();
   const elements = useMemo(
     () => [
       {
@@ -25,7 +27,9 @@ const Home: NextPage = () => {
         Icon: GameBoard,
       },
       {
-        click: () => {},
+        click: () => {
+          void push("/dashboard/join");
+        },
         text: "Join a Game",
         Icon: GamePad,
       },
@@ -60,7 +64,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     void resetState();
   }, []);
-  console.log(games);
   let content: ReactNode;
   if (firstFetch) {
     content = (

@@ -20,33 +20,50 @@ export const playerRouter = createTRPCRouter({
   join_game: protectedProcedure
     .input(
       z.object({
-        game_id: z.string(),
+        game_code: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      const game = await ctx.db.game.findFirst({
+        where: {
+          game_code: input.game_code,
+        },
+      });
+      if (!game) {
+        return {
+          success: false,
+          error: "Game with code not found",
+        };
+      }
       const userJoined = await ctx.db.profileHistory.findFirst({
         where: {
-          game_id: input.game_id,
+          game_id: game.id,
           user_id: ctx.user.id,
           status: "joined",
         },
       });
       if (userJoined) {
         return {
-          success: false,
-          error: "Already joined",
+          success: true,
+          error: "Already joined Game",
+          game: {
+            id: game.id,
+          },
         };
       } else {
         const joined = await ctx.db.profileHistory.create({
           data: {
             user_id: ctx.user.id,
-            game_id: input.game_id,
+            game_id: game.id,
             status: "joined",
           },
         });
         return {
           success: true,
           message: "Joined Game",
+          game: {
+            id: game.id,
+          },
         };
       }
     }),
@@ -111,6 +128,51 @@ export const playerRouter = createTRPCRouter({
           message: "Answered Question",
         };
       }
+    }),
+  get_questions: protectedProcedure
+    .input(
+      z.object({
+        game_id: z.string(),
+        page: z.number(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const questions = await ctx.db.question.findMany({
+        where: {
+          game_id: input.game_id,
+        },
+        select: {
+          description: true,
+          question: true,
+          points: true,
+          options: true,
+          duration: true,
+          game_id: true,
+        },
+      });
+      const history = await ctx.db.profileHistory.findMany({
+        where: {
+          game_id: input.game_id,
+          user_id: ctx.user?.id,
+          status: HistoryType.answered,
+        },
+      });
+      const totalScore = history.reduce((acc, curr) => acc + curr.points, 0);
+      let current_question;
+      let is_last = false;
+      if (input.page >= questions.length) {
+        current_question = questions.at(-1);
+        is_last = true;
+      } else {
+        current_question = questions[input.page];
+      }
+      return {
+        success: true,
+        questions,
+        score: totalScore,
+        current_question,
+        is_last
+      };
     }),
   finish_game: protectedProcedure
     .input(

@@ -274,6 +274,14 @@ export const gameRouter = createTRPCRouter({
         where: {
           game_id: input.game_id,
         },
+        select: {
+          description: true,
+          question: true,
+          points: true,
+          options: true,
+          duration: true,
+          game_id: true,
+        },
       });
       return {
         success: true,
@@ -428,7 +436,6 @@ export const gameRouter = createTRPCRouter({
             type: z.enum(["text", "image", "video"]),
             question: z.string(),
             description: z.string().optional(),
-            game_id: z.string(),
             answer: z.string(),
             points: z.number(),
             // duration in milliseconds
@@ -439,6 +446,17 @@ export const gameRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      const gameExists = await ctx.db.game.findFirst({
+        where: {
+          game_code: input.game_code,
+        },
+      });
+      if (gameExists) {
+        return {
+          success: false,
+          error: "Game with code already exists",
+        };
+      }
       const game = await ctx.db.game.create({
         data: {
           title: input.title,
@@ -454,22 +472,32 @@ export const gameRouter = createTRPCRouter({
               })),
             },
           },
-          questions: {
-            createMany: {
-              data: input.questions.map(q => ({
-                ...q,
-                options: {
-                  createMany: {
-                    data: q.options.map(o => ({
-                      value: o,
-                    })),
-                  },
-                },
-              })),
-            },
-          },
         },
       });
+      if (game) {
+        input.questions.forEach(async data => {
+          const question = await ctx.db.question.create({
+            data: {
+              question: data.question,
+              description: data.description,
+              answer: data.answer,
+              points: data.points,
+              duration: data.duration,
+              game_id: game.id,
+            },
+          });
+          if (question) {
+            data.options.forEach(async data => {
+              const option = await ctx.db.options.create({
+                data: {
+                  value: data,
+                  question_id: question.id,
+                },
+              });
+            });
+          }
+        });
+      }
       return {
         success: true,
         game: game,
