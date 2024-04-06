@@ -149,6 +149,9 @@ export const playerRouter = createTRPCRouter({
           duration: true,
           game_id: true,
         },
+        orderBy: {
+          created_at: "asc",
+        },
       });
       const history = await ctx.db.profileHistory.findMany({
         where: {
@@ -171,7 +174,7 @@ export const playerRouter = createTRPCRouter({
         questions,
         score: totalScore,
         current_question,
-        is_last
+        is_last,
       };
     }),
   finish_game: protectedProcedure

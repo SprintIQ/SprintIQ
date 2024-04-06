@@ -35,10 +35,24 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "correct-flash": {
+          from: { backgroundColor: "white" },
+          to: { backgroundColor: "green" },
+        },
+        "wrong-flash": {
+          from: { backgroundColor: "white" },
+          to: { backgroundColor: "red" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "correct-flash": "correct-flash 1s ease-in-out infinite",
+        "wrong-flash": "wrong-flash 1s ease-in-out infinite",
+      },
+      data: {
+        correct: 'correct="true"',
+        wrong: 'wrong="true"',
       },
     },
   },
