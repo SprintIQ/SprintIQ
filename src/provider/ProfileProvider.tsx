@@ -4,12 +4,17 @@ import { api } from "@src/utils/api";
 import { COOKIE_KEY } from "@src/utils/constants/constants";
 import * as React from "react";
 import { useCookies } from "react-cookie";
-
+interface Profile {
+  id: string;
+  wallet_address: string;
+  username: string;
+  nonce: number;
+  avatar_url: string | null;
+  created_at: Date;
+}
 interface IProfileContext {
-  currentProfile?: PrismaProfile | null;
-  login: (
-    address: string,
-  ) => Promise<{ success?: boolean; user?: PrismaProfile }>;
+  currentProfile?: Profile | null;
+  login: (address: string) => Promise<{ success?: boolean; user?: Profile }>;
   logout: (address?: string) => void;
   loginIn: boolean;
 }

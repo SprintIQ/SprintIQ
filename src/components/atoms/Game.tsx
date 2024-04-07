@@ -47,7 +47,7 @@ const Game: React.FC<IGameProps> = props => {
         question_id: data?.current_question?.id,
       }).then(res => {
         console.log(res);
-        if (res.success && props.page < data?.questions.length) {
+        if (res.success && parseInt(props.page) < data?.questions.length) {
           setTimeout(() => {
             void push(
               `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
@@ -71,10 +71,10 @@ const Game: React.FC<IGameProps> = props => {
     if (!data) return;
     void mutateAsync({
       game_id: props.gameId,
-      question_id: data?.current_question?.id!,
+      question_id: data?.current_question?.id ?? "",
       option_id,
     }).then(res => {
-      if (res.success && props.page < data?.questions.length) {
+      if (res.success && parseInt(props.page) < data?.questions.length) {
         setAnwsered(res.success);
         setTimeout(() => {
           void push(
@@ -99,7 +99,7 @@ const Game: React.FC<IGameProps> = props => {
             (answer?.details?.points ?? 0) > 0 ||
             (answered?.details?.points ?? 0) > 0
           }
-          className="data-correct:text-secondary-700 data-wrong: fixed inset-0 grid place-content-center bg-black/60 text-7xl font-bold text-red-700"
+          className="data-wrong: fixed inset-0 grid place-content-center bg-black/60 text-7xl font-bold text-red-700 data-correct:text-secondary-700"
         >
           {answered?.success
             ? answered?.details?.points === 0

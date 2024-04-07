@@ -13,7 +13,6 @@ export interface PrismaProfile {
   nonce: number;
   avatar_url: string | null;
   created_at: Date;
-  is_subscribed: boolean;
 }
 export const authRouter = createTRPCRouter({
   create: publicProcedure

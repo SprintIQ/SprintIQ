@@ -2,13 +2,12 @@ import { ProfileContext } from "@src/provider/ProfileProvider";
 import { Routes } from "@src/utils/constants/constants";
 import * as React from "react";
 
-import Game from "./Game";
-import Home from "./Home";
-import JoinGame from "./JoinGame";
 import CreateGame from "./Create";
+import Game from "./Game";
 import GenerateCode from "./GenerateCode";
 import GetCode from "./GetCode";
-
+import Home from "./Home";
+import JoinGame from "./JoinGame";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IDashboardContainerProps {
@@ -20,7 +19,7 @@ export interface IDashboardContainerProps {
 const DashboardContainer: React.FC<IDashboardContainerProps> = ({
   currentSection,
   gameId,
-  page
+  page,
 }) => {
   const { currentProfile } = React.useContext(ProfileContext);
 
@@ -32,14 +31,13 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <JoinGame />;
       case Routes.GAME:
         return <Game gameId={gameId} page={page} />;
-        case Routes.CREATE :
-          return <CreateGame />;
-          case Routes.GENERATE_CODE: 
-           return <GenerateCode />;
-           case Routes.GET_CODE:
-            return <GetCode/>
+      case Routes.CREATE:
+        return <CreateGame />;
+      case Routes.GENERATE_CODE:
+        return <GenerateCode />;
+      case Routes.GET_CODE:
+        return <GetCode />;
     }
-    
   };
   return <section className="h-fulll w-full">{renderSelected()}</section>;
 };
