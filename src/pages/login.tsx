@@ -3,7 +3,7 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { CreatorIn, PlayerIn } from "@src/components";
 import { ProfileContext } from "@src/provider/ProfileProvider";
 import { api } from "@src/utils/api";
-import { LABELS } from "@src/utils/constants/constants";
+import { LABELS, Routes } from "@src/utils/constants/constants";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo } from "react";
 export default function Page() {
@@ -29,7 +29,7 @@ export default function Page() {
           }
           void login(res.user!.wallet_address).then(res => {
             if (res.success) {
-              void push("/dashboard");
+              void push(`/dashboard/${Routes.HOME}`);
             }
           });
         });
@@ -60,13 +60,13 @@ export default function Page() {
     }
   };
   return (
-    <div className=" flex flex-row justify-between item-center " >
-       <div className=" box-border flex w-[463px] min-w-[463px] max-w-full flex-col items-start justify-start px-0 pb-0 pt-[3.75rem] ml-[12.5rem] ">
+    <div className=" item-center flex flex-row justify-between ">
+      <div className=" ml-[12.5rem] box-border flex w-[463px] min-w-[463px] max-w-full flex-col items-start justify-start px-0 pb-0 pt-[3.75rem] ">
         <div className=" flex max-w-full flex-col items-start justify-start gap-[70px] self-stretch">
-          <h1 className="font-inherit text-[2.5rem] mq825:leading-[72px] relative m-0 flex h-[158px] shrink-0 items-center justify-center self-stretch font-normal leading-[90px] text-inherit">
+          <h1 className="font-inherit mq825:leading-[72px] relative m-0 flex h-[158px] shrink-0 items-center justify-center self-stretch text-[2.5rem] font-normal leading-[90px] text-inherit">
             Connect wallet
           </h1>
-          <div className="box-border -mt-[5rem] flex h-[497px] max-w-full flex-row items-start justify-start  py-0 pl-[7px] pr-[9px]">
+          <div className="-mt-[5rem] box-border flex h-[497px] max-w-full flex-row items-start justify-start  py-0 pl-[7px] pr-[9px]">
             <img
               className="relative h-[497px] max-w-full flex-1 overflow-hidden object-cover"
               loading="lazy"
@@ -76,27 +76,27 @@ export default function Page() {
           </div>
         </div>
       </div>
-   
-    <section className="flex h-screen w-full flex-col content-center items-center justify-center space-y-24  ">
-      <button
-        onClick={handleSignIn}
-        className="group flex flex-col space-y-3 text-grey-300 transition-colors duration-300 hover:text-secondary-700"
-      >
-        <div className="rounded-3xl border border-grey-300 p-4 transition-colors duration-300 group-hover:border-secondary-700">
-          <PlayerIn />
-        </div>
-        <span>Player</span>
-      </button>
-      <button
-        onClick={handleSignIn}
-        className="group flex flex-col space-y-3 text-grey-300 transition-colors duration-300 hover:text-secondary-700"
-      >
-        <div className="rounded-3xl border border-grey-300 p-4 transition-colors  duration-300 group-hover:border-secondary-700">
-          <CreatorIn />
-        </div>
-        <span>Creator</span>
-      </button>
-    </section>
+
+      <section className="flex h-screen w-full flex-col content-center items-center justify-center space-y-24  ">
+        <button
+          onClick={handleSignIn}
+          className="group flex flex-col space-y-3 text-grey-300 transition-colors duration-300 hover:text-secondary-700"
+        >
+          <div className="rounded-3xl border border-grey-300 p-4 transition-colors duration-300 group-hover:border-secondary-700">
+            <PlayerIn />
+          </div>
+          <span>Player</span>
+        </button>
+        <button
+          onClick={handleSignIn}
+          className="group flex flex-col space-y-3 text-grey-300 transition-colors duration-300 hover:text-secondary-700"
+        >
+          <div className="rounded-3xl border border-grey-300 p-4 transition-colors  duration-300 group-hover:border-secondary-700">
+            <CreatorIn />
+          </div>
+          <span>Creator</span>
+        </button>
+      </section>
     </div>
   );
 }
