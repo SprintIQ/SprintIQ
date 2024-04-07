@@ -118,7 +118,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       >
         <WalletModalProvider>
           <main
-            className={`font-sans ${inter.variable} min-h-screen bg-primary-700 text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]`}
+            className={`min-h-screen bg-primary-700 text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]`}
+            style={{
+              fontFamily: inter.style.fontFamily,
+
+            }}
           >
             <ProfileProvider>
               <Component {...pageProps} />
