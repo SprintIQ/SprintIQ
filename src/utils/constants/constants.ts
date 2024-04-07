@@ -15,7 +15,9 @@ export enum Routes {
   JOIN = "join",
   CREATE = "create",
   GENERATE_CODE = "generate_code",
-  GET_CODE = "get-code"
+  GET_CODE = "get-code",
+  LEADER_BOARD = "leaderboard",
+  REWARD = "reward",
 }
 export enum QuestionType {
   TEXT = "text",
