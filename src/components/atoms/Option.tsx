@@ -15,7 +15,7 @@ const Option: React.FC<IOptionProps> = ({ option, ...props }) => {
   return (
     <button
       type="button"
-      className="data-correct:animate-correct-flash data-wrong:animate-wrong-flash w-full rounded-full bg-white px-4 py-3 text-left text-xl text-black transition-colors duration-1000 hover:bg-secondary-700"
+      className="w-full cursor-pointer rounded-full bg-white px-4 py-3 text-left text-xl text-black transition-colors duration-1000 hover:bg-secondary-700 data-correct:animate-correct-flash data-wrong:animate-wrong-flash"
       {...props}
     >
       {option.value}

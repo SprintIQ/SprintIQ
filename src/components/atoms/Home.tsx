@@ -10,7 +10,10 @@ import Badge from "../icons/Badge.icon";
 import Bell from "../icons/Bell.icon";
 import GameBoard from "../icons/GameBoard.icon";
 import GamePad from "../icons/GamePad.icon";
+import CreatedGame from "../molecule/CreatedGame";
 import ActionButton from "../ui/ActionButton";
+import Button from "../ui/Button";
+import Spinner from "../ui/Spinner";
 
 const Home: NextPage = () => {
   const [page, setPage] = useState(0);
@@ -67,11 +70,9 @@ const Home: NextPage = () => {
   let content: ReactNode;
   if (firstFetch) {
     content = (
-      <div className="mb-8 flex flex-col items-center">
-        <div className="pt-6">
-          {/* <Spinner /> */}
-          <h2>Checking for your games...</h2>
-        </div>
+      <div className="my-8 flex flex-col items-center">
+        <Spinner />
+        <h2>Checking for your games...</h2>
       </div>
     );
   } else if (games.length === 0) {
@@ -85,10 +86,13 @@ const Home: NextPage = () => {
     );
   } else {
     content = (
-      <div>
-        {/* {games.map(game => <p>Create Game Card <p/>)} */}
+      <div className="flex flex-col space-y-3">
+        {games.map(data => (
+          <CreatedGame key={data.id} {...data} />
+        ))}
+
         {!noMoreFetch && !firstFetch && (
-          <button onClick={() => fetchGames()}>Load more</button>
+          <Button onClick={() => fetchGames()} text="Load more" />
         )}
       </div>
     );
@@ -128,7 +132,7 @@ const Home: NextPage = () => {
               ))}
             </div>
           </div>
-          <div className="p-10">
+          <div className="flex flex-col space-y-6 p-10">
             <h1 className="text-xl">Drafts</h1>
             {content}
           </div>

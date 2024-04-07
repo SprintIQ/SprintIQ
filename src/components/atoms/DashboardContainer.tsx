@@ -8,6 +8,8 @@ import GenerateCode from "./GenerateCode";
 import GetCode from "./GetCode";
 import Home from "./Home";
 import JoinGame from "./JoinGame";
+import Leaderboard from "./Leaderboard";
+import Reward from "./Reward";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IDashboardContainerProps {
@@ -37,6 +39,10 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <GenerateCode />;
       case Routes.GET_CODE:
         return <GetCode />;
+      case Routes.LEADER_BOARD:
+        return <Leaderboard gameId={gameId} />;
+      case Routes.REWARD:
+        return <Reward gameId={gameId} />;
     }
   };
   return <section className="h-fulll w-full">{renderSelected()}</section>;
