@@ -90,7 +90,7 @@ const Game: React.FC<IGameProps> = props => {
     </section>
   ) : (
     <section className="relative py-4">
-      {(answered?.success || anwseres) && (
+      {(answered?.success ?? anwseres) && (
         <div
           data-wrong={
             answer?.details?.points === 0 || answered?.details?.points === 0
