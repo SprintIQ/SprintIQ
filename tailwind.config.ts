@@ -8,8 +8,17 @@ export default {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
+      fontSize: {
+        "3xs": "8px",
+        "2xs": "10px",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(#013E0A,#007205)",
+        "gradient-first": "radial-gradient(#B78F00,rgba(218,105,0,0.65))",
+        "gradient-second":
+          "radial-gradient(rgba(79,183,55,0.9912),rgba(0,168,218,0.65))",
+        "gradient-third":
+          "radial-gradient(rgba(26,143,122),rgba(148,0,218,0.65))",
       },
       colors: {
         primary: {
@@ -18,6 +27,7 @@ export default {
         secondary: {
           700: "#1FC04D",
           300: "#175611",
+          200: "#BBF3D5",
           100: "#96C4CE",
         },
         grey: {
