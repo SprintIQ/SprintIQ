@@ -49,7 +49,7 @@ model Game {
   creator_id     String
   creator        Profile          @relation(fields: [creator_id], references: [wallet_address])
   game_code      String?
-  status         Status           @default(drafted)
+  status         Status           @default(created)
   reward         Int?
   created_at     DateTime         @default(now())
   percentages    Percentages[]
