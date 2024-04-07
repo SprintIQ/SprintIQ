@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { Status } from "@prisma/client";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -103,7 +105,7 @@ export const gameRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const games = await ctx.db.game.findMany({
-        take: input.limit + 1,
+        take: input.limit,
         skip: input.skip,
         where: {
           creator_id: ctx.user.wallet_address,
@@ -446,15 +448,29 @@ export const gameRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const gameExists = await ctx.db.game.findFirst({
-        where: {
+      const query = [];
+      // check if game with
+      if (input.game_code) {
+        query.push({
           game_code: input.game_code,
+        });
+      }
+      if (input.title) {
+        query.push({
+          title: input.title,
+          creator_id: ctx.user.wallet_address,
+        });
+      }
+      const game_exists = await ctx.db.game.findFirst({
+        where: {
+          OR: query,
         },
       });
-      if (gameExists) {
+
+      if (game_exists) {
         return {
           success: false,
-          error: "Game with code already exists",
+          error: "Game already exists",
         };
       }
       const game = await ctx.db.game.create({
@@ -501,6 +517,39 @@ export const gameRouter = createTRPCRouter({
       return {
         success: true,
         game: game,
+      };
+    }),
+  start_game: protectedProcedure
+    .input(
+      z.object({
+        game_id: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const gameStarted = await ctx.db.game.findFirst({
+        where: {
+          id: input.game_id,
+          creator_id: ctx.user.wallet_address,
+        },
+      });
+      if (!gameStarted || gameStarted?.status === Status.completed) {
+        return {
+          success: false,
+          message: "Game Already Started",
+        };
+      }
+      const game = await ctx.db.game.update({
+        where: {
+          id: input.game_id,
+          creator_id: ctx.user.wallet_address,
+        },
+        data: {
+          status: Status.ongoing,
+        },
+      });
+      return {
+        success: true,
+        message: "Game Started Successfully",
       };
     }),
 });

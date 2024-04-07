@@ -1,4 +1,4 @@
-import { HistoryType } from "@prisma/client";
+import { HistoryType, Status } from "@prisma/client";
 import {
   createTRPCRouter,
   loginProcedure,
@@ -27,12 +27,28 @@ export const playerRouter = createTRPCRouter({
       const game = await ctx.db.game.findFirst({
         where: {
           game_code: input.game_code,
+          NOT: {
+            creator_id: ctx.user.id,
+          },
         },
       });
       if (!game) {
         return {
           success: false,
           error: "Game with code not found",
+        };
+      }
+
+      if (game.status === Status.completed) {
+        return {
+          success: false,
+          error: "Game already completed",
+        };
+      }
+      if (game.status !== Status.ongoing) {
+        return {
+          success: false,
+          error: "Game is not started yet",
         };
       }
       const userJoined = await ctx.db.profileHistory.findFirst({
@@ -73,6 +89,7 @@ export const playerRouter = createTRPCRouter({
         game_id: z.string(),
         question_id: z.string(),
         option_id: z.string(),
+        time_elapsed: z.boolean().optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -81,22 +98,25 @@ export const playerRouter = createTRPCRouter({
           id: input.question_id,
         },
       });
+      let option;
       if (!question) {
         return {
           success: false,
           error: "Question not found",
         };
       }
-      const option = await ctx.db.options.findUnique({
-        where: {
-          id: input.option_id,
-        },
-      });
-      if (!option) {
-        return {
-          success: false,
-          error: "Option not found",
-        };
+      if (!input.time_elapsed) {
+        option = await ctx.db.options.findUnique({
+          where: {
+            id: input.option_id,
+          },
+        });
+        if (!option) {
+          return {
+            success: false,
+            error: "Option not found",
+          };
+        }
       }
       const questionAnswered = await ctx.db.profileHistory.findFirst({
         where: {
@@ -111,25 +131,36 @@ export const playerRouter = createTRPCRouter({
           success: false,
           error: "Already answered Question",
           details: questionAnswered,
-          option_id: input.option_id,
         };
       } else {
-        const points = question.answer === option.value ? question.points : 0;
+        const points = input?.time_elapsed
+          ? 0
+          : question.answer === option?.value
+            ? question.points
+            : 0;
+        const data = input?.time_elapsed
+          ? {
+              user_id: ctx.user.id,
+              game_id: input.game_id,
+              question_id: input.question_id,
+              points: 0,
+              status: HistoryType.answered,
+            }
+          : {
+              user_id: ctx.user.id,
+              game_id: input.game_id,
+              question_id: input.question_id,
+              option_id: input.option_id,
+              points,
+              status: HistoryType.answered,
+            };
         const anwsered = await ctx.db.profileHistory.create({
-          data: {
-            user_id: ctx.user.id,
-            game_id: input.game_id,
-            question_id: input.question_id,
-            option_id: input.option_id,
-            points,
-            status: HistoryType.answered,
-          },
+          data,
         });
         return {
           success: true,
           message: "Answered Question",
           details: anwsered,
-          option_id: input.question_id,
         };
       }
     }),
@@ -326,33 +357,57 @@ export const playerRouter = createTRPCRouter({
         page: z.number().optional(),
       }),
     )
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const currentPage = input.page ?? 1;
       const pageSize = input.limit ?? 10;
       const skip = (currentPage - 1) * pageSize;
-      const history = await ctx.db.profileHistory.findMany({
+      const history = await ctx.db.profileHistory.groupBy({
+        by: ["user_id"],
         take: pageSize,
         skip,
         where: {
           game_id: input.game_id,
-          status: HistoryType.completed,
+          status: HistoryType.answered,
         },
         orderBy: {
-          points: "desc",
+          user_id: "desc",
+        },
+        _sum: {
+          points: true,
         },
       });
-      const total_pages = await ctx.db.profileHistory.count({
+      const data = await Promise.all(
+        history.map(async val => {
+          const user = await ctx.db.profile.findUnique({
+            where: {
+              id: val.user_id,
+            },
+          });
+          return { ...user, ...val };
+        }),
+      );
+
+      const total_pages = await ctx.db.profileHistory.groupBy({
+        by: ["user_id"],
         where: {
           game_id: input.game_id,
+          status: HistoryType.answered,
+        },
+        orderBy: {
+          user_id: "desc",
+        },
+        _sum: {
+          points: true,
         },
       });
+      // TODO optimize for speed
       return {
         success: true,
-        history: history,
+        history: data,
         page_info: {
           current_page: currentPage,
-          total_pages: Math.ceil(total_pages / pageSize),
-          total_count: total_pages,
+          total_pages: Math.ceil(total_pages.length / pageSize),
+          total_count: total_pages.length,
         },
       };
     }),
