@@ -17,10 +17,9 @@ const JoinGame: React.FC<IJoinGameProps> = props => {
   const { push } = useRouter();
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (
-      (!!parseInt(e.target.value) && e.target.value.length <= 6) ||
-      e.target.value.length == 0
+      (e.target.value.length <= 6)
     ) {
-      setToken(e.target.value);
+      setToken(e.target.value || undefined);
     }
   };
   const handleContinue = () => {
