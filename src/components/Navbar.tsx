@@ -9,22 +9,25 @@ const Navbar: NextPage = () => {
   }, []);
 
   return (
-    <header className="flex w-full items-center justify-between bg-black/[0.12] p-16">
+    <header className="flex flex-row sm:flex-row justify-between py-4 px-8 bg-black/[0.12] sm:p-4">
       <Image
-        className="relative h-10 w-auto"
+        className="h-5 w-auto mb-4 sm:mb-0"
         loading="lazy"
         alt=""
-        width={222}
-        height={46}
+        width={200}
+        height={50}
         src="/logo.png"
       />
-      <div className="flex items-center justify-start gap-8">
-        <button className="rounded-full bg-secondary-700 px-5 py-2">
+      <div className="flex flex-row justify-start gap-4 sm:justify-end">
+        <button className="rounded-full bg-secondary-700 px-3 py-0.5">
           Get Started
         </button>
-        <Link href="/login" className="font-bold">
-          Log In
+        <button>
+        <Link href="/login" className="font-bold rounded-full bg-secondary-700 px-3 py-1.5 ">
+          LogIn
         </Link>
+        </button>
+
       </div>
     </header>
   );
