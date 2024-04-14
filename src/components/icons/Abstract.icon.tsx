@@ -40,8 +40,8 @@ const Abstract: React.FC<IAbstract> = props => {
         fill-opacity="0.2"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M202.288 0L484.847 241.602L371.859 376.244L330.762 341.104L399.595 260.601L210.161 98.626L141.327 179.128L140.499 178.42L66.3659 265.121L297.242 462.531L259.002 505.733L-23.5576 264.132L202.288 0Z"
         fill="url(#paint3_linear_768_167)"
         fill-opacity="0.2"
