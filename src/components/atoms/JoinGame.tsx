@@ -11,18 +11,17 @@ import Spinner from "../ui/Spinner";
 export interface IJoinGameProps {}
 
 const JoinGame: React.FC<IJoinGameProps> = props => {
-  const [token, setToken] = React.useState<string>("");
+  const [token, setToken] = React.useState<string | undefined>("");
   const { mutateAsync, isLoading } = api.player.join_game.useMutation();
   const createGame = api.game.full_game_create.useMutation();
   const { push } = useRouter();
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (
-      (e.target.value.length <= 6)
-    ) {
+    if (e.target.value.length <= 6) {
       setToken(e.target.value || undefined);
     }
   };
   const handleContinue = () => {
+    if(!token) return;
     void mutateAsync({
       game_code: token,
     }).then(res => {

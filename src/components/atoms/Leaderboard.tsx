@@ -13,7 +13,10 @@ export interface ILeaderboardProps {
 const Leaderboard: React.FC<ILeaderboardProps> = props => {
   const { mutateAsync, data } = api.player.leader_board.useMutation();
   React.useEffect(() => {
-    void mutateAsync({ game_id: props.gameId });
+    // update every 2 seconds
+    setInterval(() => {
+      void mutateAsync({ game_id: props.gameId });
+    }, 10000);
   }, [props]);
   return (
     <main>

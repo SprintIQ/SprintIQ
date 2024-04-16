@@ -14,8 +14,8 @@ const Subtract: React.FC<ISubtract> = props => {
     >
       <g filter="url(#filter0_f_443_177)">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M1481.97 134.992C1297.87 64.8825 1035.36 21.0373 743.994 21.0373C452.614 21.0373 190.097 64.8857 6 135C158.285 57.6089 431.844 6 743.992 6C1056.13 6 1329.68 57.6055 1481.97 134.992Z"
           fill="url(#paint0_radial_443_177)"
         />
