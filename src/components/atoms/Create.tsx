@@ -1,65 +1,53 @@
 import ButtonPrimary from "@src/components/button-primary";
 import FrameComponent7 from "@src/components/frame-component7";
+import { api } from "@src/utils/api";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
-interface Questions {
+import { RiAddLine } from "react-icons/ri";
+
+interface Question {
+  questionNumber: number;
   question: string;
-  options: Array<string>;
+  imageOrVideo: string;
+  options: string[];
+  correctOption: string;
+  timer: string;
 }
 const CreateGame: NextPage = () => {
   const router = useRouter();
+  //const createGame = api.game.full_game_create.useMutation();
 
-  const [questions, setQuestions] = useState<Array<Questions>>([
-    { question: "", options: [""] },
+  const [quizTitle, setQuizTitle] = useState<string>("");
+  const [questions, setQuestions] = useState<Question[]>([
+    {
+      questionNumber: 1,
+      question: "",
+      imageOrVideo: "",
+      options: [""],
+      correctOption: "",
+      timer: "",
+    },
   ]);
 
-  const onPolygonIconClick = useCallback(() => {
-    void router.push("/dashboard/game");
-  }, [router]);
-
-  const onFinish = useCallback(() => {
-    void router.push("/dashboard/generate_code");
-  }, [router]);
-
-  const onUploadImagevideoTextClick = useCallback(() => {
-    // Please sync "Set Timer" to the project
-  }, []);
-
-  // const onGroupContainerClick = useCallback(() => {
-  //   // Add a new empty option when "Add more options" is clicked
-  //   setOptions([...options, ""]);
-  // }, [options]);
-
-  const onSetTimerTextClick = useCallback(() => {
-    // Please sync "set timer" to the project
-  }, []);
-
-  const onAddQuestionClick = () => {
-    setQuestions(prevQuestions => [
-      ...prevQuestions,
-      { question: "", options: [""] },
-    ]);
-  };
-
-  const onAddOptionClick = (questionIndex: number) => {
-    setQuestions(prevQuestions => {
-      const updatedQuestions = [...prevQuestions];
-      updatedQuestions?.[questionIndex]?.options?.push("");
-      return updatedQuestions;
-    });
+  const handleQuizTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuizTitle(e.target.value);
   };
 
   const handleQuestionChange = (index: number, value: string) => {
-    setQuestions(prevQuestions => {
-      const updatedQuestions = [...prevQuestions];
-      if (updatedQuestions[index]?.question) {
-        updatedQuestions[index].question = value;
-      }
+    const updatedQuestions = [...questions];
+    updatedQuestions[index].question = value;
+    setQuestions(updatedQuestions);
+  };
 
-      return updatedQuestions;
-    });
+  const handleImageOrVideoChange = (
+    questionIndex: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].imageOrVideo = e.target.value;
+    setQuestions(updatedQuestions);
   };
 
   const handleOptionChange = (
@@ -67,19 +55,57 @@ const CreateGame: NextPage = () => {
     optionIndex: number,
     value: string,
   ) => {
-    setQuestions(prevQuestions => {
-      const updatedQuestions = [...prevQuestions];
-      if (updatedQuestions?.[questionIndex]?.options[optionIndex]) {
-        updatedQuestions[questionIndex].options[optionIndex] = value;
-      }
-      return updatedQuestions;
-    });
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].options[optionIndex] = value;
+    setQuestions(updatedQuestions);
   };
 
+  const handleCorrectOptionChange = (questionIndex: number, value: string) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].correctOption = value;
+    setQuestions(updatedQuestions);
+  };
+
+  const handleTimerChange = (questionIndex: number, value: string) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].timer = value;
+    setQuestions(updatedQuestions);
+  };
+
+  const addQuestion = () => {
+    const questionNumber = questions.length + 1;
+    setQuestions(prevQuestions => [
+      ...prevQuestions,
+      {
+        questionNumber,
+        question: "",
+        imageOrVideo: "",
+        options: [""],
+        correctOption: "",
+        timer: "",
+      },
+    ]);
+  };
+
+  const addOption = (questionIndex: number) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].options.push("");
+    setQuestions(updatedQuestions);
+  };
+
+  const onBackPress = useCallback(() => {
+    void router.push("/dashboard/game");
+  }, [router]);
+
+  const onFinish = useCallback(() => {
+    void router.push("/dashboard/generate_code");
+  }, [router]);
+
+  //console.log("This are the questions:", questions);
   return (
     <div className=" p-[3.75rem]  ">
-      <div className="  relative flex w-full flex-col items-start justify-start gap-[105px] overflow-hidden rounded-[1.25rem] border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px]  ">
-        <section className="  text-41xl font-inter flex w-[1456px] max-w-full flex-col items-end justify-start gap-[50px] text-center text-white  ">
+      <div className="  relative flex w-full flex-col items-start justify-start gap-[50px] overflow-hidden rounded-[1.25rem] border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px]  ">
+        <section className="  text-41xl font-inter flex w-[1456px] max-w-full flex-col items-end justify-start gap-[20px] text-center text-white  ">
           <header className="font-inter flex h-[133px] flex-row items-start justify-between gap-[20px] self-stretch text-center text-[#1FC04D]">
             <div className="flex h-[51.1px] w-[314px] flex-row items-center justify-start gap-[43.9px]">
               <div className="flex flex-col items-center justify-start  px-0 pb-0 pt-[3px]">
@@ -89,7 +115,7 @@ const CreateGame: NextPage = () => {
                     loading="lazy"
                     alt=""
                     src="/polygon-4.svg"
-                    onClick={onPolygonIconClick}
+                    onClick={onBackPress}
                   />
                 </div>
               </div>
@@ -109,126 +135,75 @@ const CreateGame: NextPage = () => {
           <div className="box-border flex w-[1415px] max-w-full flex-row items-start justify-center px-5 py-0">
             <div className=" flex w-[1089px] max-w-full flex-col items-start justify-start gap-[36px]">
               <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch py-0 pl-5 pr-[21px]">
-                <input
-                  className="  font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-[3.75rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none "
-                  type="text"
-                  placeholder="Input Game Title"
+                <QuizTitleInput
+                  value={quizTitle}
+                  onChange={handleQuizTitleChange}
                 />
               </div>
               <div className="relative box-border h-px self-stretch border-t-[1px] border-solid border-[#373737]" />
             </div>
           </div>
         </section>
-        <section className="text-13xl font-inter box-border flex w-[1391px] max-w-full flex-row items-start justify-center px-0 pb-[0.625rem] pt-0 text-center text-white">
-          <div className="flex w-[1195px] max-w-full flex-col items-end justify-start gap-[68.5px] lg:gap-[34px_68.5px]">
+        <section className="text-13xl font-inter box-border flex w-full max-w-full flex-row items-start  px-0  pt-0 text-center text-white">
+          <div className="flex max-w-full flex-col items-end justify-start ">
             {questions.map((question, questionIndex) => (
-              <div
-                key={questionIndex}
-                className="flex max-w-full flex-row flex-wrap items-start justify-start gap-[29px] self-stretch"
-              >
-                <div className="box-border flex w-[38px] flex-col items-start justify-start py-0 pl-0 pr-[23px]">
-                  <div className="relative self-stretch text-[2rem] leading-[23px]">
-                    {questionIndex + 1}
-                  </div>
-                </div>
-                <div className="box-border flex min-w-[561px] max-w-full flex-1 flex-col items-start justify-start px-0 pb-0 pt-3">
-                  <input
-                    className="relative box-border self-stretch border-b-[1px] border-solid border-[#373737] bg-transparent outline-none"
-                    type="text"
-                    value={question.question}
-                    onChange={e =>
-                      handleQuestionChange(questionIndex, e.target.value)
-                    }
-                  />
-                </div>
-                <div className="text-darkgray box-border flex h-11 w-[236px] flex-col items-start justify-start px-0 pb-0 pt-4 text-xl">
-                  <div className="flex flex-1 flex-row items-start justify-start self-stretch">
-                    <Image
-                      className="relative z-[1] h-7 min-h-[28px] w-7"
-                      alt=""
-                      src="/vector-11.svg"
-                    />
-                    <div className="flex flex-1 flex-col items-start justify-start px-0 pb-0 pt-0.5">
-                      <div
-                        className="mq450:text-base mq450:leading-[18px] relative cursor-pointer self-stretch leading-[23px]"
-                        onClick={onUploadImagevideoTextClick}
-                      >
-                        Upload image/video
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="">
-                  {question.options.map((option, optionIndex) => (
-                    <div
-                      key={optionIndex}
-                      className="mb-2 flex w-[204px] flex-col items-start justify-start px-0 pb-0 pt-0.5"
-                    >
-                      <div className="flex flex-col items-start justify-start gap-[26px] self-stretch">
-                        <div className="flex flex-row items-center justify-start self-stretch">
-                          <div className="relative z-[1] h-[33px] w-[33px] rounded-[50%] bg-[#28FF15]" />
-                          <div className="ml-[1.25rem] flex w-[9.375rem] flex-1 flex-col items-start justify-end px-0 pb-1 pt-0">
-                            <input
-                              className="relative self-stretch bg-transparent text-[1.25rem] leading-[22.53px] placeholder-[#FFFFFF] outline-none"
-                              placeholder={`Option ${optionIndex + 1}`}
-                              value={option}
-                              onChange={e =>
-                                handleOptionChange(
-                                  questionIndex,
-                                  optionIndex,
-                                  e.target.value,
-                                )
-                              }
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="text-darkslategray z-[1] box-border flex min-w-[593px] max-w-full flex-1 flex-row items-end justify-start gap-[34.8px] rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px]">
-                  <div className="box-border flex w-[294.2px] flex-col items-start justify-end px-0 pb-[3.3px] pt-0">
-                    <div
-                      className="relative z-[2] h-[53.7px] cursor-pointer self-stretch"
-                      onClick={() => onAddOptionClick(questionIndex)}
-                    >
-                      <div className="absolute left-[calc(50%_-_80px)] top-[0px] flex h-full w-[200px] items-center justify-center text-[1.25rem] leading-[22.53px] text-[#373737]">
-                        Add more options
-                      </div>
-                      <div className="absolute left-[273.2px] top-[16.3px] flex flex-row items-start justify-start">
-                        <div className="relative h-[21px] w-[21px]">
-                          <img
-                            className="absolute left-[0px] top-[0px] h-[21px] w-[21px]"
-                            alt=""
-                            src="/vector-21.svg"
-                          />
-                          <div className="absolute left-[0px] top-[0px] h-full w-full">
-                            <img
-                              className="absolute left-[0px] top-[0px] z-[1] h-[21px] w-[21px]"
-                              alt=""
-                              src="/vector-21.svg"
-                            />
-                            <img
-                              className="absolute left-[0px] top-[0px] z-[2] h-[21px] w-[21px]"
-                              alt=""
-                              src="/vector-21.svg"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="box-border flex w-[313.2px] flex-col items-start justify-end pb-px pl-0 pr-[14.2px] pt-0">
-                    <input
-                      className="relative flex h-[53px] shrink-0 items-center justify-center self-stretch bg-transparent text-[1.25rem] leading-[22.53px] text-[#373737] placeholder-[#373737] outline-none "
-                      placeholder="Set Correct Option"
+              <div key={questionIndex}>
+                <div className="mt-7 flex max-w-full flex-row flex-wrap items-start justify-start gap-[29px] self-stretch">
+                  <p className="relative self-stretch text-[2rem] leading-[23px]">
+                    {question.questionNumber}
+                  </p>
+
+                  <div className="box-border flex min-w-[561px] max-w-full flex-1 flex-col items-start justify-start px-0 pb-0 ">
+                    <QuestionInput
+                      value={question.question}
+                      onChange={e =>
+                        handleQuestionChange(questionIndex, e.target.value)
+                      }
                     />
                   </div>
-                  <div className="rounded-3xs border-darkslategray relative box-border hidden h-[106px] w-[913px] max-w-full border-[1px] border-solid" />
-                  <input
-                    className="relative flex h-[54px] w-[154px] shrink-0 cursor-pointer items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-[#373737] placeholder-[#373737] outline-none "
-                    placeholder=" Set Timer"
+                  <ImageOrVideoInput
+                    value={question.imageOrVideo}
+                    onChange={e => handleImageOrVideoChange(questionIndex, e)}
                   />
+                </div>
+                <div className=" mt-2 flex flex-row items-center ">
+                  <div className=" mr-5 ">
+                    {question.options.map((option, optionIndex) => (
+                      <OptionInput
+                        key={optionIndex}
+                        value={option}
+                        onChange={e =>
+                          handleOptionChange(
+                            questionIndex,
+                            optionIndex,
+                            e.target.value,
+                          )
+                        }
+                      />
+                    ))}
+                  </div>
+                  <div className="z-[1] box-border flex   flex-1 flex-row  items-center justify-between gap-[34.8px] rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[#373737]">
+                    <div className=" flex flex-row items-center justify-start hover:text-[#1FC04D] ">
+                      <button onClick={() => addOption(questionIndex)}>
+                        Add More Options
+                      </button>
+                      <RiAddLine className=" h-[30px] w-[30px] font-bold " />
+                    </div>
+
+                    <CorrectOptionInput
+                      value={question.correctOption}
+                      onChange={e =>
+                        handleCorrectOptionChange(questionIndex, e.target.value)
+                      }
+                    />
+
+                    <TimerInput
+                      value={question.timer}
+                      onChange={e =>
+                        handleTimerChange(questionIndex, e.target.value)
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             ))}
@@ -236,7 +211,7 @@ const CreateGame: NextPage = () => {
         </section>
         <ButtonPrimary
           addQuestion="Add Question"
-          onButtonPrimaryClick={onAddQuestionClick}
+          onButtonPrimaryClick={addQuestion}
           onButtonPrimary1Click={onFinish}
         />
       </div>
@@ -245,3 +220,183 @@ const CreateGame: NextPage = () => {
 };
 
 export default CreateGame;
+
+// Component for the Quiz Title input field
+const QuizTitleInput: React.FC<{
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ value, onChange }) => (
+  <input
+    type="text"
+    placeholder="Input Game Title"
+    value={value}
+    onChange={onChange}
+    className="  font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-[3.75rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none "
+  />
+);
+
+// Component for an individual question
+const QuestionInput: React.FC<{
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ value, onChange }) => (
+  <input
+    type="text"
+    placeholder="Question"
+    value={value}
+    onChange={onChange}
+    className="relative box-border self-stretch border-b-[1px] border-solid border-[#373737] bg-transparent text-[20px] outline-none"
+  />
+);
+
+// Component for selecting an image or video
+const ImageOrVideoInput: React.FC<{
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ value, onChange }) => (
+  <div className="text-darkgray box-border flex h-11 w-[236px] flex-col items-start justify-start px-0 pb-0  text-xl">
+    <label
+      htmlFor="fileId"
+      className="flex flex-1 flex-row items-start justify-start self-stretch"
+    >
+      <div className="relative z-[1] h-7 min-h-[28px] w-7">
+        <Image fill alt="" src="/vector-11.svg" />
+      </div>
+      <div className="relative flex flex-1 cursor-pointer flex-col items-start justify-start self-stretch px-0 pb-0 pl-4 pt-0.5 leading-[23px] ">
+        Upload image/video
+      </div>
+    </label>
+    <input
+      id="fileId"
+      type="file"
+      accept="image/*, video/*"
+      onChange={onChange}
+      value={value}
+      className=" hidden "
+    />
+  </div>
+);
+
+// Component for an individual option
+const OptionInput: React.FC<{
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ value, onChange }) => (
+  <div className="mb-2 flex w-[204px] flex-col items-start justify-start px-0 pb-0 pt-0.5">
+    <div className="flex flex-col items-start justify-start gap-[26px] self-stretch">
+      <div className="flex flex-row items-center justify-start self-stretch">
+        <div className="relative z-[1] h-[33px] w-[33px] rounded-[50%] bg-[#28FF15]" />
+        <div className="ml-[1.25rem] flex w-[9.375rem] flex-1 flex-col items-start justify-end px-0 pb-1 pt-0">
+          <input
+            type="text"
+            placeholder="Option"
+            value={value}
+            onChange={onChange}
+            className="relative self-stretch bg-transparent text-[1.25rem] leading-[22.53px] placeholder-[#FFFFFF] outline-none"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  // <input type="text" placeholder="Option" value={value} onChange={onChange} />
+);
+
+// Component for setting the correct option
+const CorrectOptionInput: React.FC<{
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ value, onChange }) => (
+  <input
+    type="text"
+    className="relative flex w-[180px]  items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-[#373737] placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D] "
+    placeholder="Set Correct Option"
+    value={value}
+    onChange={onChange}
+  />
+);
+
+// Component for setting the timer
+const TimerInput: React.FC<{
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ value, onChange }) => {
+  const [showTimerOverlay, setShowTimerOverlay] = useState<boolean>(false);
+  const [selectedTime, setSelectedTime] = useState<string>("00:00");
+
+  const handleTimerInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e); // Update the timer value in the parent component
+    setSelectedTime(e.target.value);
+  };
+
+  const handleOverlayDoneClick = () => {
+    onChange({
+      target: { value: selectedTime },
+    } as React.ChangeEvent<HTMLInputElement>); // Update the timer value in the parent component
+    setShowTimerOverlay(false); // Hide the timer overlay
+  };
+
+  const handleTimeSelection = (time: string) => {
+    setSelectedTime(time);
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Set Timer"
+        value={value}
+        onChange={handleTimerInputChange}
+        onFocus={() => setShowTimerOverlay(true)} // Show the timer overlay when input is focused
+        className="relative flex w-[100px] items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-[#373737] placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D]"
+      />
+      {showTimerOverlay && (
+        <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">
+          <div className="w-full max-w-md rounded p-8 shadow-lg [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowTimerOverlay(false)}
+                className="text-gray-500 hover:text-gray-600"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <p className="mb-4 text-center text-[16px] text-[#D9D9D9] ">
+              Set up a timer duration for each question
+            </p>
+            <div className=" box-border flex flex-col items-center justify-center rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] ">
+              <div className="flex justify-center">
+                <input
+                  type="text"
+                  value={selectedTime}
+                  onChange={e => setSelectedTime(e.target.value)}
+                  className="mr-2   bg-transparent px-2 py-1 text-center text-[70px] font-bold text-[#1FC04D] outline-none "
+                />
+              </div>
+              <div className="mt-4 flex justify-center">
+                <button
+                  onClick={handleOverlayDoneClick}
+                  className="rounded-[12px] bg-green-500 px-6 py-2 text-white hover:bg-green-600"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
