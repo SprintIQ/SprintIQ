@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 
-const GenerateCode: NextPage = () => {
+const AddReward: NextPage = () => {
   const router = useRouter();
 
   const onButtonPrimaryClick = useCallback(() => {
@@ -15,7 +15,7 @@ const GenerateCode: NextPage = () => {
   }, [router]);
 
   const onContinue = useCallback(() => {
-    void router.push("/dashboard/get-code");
+    void router.push("/dashboard/add-reward-token");
   }, [router]);
 
   return (
@@ -23,7 +23,7 @@ const GenerateCode: NextPage = () => {
       <div className=" z-[1] m-auto  mt-20 box-border flex w-[527px] max-w-full flex-col items-center justify-start gap-[66px] rounded-[2.5rem] border-[1px] border-solid border-[#175611] bg-[#0a2913] px-5 py-[100px] ">
         {/* <div className="rounded-11xl bg-darkgreen border-limegreen relative box-border hidden h-[663px] w-[927px] max-w-full border-[1px] border-solid" /> */}
         <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-inherit">
-          Proceed to generate unique token code
+          Proceed to add rewards
         </h1>
         <div className="flex w-[300px]  flex-row  justify-center">
           <button
@@ -57,4 +57,4 @@ const GenerateCode: NextPage = () => {
   );
 };
 
-export default GenerateCode;
+export default AddReward;

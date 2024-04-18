@@ -45,12 +45,12 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
 
   return (
     <div
-      className="box-border mb-10 flex w-[1090px] max-w-full flex-row items-start justify-center px-5 py-0"
+      className="mb-10 box-border flex w-[1090px] max-w-full flex-row items-start justify-center px-5 py-0"
       style={buttonPrimaryStyle}
     >
       <div className=" flex w-[834px] max-w-full flex-row flex-wrap items-start justify-start gap-[38px]">
         <button
-          className="bg-[#1FC04D] rounded-[2.5rem] hover:bg-forestgreen box-border flex min-w-[193px] max-w-full flex-1 cursor-pointer flex-row items-start justify-center whitespace-nowrap px-5 py-4 [border:none]"
+          className="hover:bg-forestgreen box-border flex min-w-[193px] max-w-full flex-1 cursor-pointer flex-row items-start justify-center whitespace-nowrap rounded-[2.5rem] bg-[#1FC04D] px-5 py-4 [border:none]"
           style={buttonPrimary1Style}
           onClick={onButtonPrimaryClick}
         >
@@ -62,11 +62,11 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
           </div>
         </button>
         <button
-          className="bg-[#1FC04D] rounded-[40px] hover:bg-forestgreen box-border flex w-[335px] max-w-full cursor-pointer flex-row items-start justify-center px-5 py-4 [border:none]"
+          className="hover:bg-forestgreen box-border flex w-[335px] max-w-full cursor-pointer flex-row items-start justify-center rounded-[40px] bg-[#1FC04D] px-5 py-4 [border:none]"
           onClick={onButtonPrimary1Click}
         >
           <div className="text-11xl font-inter mq450:text-lg mq1050:text-5xl relative inline-block w-[83px] min-w-[83px] text-center text-white">
-            Finish
+            Continue
           </div>
         </button>
       </div>

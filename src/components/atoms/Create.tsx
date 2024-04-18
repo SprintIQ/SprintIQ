@@ -97,17 +97,17 @@ const CreateGame: NextPage = () => {
     void router.push("/dashboard/game");
   }, [router]);
 
-  const onFinish = useCallback(() => {
-    void router.push("/dashboard/generate_code");
+  const onContinue = useCallback(() => {
+    void router.push("/dashboard/add-reward");
   }, [router]);
 
   //console.log("This are the questions:", questions);
   return (
     <div className=" p-[3.75rem]  ">
-      <div className="  relative flex w-full flex-col items-start justify-start gap-[50px] overflow-hidden rounded-[1.25rem] border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px]  ">
-        <section className="  text-41xl font-inter flex w-[1456px] max-w-full flex-col items-end justify-start gap-[20px] text-center text-white  ">
-          <header className="font-inter flex h-[133px] flex-row items-start justify-between gap-[20px] self-stretch text-center text-[#1FC04D]">
-            <div className="flex h-[51.1px] w-[314px] flex-row items-center justify-start gap-[43.9px]">
+      <div className="  relative flex w-full flex-col items-start justify-start gap-[30px] overflow-hidden rounded-[1.25rem] border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px]  ">
+        <section className="  text-41xl font-inter flex w-[1456px] max-w-full flex-col items-end justify-start  text-center text-white  ">
+          <header className="font-inter flex h-[133px] flex-row items-start justify-between  self-stretch text-center text-[#1FC04D]">
+            <div className="flex h-[20px] w-[314px] flex-row items-center justify-start gap-[30px]">
               <div className="flex flex-col items-center justify-start  px-0 pb-0 pt-[3px]">
                 <div className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain">
                   <Image
@@ -133,7 +133,7 @@ const CreateGame: NextPage = () => {
             <FrameComponent7 />
           </header>
           <div className="box-border flex w-[1415px] max-w-full flex-row items-start justify-center px-5 py-0">
-            <div className=" flex w-[1089px] max-w-full flex-col items-start justify-start gap-[36px]">
+            <div className=" flex w-[1089px] max-w-full flex-col items-start justify-start gap-[10px]">
               <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch py-0 pl-5 pr-[21px]">
                 <QuizTitleInput
                   value={quizTitle}
@@ -212,7 +212,7 @@ const CreateGame: NextPage = () => {
         <ButtonPrimary
           addQuestion="Add Question"
           onButtonPrimaryClick={addQuestion}
-          onButtonPrimary1Click={onFinish}
+          onButtonPrimary1Click={onContinue}
         />
       </div>
     </div>
@@ -231,7 +231,7 @@ const QuizTitleInput: React.FC<{
     placeholder="Input Game Title"
     value={value}
     onChange={onChange}
-    className="  font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-[3.75rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none "
+    className="  font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-[2.5rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none "
   />
 );
 

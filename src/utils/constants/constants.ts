@@ -14,10 +14,12 @@ export enum Routes {
   GAME = "game",
   JOIN = "join",
   CREATE = "create",
-  GENERATE_CODE = "generate_code",
+  GENERATE_CODE = "generate-code",
   GET_CODE = "get-code",
   LEADER_BOARD = "leaderboard",
   REWARD = "reward",
+  ADD_REWARD = "add-reward",
+  ADD_REWARD_TOKEN = "add-reward-token",
 }
 export enum QuestionType {
   TEXT = "text",

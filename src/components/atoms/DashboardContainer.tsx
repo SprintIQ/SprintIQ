@@ -2,6 +2,8 @@ import { ProfileContext } from "@src/provider/ProfileProvider";
 import { Routes } from "@src/utils/constants/constants";
 import * as React from "react";
 
+import AddReward from "./AddReward";
+import AddRewardToken from "./AddRewardToken";
 import CreateGame from "./Create";
 import Game from "./Game";
 import GenerateCode from "./GenerateCode";
@@ -43,6 +45,10 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <Leaderboard gameId={gameId} />;
       case Routes.REWARD:
         return <Reward gameId={gameId} />;
+      case Routes.ADD_REWARD:
+        return <AddReward />;
+      case Routes.ADD_REWARD_TOKEN:
+        return <AddRewardToken />;
     }
   };
   return <section className="h-fulll w-full">{renderSelected()}</section>;
