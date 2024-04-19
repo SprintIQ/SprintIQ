@@ -55,8 +55,8 @@ const Abstract: React.FC<IAbstract> = props => {
           y2="443.61"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0F110F" />
-          <stop offset="1" stop-color="#187318" />
+          <stop stopColor="#0F110F" />
+          <stop offset="1" stopColor="#187318" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_768_167"
@@ -66,8 +66,8 @@ const Abstract: React.FC<IAbstract> = props => {
           y2="546.66"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0F110F" />
-          <stop offset="1" stop-color="#187318" />
+          <stop stopColor="#0F110F" />
+          <stop offset="1" stopColor="#187318" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_768_167"
@@ -77,8 +77,8 @@ const Abstract: React.FC<IAbstract> = props => {
           y2="382.964"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0F110F" />
-          <stop offset="1" stop-color="#187318" />
+          <stop stopColor="#0F110F" />
+          <stop offset="1" stopColor="#187318" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_768_167"
@@ -88,8 +88,8 @@ const Abstract: React.FC<IAbstract> = props => {
           y2="558.962"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0F110F" />
-          <stop offset="1" stop-color="#187318" />
+          <stop stopColor="#0F110F" />
+          <stop offset="1" stopColor="#187318" />
         </linearGradient>
       </defs>
     </svg>
