@@ -64,13 +64,13 @@ export default function Page() {
       <div className=" ml-[70px] box-border flex w-[463px] max-w-full flex-col items-start justify-start px-0 pb-0 pt-[3.75rem]">
         <div className=" flex max-w-full flex-col items-start justify-start gap-[70px] self-stretch">
         <div className="flex justify-start">
-     <button className="my-12  text-3xl  ">
+     <button className="my-20 mr-8 text-3xl  ">
      Connect Wallet
      </button>
      </div>
-          <div className="-mt-[5rem] box-border flex h-[497px] max-w-full flex-row items-start justify-start  py-0 pl-[7px] pr-[9px]">
+          <div className="">
             <img
-              className="relative h-[497px] max-w-full flex-1 overflow-hidden object-cover"
+              className=""
               loading="lazy"
               alt=""
               src="/group-1143@2x.png"
