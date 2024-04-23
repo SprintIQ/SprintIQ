@@ -4,6 +4,7 @@ import {
   type Idl,
   Program,
   setProvider,
+  Provider,
 } from "@coral-xyz/anchor";
 import { getAccount, getAssociatedTokenAddress } from "@solana/spl-token";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
@@ -32,7 +33,7 @@ export const sendFunds = async (
     const programId = new PublicKey(
       "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
     );
-    const program = new Program(idl as Idl, programId);
+    const program = new Program(idl as unknown as Idl, programId as unknown as Provider);
 
     const gameCreatorAssociatedUsdcToken = await getAssociatedTokenAddress(
       usdcDevCoinMintAddress,
