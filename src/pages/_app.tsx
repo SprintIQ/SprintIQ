@@ -47,6 +47,7 @@ import {
 import { clusterApiUrl } from "@solana/web3.js";
 import { Toaster } from "@src/components/ui/sonner";
 import { ProfileProvider } from "@src/provider/ProfileProvider";
+import { QuizProvider } from "@src/provider/QuizContext";
 import { api } from "@src/utils/api";
 import { COOKIE_KEY } from "@src/utils/constants/constants";
 import { type AppType } from "next/app";
@@ -121,12 +122,13 @@ const MyApp: AppType = ({ Component, pageProps }) => {
             className={`min-h-screen bg-primary-700 text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]`}
             style={{
               fontFamily: inter.style.fontFamily,
-
             }}
           >
             <ProfileProvider>
-              <Component {...pageProps} />
-              <Toaster />
+              <QuizProvider>
+                <Component {...pageProps} />
+                <Toaster />
+              </QuizProvider>
             </ProfileProvider>
           </main>
         </WalletModalProvider>

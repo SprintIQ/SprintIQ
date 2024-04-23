@@ -3,20 +3,7 @@
   "name": "sprintiq_escrow_program",
   "instructions": [
     {
-      "name": "initialize",
-      "accounts": [
-        { "name": "tokenAccountOwnerPda", "isMut": true, "isSigner": false },
-        { "name": "vaultTokenAccount", "isMut": true, "isSigner": false },
-        { "name": "mintOfTokenBeingSent", "isMut": false, "isSigner": false },
-        { "name": "signer", "isMut": true, "isSigner": true },
-        { "name": "systemProgram", "isMut": false, "isSigner": false },
-        { "name": "tokenProgram", "isMut": false, "isSigner": false },
-        { "name": "rent", "isMut": false, "isSigner": false }
-      ],
-      "args": []
-    },
-    {
-      "name": "sendFunds",
+      "name": "initAndSendFunds",
       "accounts": [
         { "name": "tokenAccountOwnerPda", "isMut": true, "isSigner": false },
         { "name": "vaultTokenAccount", "isMut": true, "isSigner": false },
@@ -48,20 +35,28 @@
       "accounts": [
         { "name": "tokenAccountOwnerPda", "isMut": true, "isSigner": false },
         { "name": "vaultTokenAccount", "isMut": true, "isSigner": false },
-        { "name": "firstWinnerTokenAccount", "isMut": true, "isSigner": false },
-        {
-          "name": "secondWinnerTokenAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        { "name": "thirdWinnerTokenAccount", "isMut": true, "isSigner": false },
         { "name": "mintOfTokenBeingSent", "isMut": false, "isSigner": false },
         { "name": "signer", "isMut": true, "isSigner": true },
         { "name": "systemProgram", "isMut": false, "isSigner": false },
         { "name": "tokenProgram", "isMut": false, "isSigner": false },
         { "name": "rent", "isMut": false, "isSigner": false }
       ],
-      "args": [{ "name": "amount", "type": "u64" }]
+      "args": [
+        { "name": "percentages", "type": "bytes" },
+        { "name": "amount", "type": "u64" }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidPercentage",
+      "msg": "The percentage doesnt add up to 100%"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidParameters",
+      "msg": "The TokenAddresses and percentages length do not add up"
     }
   ]
 }

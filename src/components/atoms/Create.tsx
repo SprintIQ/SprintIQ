@@ -1,11 +1,13 @@
 import ButtonPrimary from "@src/components/button-primary";
 import FrameComponent7 from "@src/components/frame-component7";
+import { useQuizContext } from "@src/provider/QuizContext";
 import { api } from "@src/utils/api";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { RiAddLine } from "react-icons/ri";
+import { toast, Toaster } from "sonner";
 
 interface Question {
   questionNumber: number;
@@ -18,7 +20,7 @@ interface Question {
 const CreateGame: NextPage = () => {
   const router = useRouter();
   //const createGame = api.game.full_game_create.useMutation();
-
+  const { setQuizTitleGlobal, setQuestionsGlobal } = useQuizContext();
   const [quizTitle, setQuizTitle] = useState<string>("");
   const [questions, setQuestions] = useState<Question[]>([
     {
@@ -98,15 +100,29 @@ const CreateGame: NextPage = () => {
   }, [router]);
 
   const onContinue = useCallback(() => {
-    void router.push("/dashboard/add-reward");
-  }, [router]);
+    if (
+      quizTitle.trim() === "" ||
+      questions.some(q => q.question.trim() === "")
+    ) {
+      // Show an alert error if either quizTitle or any question is empty
+      toast(
+        "Please enter a quiz title and fill in all questions before continuing.",
+      );
+    } else {
+      // Proceed to the next page if quizTitle and questions are not empty
+      setQuizTitleGlobal(quizTitle);
+      setQuestionsGlobal(questions);
+      void router.push("/dashboard/add-reward");
+    }
+  }, [quizTitle, questions, setQuizTitleGlobal, setQuestionsGlobal, router]);
 
   //console.log("This are the questions:", questions);
   return (
     <div className=" p-[3.75rem]  ">
+      <Toaster />
       <div className="  relative flex w-full flex-col items-start justify-start gap-[30px] overflow-hidden rounded-[1.25rem] border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px]  ">
         <section className="  text-41xl font-inter flex w-[1456px] max-w-full flex-col items-end justify-start  text-center text-white  ">
-          <header className="font-inter flex h-[133px] flex-row items-start justify-between  self-stretch text-center text-[#1FC04D]">
+          <header className="font-inter flex h-[100px] flex-row items-start justify-between  self-stretch text-center text-[#1FC04D]">
             <div className="flex h-[20px] w-[314px] flex-row items-center justify-start gap-[30px]">
               <div className="flex flex-col items-center justify-start  px-0 pb-0 pt-[3px]">
                 <div className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain">
@@ -119,8 +135,8 @@ const CreateGame: NextPage = () => {
                   />
                 </div>
               </div>
-              <div className="flex h-[45.1px] flex-1 flex-row items-end justify-start gap-[10.4px]">
-                <div className="relative h-[45.1px] w-[40.6px] object-contain">
+              <div className="flex h-[40.1px] flex-1 flex-row items-end justify-start ">
+                <div className="relative h-[40.1px] w-[40.6px] object-contain">
                   <Image fill loading="lazy" alt="" src="/group-1124@2x.png" />
                 </div>
                 <div className="box-border flex h-[31.1px] flex-1 flex-col items-start justify-end px-0 pb-[1.1px] pt-0">

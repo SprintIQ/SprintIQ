@@ -1,53 +1,42 @@
-import { AnchorProvider, Idl, Program, setProvider } from "@coral-xyz/anchor";
-import { getAssociatedTokenAddress } from "@solana/spl-token";
 import {
   useAnchorWallet,
   useConnection,
   useWallet,
 } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
+import { useQuizContext } from "@src/provider/QuizContext";
+import { sendFunds } from "@src/utils/helpers/sol_program_helpers";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
+import { BeatLoader } from "react-spinners";
+import { toast, Toaster } from "sonner";
 
-import idl from "../../sprintiq_program/idl.json";
-
-const usdcDevCoinMintAddress = new PublicKey(
-  "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
-);
-
-const firstWinner = new PublicKey(
-  "Ac77n4aRSpJNwD8dLi3QhgDBHmaYP2VwG9Nm6Jduw8sz",
-);
-const secondWinner = new PublicKey(
-  "3g6i4Yk4ghYf8tn8TyrpfWZUKuu6G7C22a8gpuSxuLzy",
-);
-const thirdWinner = new PublicKey(
-  "FLhy8B5KLFTycE1bU3SA3wGS5P7pYibVsujYsnj1s7et",
-);
-
-interface Distribution {
+export interface Distribution {
   label: string;
   percentage: string;
 }
 
 const AddRewardToken: NextPage = () => {
   const router = useRouter();
+  const { setAmountGlobal, setDistributionGlobal } = useQuizContext();
   const [distribution, setDistribution] = useState<Distribution[]>([
     { label: "First Prize", percentage: "" },
     { label: "Second Prize", percentage: "" },
     { label: "Third Prize", percentage: "" },
   ]);
   const [amount, setAmount] = useState<string>("");
+  const [loading, setIsLoading] = useState<boolean>(false);
 
   const { connection } = useConnection();
   const anchor_wallet = useAnchorWallet();
   const wallet = useWallet();
-  console.log("anchor_wallet", anchor_wallet);
-  console.log("public key", wallet.publicKey?.toString());
+  //console.log("anchor_wallet", anchor_wallet);
+  // console.log("quizTitleGlobal", quizTitleGlobal);
+  // console.log("questionsGlobal", questionsGlobal);
+  //console.log("public key", wallet);
 
   const handleAddMore = () => {
     setDistribution(prevDistribution => [
@@ -64,22 +53,42 @@ const AddRewardToken: NextPage = () => {
     });
   };
 
-  const onButtonPrimaryClick = useCallback(() => {
-    // Please sync "get code" to the project
-  }, []);
-
   const onPolygonIconClick = useCallback(() => {
     void router.push("/dashboard/add-reward");
   }, [router]);
 
-  const onContinue = useCallback(() => {
-    void router.push("/dashboard/get-code");
-  }, [router]);
+  const onDepositForGameButtonPress = useCallback(() => {
+    if (
+      amount.trim() === "" ||
+      distribution.some(d => d.percentage.trim() === "")
+    ) {
+      // Show an alert error if either amount or any distribution is empty
+      toast(
+        "Please enter an amount and fill in all percentages before continuing.",
+      );
+    } else {
+      if (wallet.publicKey && anchor_wallet) {
+        setIsLoading(true);
+        sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
+          .then(() => {
+            toast("You have successfully deposited");
+            setIsLoading(false);
+            setAmountGlobal(amount);
+            setDistributionGlobal(distribution);
+            void router.push("/dashboard/get-code");
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
+    }
+  }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
 
-  //console.log("percentages", distribution);
+  console.log("percentages", distribution);
 
   return (
     <div className="font-inter relative h-[1000px] w-full overflow-hidden text-center text-[2.1875rem] tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
+      <Toaster />
       <div className=" relative z-10 m-auto  mt-5 box-border flex w-[527px] max-w-full flex-col items-center justify-start  rounded-[2.5rem] border-[1px] border-solid border-[#175611] bg-[#0a2913] px-5 py-[40px] ">
         {/* <div className="rounded-11xl bg-darkgreen border-limegreen relative box-border hidden h-[663px] w-[927px] max-w-full border-[1px] border-solid" /> */}
         <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-inherit">
@@ -124,13 +133,10 @@ const AddRewardToken: NextPage = () => {
         <div className="flex w-[300px]  flex-row  justify-center">
           <button
             className="z-[2]  flex  w-full flex-row items-center  justify-center rounded-[2.5rem] bg-[#1FC04D] px-3 py-3  [border:none]"
-            onClick={onButtonPrimaryClick}
+            onClick={onDepositForGameButtonPress}
           >
-            <div
-              className="font-inter   min-w-[128px] text-center text-[16px] text-white"
-              onClick={onContinue}
-            >
-              Deposit for Game
+            <div className="font-inter   min-w-[128px] text-center text-[16px] text-white">
+              {loading ? <BeatLoader color="#36d7b7" /> : "Deposit for Game"}
             </div>
           </button>
         </div>
