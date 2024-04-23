@@ -19,7 +19,7 @@ const GetStarted: React.FC<IGetStarted> = props => {
         x2="103.621"
         y2="83.3787"
         stroke="white"
-        stroke-width="6"
+        strokeWidth="6"
       />
       <line
         y1="-3"
@@ -27,7 +27,7 @@ const GetStarted: React.FC<IGetStarted> = props => {
         y2="-3"
         transform="matrix(-0.707107 0.707107 0.707107 0.707107 101.5 85.5)"
         stroke="white"
-        stroke-width="6"
+        strokeWidth="6"
       />
       <defs>
         <radialGradient
@@ -38,8 +38,8 @@ const GetStarted: React.FC<IGetStarted> = props => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(85 85) rotate(90) scale(85)"
         >
-          <stop stop-color="#017422" />
-          <stop offset="1" stop-color="#1FC04D" />
+          <stop stopColor="#017422" />
+          <stop offset="1" stopColor="#1FC04D" />
         </radialGradient>
       </defs>
     </svg>

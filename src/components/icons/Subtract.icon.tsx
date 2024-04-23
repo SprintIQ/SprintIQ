@@ -28,9 +28,9 @@ const Subtract: React.FC<ISubtract> = props => {
           width="1487.97"
           height="141"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -50,8 +50,8 @@ const Subtract: React.FC<ISubtract> = props => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(743.992 48.4586) rotate(-0.0279576) scale(464.877 81.1273)"
         >
-          <stop stop-color="#1FC04D" />
-          <stop offset="1" stop-color="#0F1310" />
+          <stop stopColor="#1FC04D" />
+          <stop offset="1" stopColor="#0F1310" />
         </radialGradient>
       </defs>
     </svg>
