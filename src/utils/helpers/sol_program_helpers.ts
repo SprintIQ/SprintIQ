@@ -99,3 +99,14 @@ async function logTransaction(txHash: string, connection: Connection) {
     `Solana Explorer: https://explorer.solana.com/tx/${txHash}?cluster=devnet`,
   );
 }
+
+//This is just a function that generates random numbers for a game
+export function generateGameCode(length: number): string {
+  const characters = "0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}

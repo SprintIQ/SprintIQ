@@ -1,17 +1,19 @@
 import React, { createContext, useContext, useState } from "react";
 
-interface Question {
-  questionNumber: number;
-  question: string;
-  imageOrVideo: string;
-  options: string[];
-  correctOption: string;
-  timer: string;
+interface Distribution {
+  position: number;
+  percentage: number;
 }
 
-interface Distribution {
-  label: string;
-  percentage: string;
+interface Question {
+  questionNumber?: number;
+  question: string;
+  type: "text" | "image" | "video";
+  options: string[];
+  answer: string;
+  points: number;
+  duration: number;
+  description?: string | undefined;
 }
 
 interface QuizContextProps {
@@ -43,17 +45,18 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({
     {
       questionNumber: 1,
       question: "",
-      imageOrVideo: "",
+      type: "text",
       options: [""],
-      correctOption: "",
-      timer: "",
+      answer: "",
+      points: 0,
+      duration: 0,
     },
   ]);
 
   const [distributionGlobal, setDistributionGlobal] = useState<Distribution[]>([
-    { label: "First Prize", percentage: "" },
-    { label: "Second Prize", percentage: "" },
-    { label: "Third Prize", percentage: "" },
+    { position: 1, percentage: 0 },
+    { position: 2, percentage: 0 },
+    { position: 3, percentage: 0 },
   ]);
   const [amountGlobal, setAmountGlobal] = useState<string>("");
 

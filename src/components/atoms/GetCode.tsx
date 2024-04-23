@@ -6,12 +6,14 @@ import { toast, Toaster } from "sonner";
 
 const GetCode: NextPage = () => {
   const router = useRouter();
-
+  const { param } = router.query;
   const onPolygonIconClick = useCallback(() => {
     void router.push("/dashboard/add-reward-token");
   }, [router]);
 
-  const onContinue = useCallback(() => {}, [router]);
+  const onContinue = useCallback(() => {
+    void router.push("/dashboard/home");
+  }, [router]);
 
   return (
     <div className="font-inter relative h-[1000px] w-full overflow-hidden text-center text-[2.1875rem] tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
@@ -21,7 +23,7 @@ const GetCode: NextPage = () => {
         </h1>
         <div className=" rounded-[1.25rem] border border-[#175611] px-8 py-1 ">
           <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[1rem] font-normal   text-inherit">
-            456780
+            {param}
           </h1>
         </div>
         <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[1rem] font-normal   text-inherit">
