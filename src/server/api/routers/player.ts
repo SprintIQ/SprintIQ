@@ -410,6 +410,9 @@ export const playerRouter = createTRPCRouter({
           game_id: input.game_id,
           status: HistoryType.completed,
         },
+        select:{
+          user: true
+        },
         orderBy: {
           points: "desc",
         },
