@@ -354,17 +354,15 @@ export const playerRouter = createTRPCRouter({
       z.object({
         game_id: z.string(),
         limit: z.number().optional(),
-        page: z.number().optional(),
+        skip: z.number().optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const currentPage = input.page ?? 1;
       const pageSize = input.limit ?? 10;
-      const skip = (currentPage - 1) * pageSize;
       const history = await ctx.db.profileHistory.groupBy({
         by: ["user_id"],
         take: pageSize,
-        skip,
+        skip: input.skip ?? 0,
         where: {
           game_id: input.game_id,
           status: HistoryType.answered,
@@ -385,30 +383,10 @@ export const playerRouter = createTRPCRouter({
           });
           return { ...user, ...val };
         }),
-      );
-
-      const total_pages = await ctx.db.profileHistory.groupBy({
-        by: ["user_id"],
-        where: {
-          game_id: input.game_id,
-          status: HistoryType.answered,
-        },
-        orderBy: {
-          user_id: "desc",
-        },
-        _sum: {
-          points: true,
-        },
-      });
-      // TODO optimize for speed
+      )
       return {
         success: true,
         history: data,
-        page_info: {
-          current_page: currentPage,
-          total_pages: Math.ceil(total_pages.length / pageSize),
-          total_count: total_pages.length,
-        },
       };
     }),
   get_winners: protectedProcedure

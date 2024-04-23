@@ -21,7 +21,7 @@ const JoinGame: React.FC<IJoinGameProps> = props => {
     }
   };
   const handleContinue = () => {
-    if(!token) return;
+    if (!token) return;
     void mutateAsync({
       game_code: token,
     }).then(res => {
