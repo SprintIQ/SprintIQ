@@ -383,12 +383,35 @@ export const playerRouter = createTRPCRouter({
           });
           return { ...user, ...val };
         }),
-      )
+      );
       return {
         success: true,
         history: data,
       };
     }),
+  // get_notifications: protectedProcedure
+  //   .input(
+  //     z.object({
+  //       limit: z.number().optional(),
+  //       skip: z.number().optional(),
+  //     }),
+  //   )
+  //   .mutation(async ({ input, ctx }) => {
+  //     const pageSize = input.limit ?? 10;
+  //     const notifications = await ctx.db.notification.findMany({
+  //       where: {
+  //         user_id: ctx.user.id,
+  //       },
+  //       skip: input.skip ?? 0,
+  //       orderBy: {
+  //         created_at: "desc",
+  //       },
+  //     });
+  //     return {
+  //       success: true,
+  //       notifications,
+  //     };
+  //   }),
   get_winners: protectedProcedure
     .input(
       z.object({
@@ -410,17 +433,34 @@ export const playerRouter = createTRPCRouter({
           game_id: input.game_id,
           status: HistoryType.completed,
         },
-        select:{
-          user: true
+        select: {
+          user: true,
         },
         orderBy: {
           points: "desc",
         },
         take: positions.length,
       });
+      // send notifications to winner
+      // winners.forEach((val, index) => {
+      //   // send notification
+      //   await ctx.db.notification.create({
+      //     data: {
+      //       user_id: val.user,
+      //       message: `you took position ${index + 1}`,
+      //       ref_id: input.game_id,
+      //     },
+      //   });
+      // });
+
       return {
         success: true,
-        winners,
+        winners: winners.map((val, index) => {
+          return {
+            ...val,
+            position: positions[index],
+          };
+        }),
       };
     }),
 });

@@ -19,7 +19,9 @@ model Profile {
   created_at     DateTime         @default(now())
   Game           Game[]
   ProfileHistory ProfileHistory[]
+  Notification   Notification[]
 }
+
 // TODO add a model to store subscriptions
 
 enum Type {
@@ -105,4 +107,13 @@ model ProfileHistory {
   status      HistoryType @default(answered)
   points      Int         @default(0)
   created_at  DateTime    @default(now())
+}
+
+model Notification {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String
+  user       Profile  @relation(fields: [user_id], references: [wallet_address])
+  ref_id     String
+  message    String
+  created_at DateTime @default(now())
 }
