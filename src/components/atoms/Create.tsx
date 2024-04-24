@@ -258,7 +258,7 @@ const QuizTitleInput: React.FC<{
     placeholder="Input Game Title"
     value={value}
     onChange={onChange}
-    className="  font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-[2.5rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none "
+    className="  font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-[2.5rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-gray-500 outline-none "
   />
 );
 

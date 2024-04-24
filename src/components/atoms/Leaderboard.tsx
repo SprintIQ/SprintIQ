@@ -5,8 +5,8 @@ import * as React from "react";
 import { TfiReload } from "react-icons/tfi";
 
 import LeaderBoardItem from "../molecule/LeaderBoardItem";
-import Spinner from "../ui/Spinner";
 import Button from "../ui/Button";
+import Spinner from "../ui/Spinner";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ILeaderboardProps {
@@ -82,8 +82,12 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
           <LeaderBoardItem key={val.id} {...val} position={index + 1} />
         ))}
 
-        {(!noMoreFetch && !firstFetch) && (
-          <Button onClick={() => fetchLeaderboard()} text="Load more" className="mt-12" />
+        {!noMoreFetch && !firstFetch && (
+          <Button
+            onClick={() => fetchLeaderboard()}
+            text="Load more"
+            className="mt-12"
+          />
         )}
       </div>
     );

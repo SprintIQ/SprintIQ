@@ -123,7 +123,7 @@ const AddRewardToken: NextPage = () => {
             <input
               type="text"
               placeholder="USDC$"
-              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-gray-600 outline-none "
+              className="placeholder:gray-600 w-full rounded-md border border-[#175611] bg-transparent p-2 text-white outline-none "
               value={amount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setAmount(e.target.value);
@@ -141,11 +141,11 @@ const AddRewardToken: NextPage = () => {
                   <input
                     type="text"
                     placeholder="Percentage"
-                    value={item.percentage}
+                    //value={item.percentage}
                     onChange={e =>
                       handlePercentageChange(index, e.target.value)
                     }
-                    className=" bg-transparent text-gray-600 outline-none "
+                    className=" placeholder:gray-600 bg-transparent text-white outline-none "
                   />
                   <p>%</p>
                 </div>
