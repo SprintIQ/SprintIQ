@@ -54,9 +54,6 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
   React.useEffect(() => {
     void resetState();
   }, []);
-  React.useEffect(() => {
-    void mutateAsync({ game_id: props.gameId });
-  }, [props]);
   let content: React.ReactNode;
   if (firstFetch) {
     content = (
