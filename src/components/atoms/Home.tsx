@@ -101,29 +101,31 @@ const Home: NextPage = () => {
     <main>
       <header className="flex w-full items-center justify-between bg-black/[0.12] px-16 py-12">
         <Image
-          className="relative h-10 w-auto"
+          className="relative h-8 w-auto "
           loading="lazy"
           alt=""
-          width={222}
-          height={46}
+          width={200}
+          height={40}
           src="/logo.png"
         />
         <div className="flex items-center justify-start gap-8">
           <Link
-            className="rounded-full bg-secondary-700 px-5 py-2"
+            className="ml-8 mt-2 rounded-lg bg-gradient-to-r from-green-700 via-green-700 to-green-700 px-1.5 py-0.5 text-center text-sm font-medium text-white shadow-lg shadow-green-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-green-300 sm:rounded-xl md:px-6 md:py-2 dark:shadow-lg  dark:shadow-green-800/80 dark:focus:ring-green-800"
             href="/dashboard/create"
           >
             Create Game
           </Link>
+
           <Bell className="h-auto w-8" />
         </div>
       </header>
-      <section className="mt-8 px-6 pb-6">
-        <div className="rounded-b-xl border border-grey-100">
+      <section className="mt-8 pb-6 lg:px-6">
+        <div className="rounded-b-xl border-y border-grey-100 lg:border">
           <div className="border-b border-b-grey-100 py-8">
-            <div className="mx-auto flex w-fit space-x-4 rounded-3xl border border-secondary-700 bg-secondary-300/10 px-6 py-3">
+            <div className="mx-auto flex w-fit justify-between rounded-3xl border border-secondary-700 bg-secondary-300/10 px-6 py-3 lg:space-x-4">
               {elements.map(data => (
                 <ActionButton
+                  className="flex-col lg:flex-row"
                   key={data.text}
                   Icon={data.Icon}
                   text={data.text}

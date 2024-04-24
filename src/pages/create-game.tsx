@@ -145,6 +145,8 @@ const CreateGame: NextPage = () => {
                   <div className="flex flex-1 flex-row items-start justify-start self-stretch">
                     <Image
                       className="relative z-[1] h-7 min-h-[28px] w-7"
+                      width="28"
+                      height="28"
                       alt=""
                       src="/vector-11.svg"
                     />

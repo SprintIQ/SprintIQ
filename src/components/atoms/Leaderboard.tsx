@@ -31,7 +31,6 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
   const [noMoreFetch, setNoMoreFetch] = React.useState(false);
   const [firstFetch, setFirstFetch] = React.useState(true);
   const fetchLeaderboard = async (reset?: boolean) => {
-    setFirstFetch(!!reset);
     const PAGE_SIZE = 20;
     const newPlayers = (
       await mutateAsync({
@@ -96,14 +95,17 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     <main>
       <section className="px-6 py-24">
         <Link href={`/dashboard/${Routes.HOME}`} className="cursor-pointer">
-          <div className="h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent" />
+          <div className="hidden h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent lg:block" />
         </Link>
         <div className="mx-auto w-10/12 rounded-xl border border-secondary-700 bg-secondary-300/10">
           <div className="flex items-center justify-center space-x-2 border-b border-b-secondary-700 py-16 text-center text-3xl font-bold text-secondary-700">
             <h1>Leaderboard</h1>
             <TfiReload
               className="h-6 w-auto cursor-pointer"
-              onClick={() => fetchLeaderboard(true)}
+              onClick={() => {
+                setFirstFetch(true);
+                void fetchLeaderboard(true);
+              }}
             />
           </div>
           <div className="px-16 py-8">{content}</div>

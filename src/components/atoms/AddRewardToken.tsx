@@ -43,10 +43,10 @@ const AddRewardToken: NextPage = () => {
   const { connection } = useConnection();
   const anchor_wallet = useAnchorWallet();
   const wallet = useWallet();
-  //console.log("anchor_wallet", anchor_wallet);
+  // console.log("anchor_wallet", anchor_wallet);
   // console.log("quizTitleGlobal", quizTitleGlobal);
   // console.log("questionsGlobal", questionsGlobal);
-  //console.log("public key", wallet);
+  // console.log("public key", wallet);
 
   const handleAddMore = () => {
     setDistribution(prevDistribution => [
@@ -110,11 +110,11 @@ const AddRewardToken: NextPage = () => {
   //console.log("percentages", distribution);
 
   return (
-    <div className="font-inter relative h-[1000px] w-full overflow-hidden text-center text-[2.1875rem] tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
+    <div className="font-inter relative flex h-[100vh] w-full items-center justify-center overflow-hidden text-center text-2xl tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] md:text-[35px]">
       <Toaster />
-      <div className=" relative z-10 m-auto  mt-5 box-border flex w-[527px] max-w-full flex-col items-center justify-start  rounded-[2.5rem] border-[1px] border-solid border-[#175611] bg-[#0a2913] px-5 py-[40px] ">
+      <div className=" relative z-10 m-auto box-border flex w-[527px] max-w-full flex-col items-center justify-start  rounded-[2.5rem] border-solid px-5 py-[100px] md:border-[1px] md:border-[#175611] md:bg-[#0a2913]">
         {/* <div className="rounded-11xl bg-darkgreen border-limegreen relative box-border hidden h-[663px] w-[927px] max-w-full border-[1px] border-solid" /> */}
-        <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-inherit">
+        <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-white">
           Set up Reward
         </h1>
         <div className=" text-left text-[16px] ">
@@ -123,7 +123,7 @@ const AddRewardToken: NextPage = () => {
             <input
               type="text"
               placeholder="USDC$"
-              className="placeholder:gray-600 w-full rounded-md border border-[#175611] bg-transparent p-2 text-white outline-none "
+              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-gray-600 text-white outline-none"
               value={amount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setAmount(e.target.value);
@@ -137,7 +137,7 @@ const AddRewardToken: NextPage = () => {
                 <label className=" text-sm font-semibold">
                   {item.position}
                 </label>
-                <div className="flex w-full flex-row items-center justify-start  rounded-md  border border-[#175611] bg-transparent p-2 text-gray-600 outline-none ">
+                <div className="flex w-full flex-row items-center justify-start  rounded-md  border border-[#175611] bg-transparent p-2 text-white outline-none ">
                   <input
                     type="text"
                     placeholder="Percentage"
@@ -145,7 +145,7 @@ const AddRewardToken: NextPage = () => {
                     onChange={e =>
                       handlePercentageChange(index, e.target.value)
                     }
-                    className=" placeholder:gray-600 bg-transparent text-white outline-none "
+                    className=" bg-transparent outline-none placeholder:text-gray-600 "
                   />
                   <p>%</p>
                 </div>
@@ -175,7 +175,7 @@ const AddRewardToken: NextPage = () => {
         <div className="absolute left-[7px] top-[-140px] h-[1100px] w-[1009.4px] object-cover">
           <Image fill alt="" src="/group-1143@2x.png" />
         </div>
-        <div className="absolute left-[7px] top-[117px] z-[1] h-[48.1px] w-[48.1px] cursor-pointer object-contain">
+        <div className="absolute left-[7px] top-[117px] z-[1] hidden h-[48.1px] w-[48.1px] cursor-pointer object-contain lg:block">
           <Image
             fill
             loading="lazy"

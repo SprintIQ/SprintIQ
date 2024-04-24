@@ -3,8 +3,8 @@ import {
   BN,
   type Idl,
   Program,
+  type Provider,
   setProvider,
-  Provider,
 } from "@coral-xyz/anchor";
 import { getAccount, getAssociatedTokenAddress } from "@solana/spl-token";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
@@ -33,7 +33,11 @@ export const sendFunds = async (
     const programId = new PublicKey(
       "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
     );
-    const program = new Program(idl as unknown as Idl, programId as unknown as Provider);
+    const program = new Program(
+      idl as unknown as Idl,
+      programId as unknown as Provider,
+    );
+      console.log('here')
 
     const gameCreatorAssociatedUsdcToken = await getAssociatedTokenAddress(
       usdcDevCoinMintAddress,
@@ -63,6 +67,7 @@ export const sendFunds = async (
     };
     //Initialization transaction
     const txHash = await program.methods
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       .initAndSendFunds(new BN(amount))
       .accounts({
         tokenAccountOwnerPda: tokenAccountOwnerPda,
@@ -100,7 +105,6 @@ async function logTransaction(txHash: string, connection: Connection) {
     `Solana Explorer: https://explorer.solana.com/tx/${txHash}?cluster=devnet`,
   );
 }
-
 //This is just a function that generates random numbers for a game
 export function generateGameCode(length: number): string {
   const characters = "0123456789";
