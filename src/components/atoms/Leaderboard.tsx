@@ -103,8 +103,8 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
             <TfiReload
               className="h-6 w-auto cursor-pointer"
               onClick={() => {
-                setFirstFetch(true)
-                void fetchLeaderboard(true)
+                setFirstFetch(true);
+                void fetchLeaderboard(true);
               }}
             />
           </div>
