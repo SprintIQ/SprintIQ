@@ -74,7 +74,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
   } else {
     content = (
       <div className="flex flex-col space-y-6">
-        {data?.history?.map((val, index) => (
+        {players?.map((val, index) => (
           <LeaderBoardItem key={val.id} {...val} position={index + 1} />
         ))}
 
