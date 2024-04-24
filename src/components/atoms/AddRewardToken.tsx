@@ -141,7 +141,7 @@ const AddRewardToken: NextPage = () => {
                   <input
                     type="text"
                     placeholder="Percentage"
-                    //value={item.percentage}
+                    value={item.percentage}
                     onChange={e =>
                       handlePercentageChange(index, e.target.value)
                     }
