@@ -22,13 +22,8 @@ const GetCode: NextPage = () => {
           Game Token
         </h1>
         <div className=" rounded-[1.25rem] border border-[#175611] px-8 py-1 ">
-<<<<<<< HEAD
-          <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[1rem] font-normal text-inherit">
-            456780
-=======
           <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[1rem] font-normal   text-inherit">
             {param}
->>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
           </h1>
         </div>
         <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[12px] md:text-[1rem] font-normal text-inherit leading-snug px-5 md:px-0">

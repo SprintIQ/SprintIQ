@@ -109,20 +109,20 @@ const Home: NextPage = () => {
           src="/logo.png"
         />
         <div className="flex items-center justify-start gap-8">
-        <Link
-         className="text-white bg-gradient-to-r from-green-700 via-green-700 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-1 py-0.5 text-center  mt-2 ml-8"
-         href="/dashboard/create"
-         >
-         Create Game
-       </Link>
+          <Link
+            className="ml-8 mt-2 rounded-lg bg-gradient-to-r from-green-700 via-green-700 to-green-700 px-1.5 py-0.5 text-center text-sm font-medium text-white shadow-lg shadow-green-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-green-300 sm:rounded-xl md:px-6 md:py-2 dark:shadow-lg  dark:shadow-green-800/80 dark:focus:ring-green-800"
+            href="/dashboard/create"
+          >
+            Create Game
+          </Link>
 
           <Bell className="h-auto w-8" />
         </div>
       </header>
-      <section className="mt-8 lg:px-6 pb-6">
-        <div className="rounded-b-xl border-y lg:border border-grey-100">
+      <section className="mt-8 pb-6 lg:px-6">
+        <div className="rounded-b-xl border-y border-grey-100 lg:border">
           <div className="border-b border-b-grey-100 py-8">
-            <div className="mx-auto flex w-fit lg:space-x-4 rounded-3xl border border-secondary-700 bg-secondary-300/10 px-6 py-3 justify-between">
+            <div className="mx-auto flex w-fit justify-between rounded-3xl border border-secondary-700 bg-secondary-300/10 px-6 py-3 lg:space-x-4">
               {elements.map(data => (
                 <ActionButton
                   className="flex-col lg:flex-row"

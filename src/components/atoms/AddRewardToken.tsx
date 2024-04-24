@@ -4,15 +4,11 @@ import {
   useWallet,
 } from "@solana/wallet-adapter-react";
 import { useQuizContext } from "@src/provider/QuizContext";
-<<<<<<< HEAD
-// import { sendFunds } from "@src/utils/helpers/sol_program_helpers";
-=======
 import { api } from "@src/utils/api";
 import {
   generateGameCode,
   sendFunds,
 } from "@src/utils/helpers/sol_program_helpers";
->>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -47,10 +43,10 @@ const AddRewardToken: NextPage = () => {
   const { connection } = useConnection();
   const anchor_wallet = useAnchorWallet();
   const wallet = useWallet();
-  //console.log("anchor_wallet", anchor_wallet);
+  // console.log("anchor_wallet", anchor_wallet);
   // console.log("quizTitleGlobal", quizTitleGlobal);
   // console.log("questionsGlobal", questionsGlobal);
-  //console.log("public key", wallet);
+  // console.log("public key", wallet);
 
   const handleAddMore = () => {
     setDistribution(prevDistribution => [
@@ -80,19 +76,6 @@ const AddRewardToken: NextPage = () => {
     } else {
       if (wallet.publicKey && anchor_wallet) {
         setIsLoading(true);
-<<<<<<< HEAD
-        // sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
-        //   .then(() => {
-        //     toast("You have successfully deposited");
-        //     setIsLoading(false);
-        //     setAmountGlobal(amount);
-        //     setDistributionGlobal(distribution);
-        //     void router.push("/dashboard/get-code");
-        //   })
-        //   .catch(err => {
-        //     console.error(err);
-        //   });
-=======
         sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
           .then(() => {
             const gameCode = generateGameCode(6);
@@ -120,7 +103,6 @@ const AddRewardToken: NextPage = () => {
           .catch(err => {
             console.error(err);
           });
->>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
       }
     }
   }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
@@ -132,7 +114,7 @@ const AddRewardToken: NextPage = () => {
       <Toaster />
       <div className=" relative z-10 m-auto box-border flex w-[527px] max-w-full flex-col items-center justify-start  rounded-[2.5rem] md:border-[1px] border-solid md:border-[#175611] md:bg-[#0a2913] px-5 py-[100px]">
         {/* <div className="rounded-11xl bg-darkgreen border-limegreen relative box-border hidden h-[663px] w-[927px] max-w-full border-[1px] border-solid" /> */}
-        <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-inherit">
+        <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-white">
           Set up Reward
         </h1>
         <div className=" text-left text-[16px] ">
@@ -141,7 +123,7 @@ const AddRewardToken: NextPage = () => {
             <input
               type="text"
               placeholder="USDC$"
-              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-gray-600 outline-none "
+              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-gray-600 outline-none text-white"
               value={amount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setAmount(e.target.value);
@@ -155,7 +137,7 @@ const AddRewardToken: NextPage = () => {
                 <label className=" text-sm font-semibold">
                   {item.position}
                 </label>
-                <div className="flex w-full flex-row items-center justify-start  rounded-md  border border-[#175611] bg-transparent p-2 text-gray-600 outline-none ">
+                <div className="flex w-full flex-row items-center justify-start  rounded-md  border border-[#175611] bg-transparent p-2 text-white outline-none ">
                   <input
                     type="text"
                     placeholder="Percentage"
@@ -163,7 +145,7 @@ const AddRewardToken: NextPage = () => {
                     onChange={e =>
                       handlePercentageChange(index, e.target.value)
                     }
-                    className=" bg-transparent text-gray-600 outline-none "
+                    className=" bg-transparent placeholder:text-gray-600 outline-none "
                   />
                   <p>%</p>
                 </div>

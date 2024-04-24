@@ -127,16 +127,6 @@ const CreateGame: NextPage = () => {
 
   //console.log("This are the questions:", questions);
   return (
-<<<<<<< HEAD
-    <div className="p-5 md:p-[3.75rem] ">
-      <Toaster />
-      <div className="relative flex w-full flex-col items-start justify-start gap-[30px] rounded-[1.25rem] md:border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px] px-5">
-        <section className="text-41xl font-inter flex w-full lg:w-[1456px] max-w-full flex-col items-end justify-start text-center text-white">
-          <header className="font-inter flex h-[100px] flex-row items-start justify-between  self-stretch text-center text-[#1FC04D]">
-            <div className="flex h-[20px] w-[314px] flex-row items-center justify-start gap-[30px]">
-              <div className="lg:flex flex-col items-center justify-start px-0 pb-0 pt-[3px] hidden">
-                <div className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain">
-=======
     <div className="p-4 sm:p-[2rem] lg:p-[3.75rem]  ">
       <Toaster />
       <div className="  relative flex w-full flex-col items-start justify-start overflow-hidden rounded-[1.25rem] border border-[#373737] px-2  pt-[1.25rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:gap-[30px] lg:pl-[57px] lg:pr-[57px]  ">
@@ -145,7 +135,6 @@ const CreateGame: NextPage = () => {
             <div className="flex h-[20px] w-full flex-row items-center justify-start gap-2 sm:w-[314px] lg:gap-[30px]">
               <div className="flex flex-col items-center justify-start  px-0 pb-0 lg:pt-[3px]">
                 <div className="relative h-[0.9375rem] w-[0.9375rem] cursor-pointer object-contain lg:h-[1.875rem] lg:w-[1.875rem]">
->>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
                   <Image
                     fill
                     loading="lazy"
@@ -160,13 +149,8 @@ const CreateGame: NextPage = () => {
                 <div className="relative h-[22px] w-[22px] object-contain lg:h-[40.1px] lg:w-[40.6px]">
                   <Image fill loading="lazy" alt="" src="/group-1124@2x.png" />
                 </div>
-<<<<<<< HEAD
-                <div className="box-border lg:flex h-[31.1px] flex-1 flex-col items-start justify-end px-0 pb-[1.1px] pt-0 hidden">
-                  <div className="relative h-[30px] max-w-full shrink-0 self-stretch overflow-hidden">
-=======
                 <div className="box-border flex h-[20px] flex-1 flex-col items-center px-0 pt-0 lg:h-[31.1px] lg:justify-end lg:pb-[1.1px]">
                   <div className="relative -ml-5 h-[20px] max-w-full shrink-0 self-stretch overflow-hidden sm:-ml-12 lg:ml-0 lg:h-[30px] ">
->>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
                     <Image fill loading="lazy" alt="" src="/sprint-iq.svg" />
                   </div>
                 </div>
@@ -176,8 +160,8 @@ const CreateGame: NextPage = () => {
               <FrameComponent7 />
             </div>
           </header>
-          <div className="box-border flex w-full lg:w-[1415px] max-w-full flex-col lg:flex-row items-start justify-center px-5 py-0">
-            <div className=" flex w-full lg:w-[1089px] max-w-full flex-col items-start justify-start gap-[10px]">
+          <div className="box-border flex w-full max-w-full flex-col items-start justify-center px-5 py-0 lg:w-[1415px] lg:flex-row">
+            <div className=" flex w-full max-w-full flex-col items-start justify-start gap-[10px] lg:w-[1089px]">
               <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch py-0 pl-5 lg:pr-[21px]">
                 <QuizTitleInput
                   value={quizTitle}
@@ -192,13 +176,12 @@ const CreateGame: NextPage = () => {
           <div className="flex w-full max-w-full flex-col justify-start">
             {questions.map((question, questionIndex) => (
               <div key={questionIndex}>
-                <div className="mt-7 flex w-full max-w-full lg:flex-row flex-wrap items-start justify-start gap-[29px] self-stretch">
+                <div className="mt-7 flex w-full max-w-full flex-wrap items-start justify-start gap-[29px] self-stretch lg:flex-row">
                   <p className="relative self-stretch text-[2rem] leading-[23px]">
                     {question.questionNumber}
                   </p>
 
-
-                  <div className="box-border w-full flex max-w-full flex-1 flex-col lg:flex-row items-start justify-start px-0 pb-0 gap-y-[20px] lg:gap-y-0 lg:gap-x-5">
+                  <div className="box-border flex w-full max-w-full flex-1 flex-col items-start justify-start gap-y-[20px] px-0 pb-0 lg:flex-row lg:gap-x-5 lg:gap-y-0">
                     <QuestionInput
                       value={question.question}
                       onChange={e =>
@@ -206,18 +189,15 @@ const CreateGame: NextPage = () => {
                       }
                     />
                     <ImageOrVideoInput
-                      value={question.imageOrVideo}
+                      // value={question.imageOrVideo}
                       onChange={e => handleImageOrVideoChange(questionIndex, e)}
                     />
                   </div>
-<<<<<<< HEAD[]
-=======
                   <ImageOrVideoInput
                     onChange={e => handleImageOrVideoChange(questionIndex, e)}
                   />
->>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
                 </div>
-                <div className=" mt-2 flex flex-col lg:flex-row lg:items-center gap-y-[20px]">
+                <div className=" mt-2 flex flex-col gap-y-[20px] lg:flex-row lg:items-center">
                   <div className=" mr-5 ">
                     {question.options.map((option, optionIndex) => (
                       <OptionInput
@@ -233,7 +213,7 @@ const CreateGame: NextPage = () => {
                       />
                     ))}
                   </div>
-                  <div className="z-[1] box-border flex  flex-col flex-1 lg:flex-row  lg:items-center justify-between lg:gap-[34.8px] rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[#373737] w-fit text-[20px]">
+                  <div className="z-[1] box-border flex  w-fit flex-1 flex-col  justify-between rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[20px] text-[#373737] lg:flex-row lg:items-center lg:gap-[34.8px]">
                     <div className=" flex flex-row items-center justify-start hover:text-[#1FC04D] ">
                       <button onClick={() => addOption(questionIndex)}>
                         Add More Options
@@ -285,7 +265,7 @@ const QuizTitleInput: React.FC<{
     placeholder="Input Game Title"
     value={value}
     onChange={onChange}
-    className="font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-2xl md:text-[2.5rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none "
+    className="font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-2xl font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none md:text-[2.5rem] placeholder:opacity-50"
   />
 );
 
@@ -299,20 +279,15 @@ const QuestionInput: React.FC<{
     placeholder="Question"
     value={value}
     onChange={onChange}
-    className="relative w-full box-border border-b-[1px] border-solid border-[#373737] bg-transparent text-[20px] outline-none"
+    className="relative box-border w-full border-b-[1px] border-solid border-[#373737] bg-transparent text-[20px] outline-none"
   />
 );
 
 // Component for selecting an image or video
 const ImageOrVideoInput: React.FC<{
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-<<<<<<< HEAD
-}> = ({ value, onChange }) => (
-  <div className="text-darkgray box-border flex h-11 w-[236px] flex-col items-start justify-start px-0 pb-0  text-xl shrink-0">
-=======
 }> = ({ onChange }) => (
   <div className="text-darkgray box-border flex h-11 w-[236px] flex-col items-start justify-start px-0 pb-0  text-xl">
->>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
     <label
       htmlFor="fileId"
       className="flex flex-1 flex-row items-start justify-start self-stretch"
