@@ -33,12 +33,13 @@ export const sendFunds = async (
     const programId = new PublicKey(
       "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
     );
-    // const program = new Program(
-    //   idl as unknown as Idl,
-    //   programId as unknown as Provider,
-    // );
+    const program = new Program(
+      idl as unknown as Idl,
+      programId as unknown as PublicKey,
+    );
 
-    const program = new Program(idl as Idl, programId);
+    // const program = new Program(idl as Idl, programId);
+
     const gameCreatorAssociatedUsdcToken = await getAssociatedTokenAddress(
       usdcDevCoinMintAddress,
       publicKey,
