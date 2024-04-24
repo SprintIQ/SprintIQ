@@ -32,17 +32,19 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
   const [firstFetch, setFirstFetch] = React.useState(true);
   const fetchLeaderboard = async (reset?: boolean) => {
     const PAGE_SIZE = 20;
-    const newPlayers = (
-      await mutateAsync({
-        game_id: props.gameId,
-        limit: PAGE_SIZE,
-        skip: players.length,
-      })
-    )?.history as Array<ILeaderBoard>;
-    if (newPlayers.length < PAGE_SIZE) {
+    const newPlayers = await mutateAsync({
+      game_id: props.gameId,
+      limit: PAGE_SIZE,
+      skip: players.length,
+    });
+    if (newPlayers?.history?.length < PAGE_SIZE) {
       setNoMoreFetch(true);
     }
-    setPlayers(prev => (reset ? [] : [...prev]).concat(newPlayers));
+    setPlayers(prev =>
+      (reset ? [] : [...prev]).concat(
+        (newPlayers?.history || []) as Array<ILeaderBoard>,
+      ),
+    );
     setFirstFetch(false);
   };
   const resetState = async () => {

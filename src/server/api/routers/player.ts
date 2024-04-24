@@ -367,11 +367,23 @@ export const playerRouter = createTRPCRouter({
           game_id: input.game_id,
           status: HistoryType.answered,
         },
-        orderBy: {
-          user_id: "desc",
-        },
+        orderBy: [
+          {
+            _sum: {
+              points: "desc",
+            },
+          },
+          {
+            _max: {
+              created_at: "asc",
+            },
+          },
+        ],
         _sum: {
           points: true,
+        },
+        _max: {
+          created_at: true,
         },
       });
       const data = await Promise.all(
