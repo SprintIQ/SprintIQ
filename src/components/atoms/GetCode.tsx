@@ -6,12 +6,14 @@ import { toast, Toaster } from "sonner";
 
 const GetCode: NextPage = () => {
   const router = useRouter();
-
+  const { param } = router.query;
   const onPolygonIconClick = useCallback(() => {
     void router.push("/dashboard/add-reward-token");
   }, [router]);
 
-  const onContinue = useCallback(() => {}, [router]);
+  const onContinue = useCallback(() => {
+    void router.push("/dashboard/home");
+  }, [router]);
 
   return (
     <div className="font-inter relative h-[100vh] w-full overflow-hidden text-center text-2xl md:text-[35px] tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] px-10 flex justify-center items-center">
@@ -20,8 +22,13 @@ const GetCode: NextPage = () => {
           Game Token
         </h1>
         <div className=" rounded-[1.25rem] border border-[#175611] px-8 py-1 ">
+<<<<<<< HEAD
           <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[1rem] font-normal text-inherit">
             456780
+=======
+          <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[1rem] font-normal   text-inherit">
+            {param}
+>>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
           </h1>
         </div>
         <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[12px] md:text-[1rem] font-normal text-inherit leading-snug px-5 md:px-0">

@@ -52,7 +52,7 @@ const Home: NextPage = () => {
         skip: games.length,
       })
     )?.games;
-    if (games.length < PAGE_SIZE) {
+    if (newGames.length < PAGE_SIZE) {
       setNoMoreFetch(true);
     }
     setGames(prev => (reset ? [] : [...prev]).concat(newGames));

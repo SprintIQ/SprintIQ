@@ -1,7 +1,6 @@
 import ButtonPrimary from "@src/components/button-primary";
 import FrameComponent7 from "@src/components/frame-component7";
 import { useQuizContext } from "@src/provider/QuizContext";
-import { api } from "@src/utils/api";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -10,26 +9,29 @@ import { useCallback, useState } from "react";
 import { toast, Toaster } from "sonner";
 
 interface Question {
-  questionNumber: number;
+  questionNumber?: number;
   question: string;
-  imageOrVideo: string;
+  type: "text" | "image" | "video";
   options: string[];
-  correctOption: string;
-  timer: string;
+  answer: string;
+  points: number;
+  duration: number;
+  description?: string | undefined;
 }
+
 const CreateGame: NextPage = () => {
   const router = useRouter();
-  //const createGame = api.game.full_game_create.useMutation();
   const { setQuizTitleGlobal, setQuestionsGlobal } = useQuizContext();
   const [quizTitle, setQuizTitle] = useState<string>("");
   const [questions, setQuestions] = useState<Question[]>([
     {
       questionNumber: 1,
       question: "",
-      imageOrVideo: "",
+      type: "text",
       options: [""],
-      correctOption: "",
-      timer: "",
+      answer: "",
+      points: 1,
+      duration: 0,
     },
   ]);
 
@@ -48,8 +50,14 @@ const CreateGame: NextPage = () => {
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].imageOrVideo = e.target.value;
-    setQuestions(updatedQuestions);
+    const value = e.target.value.toLowerCase(); // Convert the input value to lowercase
+    if (value === "text" || value === "image" || value === "video") {
+      updatedQuestions[questionIndex].type = value;
+      setQuestions(updatedQuestions);
+    } else {
+      // Handle invalid input (optional)
+      console.error("Invalid input for question type");
+    }
   };
 
   const handleOptionChange = (
@@ -64,13 +72,13 @@ const CreateGame: NextPage = () => {
 
   const handleCorrectOptionChange = (questionIndex: number, value: string) => {
     const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].correctOption = value;
+    updatedQuestions[questionIndex].answer = value;
     setQuestions(updatedQuestions);
   };
 
-  const handleTimerChange = (questionIndex: number, value: string) => {
+  const handleTimerChange = (questionIndex: number, value: number) => {
     const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].timer = value;
+    updatedQuestions[questionIndex].duration = value;
     setQuestions(updatedQuestions);
   };
 
@@ -81,10 +89,11 @@ const CreateGame: NextPage = () => {
       {
         questionNumber,
         question: "",
-        imageOrVideo: "",
+        type: "text", // Assuming the default type is text
         options: [""],
-        correctOption: "",
-        timer: "",
+        answer: "",
+        points: 1, // Assuming the default points is 0
+        duration: 0,
       },
     ]);
   };
@@ -96,7 +105,7 @@ const CreateGame: NextPage = () => {
   };
 
   const onBackPress = useCallback(() => {
-    void router.push("/dashboard/game");
+    void router.push("/dashboard/home");
   }, [router]);
 
   const onContinue = useCallback(() => {
@@ -118,6 +127,7 @@ const CreateGame: NextPage = () => {
 
   //console.log("This are the questions:", questions);
   return (
+<<<<<<< HEAD
     <div className="p-5 md:p-[3.75rem] ">
       <Toaster />
       <div className="relative flex w-full flex-col items-start justify-start gap-[30px] rounded-[1.25rem] md:border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px] px-5">
@@ -126,6 +136,16 @@ const CreateGame: NextPage = () => {
             <div className="flex h-[20px] w-[314px] flex-row items-center justify-start gap-[30px]">
               <div className="lg:flex flex-col items-center justify-start px-0 pb-0 pt-[3px] hidden">
                 <div className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain">
+=======
+    <div className="p-4 sm:p-[2rem] lg:p-[3.75rem]  ">
+      <Toaster />
+      <div className="  relative flex w-full flex-col items-start justify-start overflow-hidden rounded-[1.25rem] border border-[#373737] px-2  pt-[1.25rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:gap-[30px] lg:pl-[57px] lg:pr-[57px]  ">
+        <section className="  lg:text-41xl font-inter flex max-w-full flex-col items-end justify-start text-center  text-white lg:w-[1456px]  ">
+          <header className="font-inter flex flex-row items-center justify-between self-stretch  text-center text-[#1FC04D] lg:h-[100px]">
+            <div className="flex h-[20px] w-full flex-row items-center justify-start gap-2 sm:w-[314px] lg:gap-[30px]">
+              <div className="flex flex-col items-center justify-start  px-0 pb-0 lg:pt-[3px]">
+                <div className="relative h-[0.9375rem] w-[0.9375rem] cursor-pointer object-contain lg:h-[1.875rem] lg:w-[1.875rem]">
+>>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
                   <Image
                     fill
                     loading="lazy"
@@ -136,12 +156,17 @@ const CreateGame: NextPage = () => {
                   />
                 </div>
               </div>
-              <div className="flex h-[40.1px] flex-1 flex-row items-end justify-start ">
-                <div className="relative h-[40.1px] w-[40.6px] object-contain">
+              <div className="flex h-[40.1px] flex-1 flex-row items-center justify-start ">
+                <div className="relative h-[22px] w-[22px] object-contain lg:h-[40.1px] lg:w-[40.6px]">
                   <Image fill loading="lazy" alt="" src="/group-1124@2x.png" />
                 </div>
+<<<<<<< HEAD
                 <div className="box-border lg:flex h-[31.1px] flex-1 flex-col items-start justify-end px-0 pb-[1.1px] pt-0 hidden">
                   <div className="relative h-[30px] max-w-full shrink-0 self-stretch overflow-hidden">
+=======
+                <div className="box-border flex h-[20px] flex-1 flex-col items-center px-0 pt-0 lg:h-[31.1px] lg:justify-end lg:pb-[1.1px]">
+                  <div className="relative -ml-5 h-[20px] max-w-full shrink-0 self-stretch overflow-hidden sm:-ml-12 lg:ml-0 lg:h-[30px] ">
+>>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
                     <Image fill loading="lazy" alt="" src="/sprint-iq.svg" />
                   </div>
                 </div>
@@ -185,6 +210,12 @@ const CreateGame: NextPage = () => {
                       onChange={e => handleImageOrVideoChange(questionIndex, e)}
                     />
                   </div>
+<<<<<<< HEAD[]
+=======
+                  <ImageOrVideoInput
+                    onChange={e => handleImageOrVideoChange(questionIndex, e)}
+                  />
+>>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
                 </div>
                 <div className=" mt-2 flex flex-col lg:flex-row lg:items-center gap-y-[20px]">
                   <div className=" mr-5 ">
@@ -211,16 +242,19 @@ const CreateGame: NextPage = () => {
                     </div>
 
                     <CorrectOptionInput
-                      value={question.correctOption}
+                      value={question.answer}
                       onChange={e =>
                         handleCorrectOptionChange(questionIndex, e.target.value)
                       }
                     />
 
                     <TimerInput
-                      value={question.timer}
+                      value={question.duration}
                       onChange={e =>
-                        handleTimerChange(questionIndex, e.target.value)
+                        handleTimerChange(
+                          questionIndex,
+                          parseInt(e.target.value),
+                        )
                       }
                     />
                   </div>
@@ -271,10 +305,14 @@ const QuestionInput: React.FC<{
 
 // Component for selecting an image or video
 const ImageOrVideoInput: React.FC<{
-  value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+<<<<<<< HEAD
 }> = ({ value, onChange }) => (
   <div className="text-darkgray box-border flex h-11 w-[236px] flex-col items-start justify-start px-0 pb-0  text-xl shrink-0">
+=======
+}> = ({ onChange }) => (
+  <div className="text-darkgray box-border flex h-11 w-[236px] flex-col items-start justify-start px-0 pb-0  text-xl">
+>>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
     <label
       htmlFor="fileId"
       className="flex flex-1 flex-row items-start justify-start self-stretch"
@@ -291,7 +329,6 @@ const ImageOrVideoInput: React.FC<{
       type="file"
       accept="image/*, video/*"
       onChange={onChange}
-      value={value}
       className=" hidden "
     />
   </div>
@@ -337,26 +374,26 @@ const CorrectOptionInput: React.FC<{
 
 // Component for setting the timer
 const TimerInput: React.FC<{
-  value: string;
+  value: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }> = ({ value, onChange }) => {
   const [showTimerOverlay, setShowTimerOverlay] = useState<boolean>(false);
-  const [selectedTime, setSelectedTime] = useState<string>("00:00");
+  const [selectedTime, setSelectedTime] = useState<string>("00:00:00");
 
-  const handleTimerInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e); // Update the timer value in the parent component
-    setSelectedTime(e.target.value);
+  // Function to convert time string (HH:MM:SS) to seconds
+  const timeStringToSeconds = (timeString: string): number => {
+    const [hours, minutes, seconds] = timeString.split(":").map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
   };
 
+  // Function to handle overlay done click
   const handleOverlayDoneClick = () => {
-    onChange({
-      target: { value: selectedTime },
-    } as React.ChangeEvent<HTMLInputElement>); // Update the timer value in the parent component
-    setShowTimerOverlay(false); // Hide the timer overlay
-  };
+    const syntheticEvent = {
+      target: { value: timeStringToSeconds(selectedTime) },
+    };
 
-  const handleTimeSelection = (time: string) => {
-    setSelectedTime(time);
+    onChange(syntheticEvent as unknown as React.ChangeEvent<HTMLInputElement>); // Update the timer value in the parent component
+    setShowTimerOverlay(false); // Hide the timer overlay
   };
 
   return (
@@ -364,8 +401,8 @@ const TimerInput: React.FC<{
       <input
         type="text"
         placeholder="Set Timer"
-        value={value}
-        onChange={handleTimerInputChange}
+        value={value.toString()} // Convert number to string for input value
+        onChange={onChange}
         onFocus={() => setShowTimerOverlay(true)} // Show the timer overlay when input is focused
         className="relative flex w-[100px] items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-[#373737] placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D]"
       />
@@ -396,13 +433,13 @@ const TimerInput: React.FC<{
             <p className="mb-4 text-center text-[16px] text-[#D9D9D9] ">
               Set up a timer duration for each question
             </p>
-            <div className=" box-border flex flex-col items-center justify-center rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] ">
+            <div className="box-border flex flex-col items-center justify-center rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] ">
               <div className="flex justify-center">
                 <input
                   type="text"
                   value={selectedTime}
                   onChange={e => setSelectedTime(e.target.value)}
-                  className="mr-2   bg-transparent px-2 py-1 text-center text-[70px] font-bold text-[#1FC04D] outline-none "
+                  className="mr-2 bg-transparent px-2 py-1 text-center text-[70px] font-bold text-[#1FC04D] outline-none "
                 />
               </div>
               <div className="mt-4 flex justify-center">

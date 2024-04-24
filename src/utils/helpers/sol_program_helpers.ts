@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import {
 //   AnchorProvider,
 //   BN,
@@ -8,6 +9,19 @@
 // import { getAccount, getAssociatedTokenAddress } from "@solana/spl-token";
 // import type { AnchorWallet } from "@solana/wallet-adapter-react";
 // import { type Connection, PublicKey } from "@solana/web3.js";
+=======
+import {
+  AnchorProvider,
+  BN,
+  type Idl,
+  Program,
+  setProvider,
+  Provider,
+} from "@coral-xyz/anchor";
+import { getAccount, getAssociatedTokenAddress } from "@solana/spl-token";
+import type { AnchorWallet } from "@solana/wallet-adapter-react";
+import { type Connection, PublicKey } from "@solana/web3.js";
+>>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
 
 // import idl from "../../sprintiq_program/idl.json";
 
@@ -18,6 +32,7 @@
 //   "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
 // );
 
+<<<<<<< HEAD
 // export const sendFunds = async (
 //   publicKey: PublicKey,
 //   anchor_wallet: AnchorWallet,
@@ -33,6 +48,23 @@
 //       "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
 //     );
 //     const program = new Program(idl as Idl, programId);
+=======
+export const sendFunds = async (
+  publicKey: PublicKey,
+  anchor_wallet: AnchorWallet,
+  connection: Connection,
+  amount: string,
+) => {
+  console.log("---working");
+  if (publicKey && anchor_wallet) {
+    const provider = new AnchorProvider(connection, anchor_wallet, {});
+    setProvider(provider);
+    console.log("---provider set up");
+    const programId = new PublicKey(
+      "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
+    );
+    const program = new Program(idl as unknown as Idl, programId as unknown as Provider);
+>>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
 
 //     const gameCreatorAssociatedUsdcToken = await getAssociatedTokenAddress(
 //       usdcDevCoinMintAddress,
@@ -95,7 +127,25 @@
 //     signature: txHash,
 //   });
 
+<<<<<<< HEAD
 //   console.log(
 //     `Solana Explorer: https://explorer.solana.com/tx/${txHash}?cluster=devnet`,
 //   );
 // }
+=======
+  console.log(
+    `Solana Explorer: https://explorer.solana.com/tx/${txHash}?cluster=devnet`,
+  );
+}
+
+//This is just a function that generates random numbers for a game
+export function generateGameCode(length: number): string {
+  const characters = "0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+>>>>>>> a9f9d068589862e94f172ca63e24cd8d4f1cbaaf
