@@ -17,12 +17,12 @@ const ActionButton: React.FC<IActionButtonProps> = ({
   return (
     <button
       {...props}
-      className={twMerge("flex items-center space-x-4", className)}
+      className={twMerge("grow-0 flex items-center lg:space-x-3 shrink-0 max-w-[calc(100%/3.5)]", className)}
     >
       <div className="flex items-center justify-center rounded-2xl bg-gradient-radial px-3.5 py-2">
-        <Icon className="h-8 w-8" />
+        <Icon className="h-8 w-8"/>
       </div>
-      <span>{text}</span>
+      <span className="text-xs lg:text-sm">{text}</span>
     </button>
   );
 };

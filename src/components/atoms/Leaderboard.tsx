@@ -22,10 +22,10 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     <main>
       <section className="px-6 py-24">
         <Link href={`/dashboard/${Routes.HOME}`} className="cursor-pointer">
-          <div className="h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent" />
+          <div className="h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent hidden lg:block" />
         </Link>
         <div className="mx-auto w-10/12 rounded-xl border border-secondary-700 bg-secondary-300/10">
-          <div className="border-b border-b-secondary-700 border-b-secondary-700 py-16 text-center text-3xl font-bold text-secondary-700">
+          <div className="border-b border-b-secondary-700 py-16 text-center text-3xl font-bold text-secondary-700">
             Leaderboard
           </div>
           <div className="px-16 py-8">

@@ -48,7 +48,7 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
       className="mb-10 box-border flex w-[1090px] max-w-full flex-row items-start justify-center px-5 py-0"
       style={buttonPrimaryStyle}
     >
-      <div className=" flex w-[834px] max-w-full flex-row flex-wrap items-start justify-start gap-[38px]">
+      <div className=" flex w-[834px] max-w-full flex-row flex-wrap items-start justify-start gap-[20px] md:gap-[38px]">
         <button
           className="hover:bg-forestgreen box-border flex min-w-[193px] max-w-full flex-1 cursor-pointer flex-row items-start justify-center whitespace-nowrap rounded-[2.5rem] bg-[#1FC04D] px-5 py-4 [border:none]"
           style={buttonPrimary1Style}

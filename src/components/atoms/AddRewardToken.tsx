@@ -4,7 +4,7 @@ import {
   useWallet,
 } from "@solana/wallet-adapter-react";
 import { useQuizContext } from "@src/provider/QuizContext";
-import { sendFunds } from "@src/utils/helpers/sol_program_helpers";
+// import { sendFunds } from "@src/utils/helpers/sol_program_helpers";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -69,17 +69,17 @@ const AddRewardToken: NextPage = () => {
     } else {
       if (wallet.publicKey && anchor_wallet) {
         setIsLoading(true);
-        sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
-          .then(() => {
-            toast("You have successfully deposited");
-            setIsLoading(false);
-            setAmountGlobal(amount);
-            setDistributionGlobal(distribution);
-            void router.push("/dashboard/get-code");
-          })
-          .catch(err => {
-            console.error(err);
-          });
+        // sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
+        //   .then(() => {
+        //     toast("You have successfully deposited");
+        //     setIsLoading(false);
+        //     setAmountGlobal(amount);
+        //     setDistributionGlobal(distribution);
+        //     void router.push("/dashboard/get-code");
+        //   })
+        //   .catch(err => {
+        //     console.error(err);
+        //   });
       }
     }
   }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
@@ -87,9 +87,9 @@ const AddRewardToken: NextPage = () => {
   console.log("percentages", distribution);
 
   return (
-    <div className="font-inter relative h-[1000px] w-full overflow-hidden text-center text-[2.1875rem] tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)]">
+    <div className="font-inter relative h-[100vh] w-full overflow-hidden text-center text-2xl md:text-[35px] tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] flex justify-center items-center">
       <Toaster />
-      <div className=" relative z-10 m-auto  mt-5 box-border flex w-[527px] max-w-full flex-col items-center justify-start  rounded-[2.5rem] border-[1px] border-solid border-[#175611] bg-[#0a2913] px-5 py-[40px] ">
+      <div className=" relative z-10 m-auto box-border flex w-[527px] max-w-full flex-col items-center justify-start  rounded-[2.5rem] md:border-[1px] border-solid md:border-[#175611] md:bg-[#0a2913] px-5 py-[100px]">
         {/* <div className="rounded-11xl bg-darkgreen border-limegreen relative box-border hidden h-[663px] w-[927px] max-w-full border-[1px] border-solid" /> */}
         <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-inherit">
           Set up Reward
@@ -145,7 +145,7 @@ const AddRewardToken: NextPage = () => {
         <div className="absolute left-[7px] top-[-140px] h-[1100px] w-[1009.4px] object-cover">
           <Image fill alt="" src="/group-1143@2x.png" />
         </div>
-        <div className="absolute left-[7px] top-[117px] z-[1] h-[48.1px] w-[48.1px] cursor-pointer object-contain">
+        <div className="absolute left-[7px] top-[117px] z-[1] h-[48.1px] w-[48.1px] cursor-pointer object-contain hidden lg:block">
           <Image
             fill
             loading="lazy"

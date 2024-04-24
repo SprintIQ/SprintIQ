@@ -19,11 +19,11 @@ const Navbar: NextPage = () => {
         src="/logo.png"
       />
       <div className="flex flex-row justify-start gap-4 sm:justify-end">
-        <button className="rounded-full bg-secondary-700 px-3 py-0.5">
+        <button className="text-white  bg-gradient-to-r from-green-700 via-green-700 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-full text-sm px-4 py-0.5 text-center ml-auto">
           Get Started
         </button>
         <button>
-        <Link href="/login" className="font-bold rounded-full bg-secondary-700 px-3 py-1.5 ">
+        <Link href="/login" className="text-white bg-gradient-to-r from-green-700 via-green-700 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-full text-sm px-4 py-0.5 text-center ml-auto ">
           LogIn
         </Link>
         </button>

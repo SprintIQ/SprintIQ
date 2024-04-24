@@ -21,8 +21,8 @@ const Leaderboard: NextPage = () => {
             onClick={onPolygonIconClick}
           />
         </div>
-        <section className="text-41xl text-limegreen font-inter mq1225:min-w-full mq450:gap-[17px_70px] mq750:gap-[35px_70px] mq750:pt-[62px] mq750:pb-[31px] mq750:box-border mq1050:pt-[95px] mq1050:pb-[47px] mq1050:box-border relative box-border flex min-w-[844px] flex-1 shrink-0 flex-col items-start justify-start gap-[70px] px-0 pb-[73px] pt-[146px] text-center [debug_commit:f6aba90]">
-          <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch py-0 pl-5 pr-[21px]">
+        <section className="text-41xl text-limegreen font-inter mq1225:min-w-full mq450:gap-[17px_70px] mq750:gap-[35px_70px] mq750:pt-[62px] mq750:pb-[31px] mq750:box-border mq1050:pt-[95px] mq1050:pb-[47px] mq1050:box-border relative box-border flex min-w-[844px] flex-1 shrink-0 flex-col items-start justify-start gap-[70px] px-0 pb-[73px] pt-[146px] ut558text-center ">
+          <div className="box-border flex  flex-row items-start justify-center self-stretch py-0 pl-5 pr-[21px]">
             <h3 className="font-inherit mq450:text-17xl mq450:leading-[14px] mq750:text-29xl mq750:leading-[18px] relative m-0 flex w-[425px] max-w-full shrink-0 items-center justify-center font-black leading-[23px] text-inherit">
               Leaderboard
             </h3>

@@ -6,7 +6,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
-import { RiAddLine } from "react-icons/ri";
+// import { RiAddLine } from "react-icons/ri";
 import { toast, Toaster } from "sonner";
 
 interface Question {
@@ -118,13 +118,13 @@ const CreateGame: NextPage = () => {
 
   //console.log("This are the questions:", questions);
   return (
-    <div className=" p-[3.75rem]  ">
+    <div className="p-5 md:p-[3.75rem] ">
       <Toaster />
-      <div className="  relative flex w-full flex-col items-start justify-start gap-[30px] overflow-hidden rounded-[1.25rem] border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px]  ">
-        <section className="  text-41xl font-inter flex w-[1456px] max-w-full flex-col items-end justify-start  text-center text-white  ">
+      <div className="relative flex w-full flex-col items-start justify-start gap-[30px] rounded-[1.25rem] md:border border-[#373737]  pt-[2.5rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:pl-[57px] lg:pr-[57px] px-5">
+        <section className="text-41xl font-inter flex w-full lg:w-[1456px] max-w-full flex-col items-end justify-start text-center text-white">
           <header className="font-inter flex h-[100px] flex-row items-start justify-between  self-stretch text-center text-[#1FC04D]">
             <div className="flex h-[20px] w-[314px] flex-row items-center justify-start gap-[30px]">
-              <div className="flex flex-col items-center justify-start  px-0 pb-0 pt-[3px]">
+              <div className="lg:flex flex-col items-center justify-start px-0 pb-0 pt-[3px] hidden">
                 <div className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain">
                   <Image
                     fill
@@ -132,6 +132,7 @@ const CreateGame: NextPage = () => {
                     alt=""
                     src="/polygon-4.svg"
                     onClick={onBackPress}
+                    className="hidden lg:block"
                   />
                 </div>
               </div>
@@ -139,18 +140,20 @@ const CreateGame: NextPage = () => {
                 <div className="relative h-[40.1px] w-[40.6px] object-contain">
                   <Image fill loading="lazy" alt="" src="/group-1124@2x.png" />
                 </div>
-                <div className="box-border flex h-[31.1px] flex-1 flex-col items-start justify-end px-0 pb-[1.1px] pt-0">
+                <div className="box-border lg:flex h-[31.1px] flex-1 flex-col items-start justify-end px-0 pb-[1.1px] pt-0 hidden">
                   <div className="relative h-[30px] max-w-full shrink-0 self-stretch overflow-hidden">
                     <Image fill loading="lazy" alt="" src="/sprint-iq.svg" />
                   </div>
                 </div>
               </div>
             </div>
-            <FrameComponent7 />
+            <div className="hidden lg:block">
+              <FrameComponent7 />
+            </div>
           </header>
-          <div className="box-border flex w-[1415px] max-w-full flex-row items-start justify-center px-5 py-0">
-            <div className=" flex w-[1089px] max-w-full flex-col items-start justify-start gap-[10px]">
-              <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch py-0 pl-5 pr-[21px]">
+          <div className="box-border flex w-full lg:w-[1415px] max-w-full flex-col lg:flex-row items-start justify-center px-5 py-0">
+            <div className=" flex w-full lg:w-[1089px] max-w-full flex-col items-start justify-start gap-[10px]">
+              <div className="box-border flex max-w-full flex-row items-start justify-center self-stretch py-0 pl-5 lg:pr-[21px]">
                 <QuizTitleInput
                   value={quizTitle}
                   onChange={handleQuizTitleChange}
@@ -160,29 +163,30 @@ const CreateGame: NextPage = () => {
             </div>
           </div>
         </section>
-        <section className="text-13xl font-inter box-border flex w-full max-w-full flex-row items-start  px-0  pt-0 text-center text-white">
-          <div className="flex max-w-full flex-col items-end justify-start ">
+        <section className="font-inter box-border flex w-full max-w-full flex-row items-start  px-0  pt-0 text-center text-white">
+          <div className="flex w-full max-w-full flex-col justify-start">
             {questions.map((question, questionIndex) => (
               <div key={questionIndex}>
-                <div className="mt-7 flex max-w-full flex-row flex-wrap items-start justify-start gap-[29px] self-stretch">
+                <div className="mt-7 flex w-full max-w-full lg:flex-row flex-wrap items-start justify-start gap-[29px] self-stretch">
                   <p className="relative self-stretch text-[2rem] leading-[23px]">
                     {question.questionNumber}
                   </p>
 
-                  <div className="box-border flex min-w-[561px] max-w-full flex-1 flex-col items-start justify-start px-0 pb-0 ">
+
+                  <div className="box-border w-full flex max-w-full flex-1 flex-col lg:flex-row items-start justify-start px-0 pb-0 gap-y-[20px] lg:gap-y-0 lg:gap-x-5">
                     <QuestionInput
                       value={question.question}
                       onChange={e =>
                         handleQuestionChange(questionIndex, e.target.value)
                       }
                     />
+                    <ImageOrVideoInput
+                      value={question.imageOrVideo}
+                      onChange={e => handleImageOrVideoChange(questionIndex, e)}
+                    />
                   </div>
-                  <ImageOrVideoInput
-                    value={question.imageOrVideo}
-                    onChange={e => handleImageOrVideoChange(questionIndex, e)}
-                  />
                 </div>
-                <div className=" mt-2 flex flex-row items-center ">
+                <div className=" mt-2 flex flex-col lg:flex-row lg:items-center gap-y-[20px]">
                   <div className=" mr-5 ">
                     {question.options.map((option, optionIndex) => (
                       <OptionInput
@@ -198,12 +202,12 @@ const CreateGame: NextPage = () => {
                       />
                     ))}
                   </div>
-                  <div className="z-[1] box-border flex   flex-1 flex-row  items-center justify-between gap-[34.8px] rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[#373737]">
+                  <div className="z-[1] box-border flex  flex-col flex-1 lg:flex-row  lg:items-center justify-between lg:gap-[34.8px] rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[#373737] w-fit text-[20px]">
                     <div className=" flex flex-row items-center justify-start hover:text-[#1FC04D] ">
                       <button onClick={() => addOption(questionIndex)}>
                         Add More Options
                       </button>
-                      <RiAddLine className=" h-[30px] w-[30px] font-bold " />
+                      {/* <RiAddLine className=" h-[30px] w-[30px] font-bold " /> */}
                     </div>
 
                     <CorrectOptionInput
@@ -247,7 +251,7 @@ const QuizTitleInput: React.FC<{
     placeholder="Input Game Title"
     value={value}
     onChange={onChange}
-    className="  font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-[2.5rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none "
+    className="font-inherit relative m-0 flex h-[76px] w-full  max-w-full shrink-0 items-center justify-center bg-transparent text-center text-2xl md:text-[2.5rem] font-normal leading-[22.53px] text-[#FFFFFF] text-inherit placeholder-[#FFFFFF] outline-none "
   />
 );
 
@@ -261,7 +265,7 @@ const QuestionInput: React.FC<{
     placeholder="Question"
     value={value}
     onChange={onChange}
-    className="relative box-border self-stretch border-b-[1px] border-solid border-[#373737] bg-transparent text-[20px] outline-none"
+    className="relative w-full box-border border-b-[1px] border-solid border-[#373737] bg-transparent text-[20px] outline-none"
   />
 );
 
@@ -270,7 +274,7 @@ const ImageOrVideoInput: React.FC<{
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }> = ({ value, onChange }) => (
-  <div className="text-darkgray box-border flex h-11 w-[236px] flex-col items-start justify-start px-0 pb-0  text-xl">
+  <div className="text-darkgray box-border flex h-11 w-[236px] flex-col items-start justify-start px-0 pb-0  text-xl shrink-0">
     <label
       htmlFor="fileId"
       className="flex flex-1 flex-row items-start justify-start self-stretch"

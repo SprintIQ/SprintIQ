@@ -51,6 +51,6 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <AddRewardToken />;
     }
   };
-  return <section className="h-fulll w-full">{renderSelected()}</section>;
+  return <section className="h-full w-full">{renderSelected()}</section>;
 };
 export default DashboardContainer;
