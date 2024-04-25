@@ -440,19 +440,42 @@ export const playerRouter = createTRPCRouter({
         },
       });
       const positions = game?.percentages ?? [];
-      const winners = await ctx.db.profileHistory.findMany({
+      const history = await ctx.db.profileHistory.groupBy({
+        by: ["user_id"],
+        take: positions.length,
         where: {
           game_id: input.game_id,
-          status: HistoryType.completed,
+          status: HistoryType.answered,
         },
-        select: {
-          user: true,
+        orderBy: [
+          {
+            _sum: {
+              points: "desc",
+            },
+          },
+          {
+            _max: {
+              created_at: "asc",
+            },
+          },
+        ],
+        _sum: {
+          points: true,
         },
-        orderBy: {
-          points: "desc",
+        _max: {
+          created_at: true,
         },
-        take: positions.length,
       });
+      const winners = await Promise.all(
+        history.map(async val => {
+          const user = await ctx.db.profile.findUnique({
+            where: {
+              id: val.user_id,
+            },
+          });
+          return { ...user, ...val };
+        }),
+      );
       // send notifications to winner
       // winners.forEach((val, index) => {
       //   // send notification
