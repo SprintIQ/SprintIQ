@@ -10,7 +10,11 @@ const LandingPage: NextPage = () => {
       <Navbar />
       <section className="mx-auto mt-16 flex w-full flex-col items-center">
         <Hero />
+        <button 
+        
+        >
         <GetStarted className="mt-8 w-36" />
+        </button>
       </section>
     </div>
   );
