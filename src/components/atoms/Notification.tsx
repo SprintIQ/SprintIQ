@@ -4,33 +4,33 @@ import Link from "next/link";
 import * as React from "react";
 import { TfiReload } from "react-icons/tfi";
 
-import LeaderBoardItem from "../molecule/LeaderBoardItem";
+import NotificationItem from "../molecule/NotificationItem";
 import Button from "../ui/Button";
 import Spinner from "../ui/Spinner";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ILeaderboardProps {
+export interface INotificationProps {
   gameId: string;
 }
-interface ILeaderBoard {
+interface INotification {
   user_id: string;
   message: string;
   ref_id: string;
 }
-const Leaderboard: React.FC<ILeaderboardProps> = props => {
+const Notification: React.FC<INotificationProps> = props => {
   const { mutateAsync, data, isLoading } =
     api.player.get_notifications.useMutation();
-  const [players, setPlayers] = React.useState<Array<ILeaderBoard>>([]);
+  const [players, setPlayers] = React.useState<Array<INotification>>([]);
   const [noMoreFetch, setNoMoreFetch] = React.useState(false);
   const [firstFetch, setFirstFetch] = React.useState(true);
-  const fetchLeaderboard = async (reset?: boolean) => {
+  const fetchNotification = async (reset?: boolean) => {
     const PAGE_SIZE = 20;
     const newPlayers = (
       await mutateAsync({
         limit: PAGE_SIZE,
         skip: players.length,
       })
-    )?.notifications as Array<ILeaderBoard>;
+    )?.notifications as Array<INotification>;
     if (newPlayers.length < PAGE_SIZE) {
       setNoMoreFetch(true);
     }
@@ -40,7 +40,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
   const resetState = async () => {
     setFirstFetch(true);
     setNoMoreFetch(false);
-    void fetchLeaderboard(true);
+    void fetchNotification(true);
   };
 
   React.useEffect(() => {
@@ -57,7 +57,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
   } else if (players.length === 0) {
     content = (
       <div className="flex flex-col items-center text-center">
-        <h2 className="text-2xl font-medium">Nothing in Leaderboard</h2>
+        <h2 className="text-2xl font-medium">Nothing in Notification</h2>
         <p className="text-grey-200">
           Created games and ongoing games will be listed here
         </p>
@@ -66,13 +66,13 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
   } else {
     content = (
       <div className="flex flex-col space-y-6">
-        {data?.notifications?.map((val, index) => (
-          <div key={val.id}>{val.message}</div>
+        {data?.notifications?.map(val => (
+          <NotificationItem key={val.id} {...val} />
         ))}
 
         {!noMoreFetch && !firstFetch && (
           <Button
-            onClick={() => fetchLeaderboard()}
+            onClick={() => fetchNotification()}
             text="Load more"
             className="mt-12"
           />
@@ -93,7 +93,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
               className="h-6 w-auto cursor-pointer"
               onClick={() => {
                 setFirstFetch(true);
-                void fetchLeaderboard(true);
+                void fetchNotification(true);
               }}
             />
           </div>
@@ -103,4 +103,4 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     </main>
   );
 };
-export default Leaderboard;
+export default Notification;
