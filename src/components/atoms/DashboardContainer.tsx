@@ -11,6 +11,7 @@ import GetCode from "./GetCode";
 import Home from "./Home";
 import JoinGame from "./JoinGame";
 import Leaderboard from "./Leaderboard";
+import Notification from "./Notification";
 import Reward from "./Reward";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -49,6 +50,8 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <AddReward />;
       case Routes.ADD_REWARD_TOKEN:
         return <AddRewardToken />;
+      case Routes.NOTIFICATION:
+        return <Notification gameId={gameId} />;
     }
   };
   return <section className="h-full w-full">{renderSelected()}</section>;
