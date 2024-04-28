@@ -156,9 +156,6 @@ const CreateGame: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div className="hidden lg:block">
-              <FrameComponent7 />
-            </div>
           </header>
           <div className="box-border flex w-full max-w-full flex-col items-start justify-center px-5 py-0 lg:w-[1415px] lg:flex-row">
             <div className=" flex w-full max-w-full flex-col items-start justify-start gap-[10px] lg:w-[1089px]">
@@ -188,17 +185,10 @@ const CreateGame: NextPage = () => {
                         handleQuestionChange(questionIndex, e.target.value)
                       }
                     />
-                    <ImageOrVideoInput
-                      // value={question.imageOrVideo}
-                      onChange={e => handleImageOrVideoChange(questionIndex, e)}
-                    />
                   </div>
-                  <ImageOrVideoInput
-                    onChange={e => handleImageOrVideoChange(questionIndex, e)}
-                  />
                 </div>
-                <div className=" mt-2 flex flex-col gap-y-[20px] lg:flex-row lg:items-center">
-                  <div className=" mr-5 ">
+                <div className="mt-4 flex flex-col gap-y-[20px] lg:flex-row lg:items-center">
+                  <div className="mr-6">
                     {question.options.map((option, optionIndex) => (
                       <OptionInput
                         key={optionIndex}

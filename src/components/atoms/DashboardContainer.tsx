@@ -2,6 +2,7 @@ import { ProfileContext } from "@src/provider/ProfileProvider";
 import { Routes } from "@src/utils/constants/constants";
 import * as React from "react";
 
+import Page404 from "./404";
 import AddReward from "./AddReward";
 import AddRewardToken from "./AddRewardToken";
 import CreateGame from "./Create";
@@ -52,6 +53,8 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <AddRewardToken />;
       case Routes.NOTIFICATION:
         return <Notification gameId={gameId} />;
+      default:
+        return <Page404 />;
     }
   };
   return <section className="h-full w-full">{renderSelected()}</section>;

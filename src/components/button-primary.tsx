@@ -45,7 +45,7 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
 
   return (
     <div
-      className="mb-10 box-border flex w-[1090px] max-w-full flex-row items-start justify-center px-5 py-0"
+      className="mx-auto mb-10 box-border flex w-fit flex-row items-start justify-center px-5 py-0"
       style={buttonPrimaryStyle}
     >
       <div className=" flex w-[834px] max-w-full flex-row flex-wrap items-start justify-start gap-[20px] md:gap-[38px]">
