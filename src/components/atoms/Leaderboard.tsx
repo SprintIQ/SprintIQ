@@ -37,18 +37,9 @@ interface ILeaderBoard {
 const Leaderboard: React.FC<ILeaderboardProps> = props => {
   const { mutateAsync, data, isLoading } =
     api.player.leader_board.useMutation();
-  const getWinners = api.player.get_winners.useQuery({
-    game_id: props.gameId.toString(),
-  });
-  const getGame = api.game.get_game.useQuery({ id: props.gameId.toString() });
   const [players, setPlayers] = React.useState<Array<ILeaderBoard>>([]);
   const [noMoreFetch, setNoMoreFetch] = React.useState(false);
   const [firstFetch, setFirstFetch] = React.useState(true);
-  const [loading, setIsLoading] = React.useState<boolean>(false);
-
-  const { connection } = useConnection();
-  const anchor_wallet = useAnchorWallet();
-  const { publicKey, signTransaction } = useWallet();
 
   const fetchLeaderboard = async (reset?: boolean) => {
     const PAGE_SIZE = 20;
@@ -57,6 +48,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
       limit: PAGE_SIZE,
       skip: players.length,
     });
+    if (!newPlayers) return;
     if (newPlayers?.history?.length < PAGE_SIZE) {
       setNoMoreFetch(true);
     }
@@ -73,56 +65,6 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     void fetchLeaderboard(true);
   };
 
-  const onDistributeRewards = React.useCallback(() => {
-    setIsLoading(true);
-    // get the winners and creator publickey
-    const winners = getWinners.data?.winners;
-    const creator = getGame.data?.game?.creator_id;
-
-    // Check if winners array exists and has elements
-    if (
-      winners &&
-      winners.length > 0 &&
-      publicKey &&
-      anchor_wallet &&
-      creator
-    ) {
-      // Map over the winners array to extract wallet_address and percentage
-      const walletAddressesAndPercentages = winners.map(winner => {
-        const { wallet_address } = winner;
-        const { percentage } = winner.position;
-        return { wallet_address, percentage };
-      });
-      console.log(
-        "Wallet addresses and percentages:",
-        walletAddressesAndPercentages,
-      );
-      const creatorPubKey = new PublicKey(creator);
-      //console.log("creators publkey", creatorPubKey.toString());
-
-      if (signTransaction) {
-        console.log("signing transaction");
-        sendFundsToPlayers(
-          creatorPubKey,
-          anchor_wallet,
-          connection,
-          walletAddressesAndPercentages,
-          signTransaction,
-        )
-          .then(() => {
-            setIsLoading(false);
-            toast("Rewards has beeen delivered successfully");
-          })
-          .catch(err => {
-            console.error(err);
-            setIsLoading(false);
-            toast("Something went wrong, pls try again ");
-          });
-        setIsLoading(false);
-      }
-    }
-  }, []);
-
   React.useEffect(() => {
     void resetState();
   }, []);
@@ -131,16 +73,14 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     content = (
       <div className="my-8 flex flex-col items-center">
         <Spinner />
-        <h2>Checking for your players scores...</h2>
+        <h2>Checking for your notifications...</h2>
       </div>
     );
   } else if (players.length === 0) {
     content = (
       <div className="flex flex-col items-center text-center">
-        <h2 className="text-2xl font-medium">Nothing in Leaderboard</h2>
-        <p className="text-grey-200">
-          Created games and ongoing games will be listed here
-        </p>
+        <h2 className="text-2xl font-medium">No Notifications Yet</h2>
+        <p className="text-grey-200">Your Notifications will show up here</p>
       </div>
     );
   } else {
@@ -173,28 +113,13 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
             <TfiReload
               className="h-6 w-auto cursor-pointer"
               onClick={() => {
-                setFirstFetch(true);
-                void fetchLeaderboard(true);
+                void resetState();
               }}
             />
           </div>
           <div className="px-16 py-8">{content}</div>
         </div>
       </section>
-      <div className="m-auto flex w-[500px] flex-row  justify-center">
-        <button
-          className="z-[2]  flex  w-full flex-row items-center  justify-center rounded-[2.5rem] bg-[#1FC04D] px-3 py-3  [border:none]"
-          onClick={onDistributeRewards}
-        >
-          <div className="font-inter   min-w-[128px] text-center text-[16px] text-white">
-            {loading ? (
-              <BeatLoader color="white" />
-            ) : (
-              "End Game and Distribute the rewards"
-            )}
-          </div>
-        </button>
-      </div>
     </main>
   );
 };
