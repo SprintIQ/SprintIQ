@@ -1,13 +1,14 @@
-import GetStarted from "@src/components/icons/GetStarted.icon";
-import Hero from "../components/Hero";
-import Navbar from "../components/Navbar";
 import { useWalletMultiButton } from "@solana/wallet-adapter-base-ui";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import GetStarted from "@src/components/icons/GetStarted.icon";
 import { ProfileContext } from "@src/provider/ProfileProvider";
 import { api } from "@src/utils/api";
 import { LABELS, Routes } from "@src/utils/constants/constants";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo } from "react";
+
+import Hero from "../components/Hero";
+import Navbar from "../components/Navbar";
 export default function Page() {
   const createUser = api.auth.create.useMutation();
   const { login } = useContext(ProfileContext);
@@ -64,14 +65,12 @@ export default function Page() {
   return (
     <div className="relative  flex w-full flex-col  tracking-[normal]">
       <Navbar />
-      <section className="mx-auto mt-16 flex w-full flex-col items-center">
+      <section className="mx-auto mt-16 flex h-full w-full flex-col items-center justify-center">
         <Hero />
-        <button 
-         onClick={handleSignIn}
-        >
-        <GetStarted className="mt-8 w-36" />
+        <button onClick={handleSignIn}>
+          <GetStarted className="mt-8 w-36" />
         </button>
       </section>
     </div>
   );
-};
+}
