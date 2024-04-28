@@ -20,6 +20,7 @@ export enum Routes {
   REWARD = "reward",
   ADD_REWARD = "add-reward",
   ADD_REWARD_TOKEN = "add-reward-token",
+  NOTIFICATION = "notification",
 }
 export enum QuestionType {
   TEXT = "text",
