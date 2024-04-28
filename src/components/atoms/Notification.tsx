@@ -14,8 +14,8 @@ export interface ILeaderboardProps {
 }
 interface ILeaderBoard {
   user_id: string;
-  message: string
-  ref_id: string
+  message: string;
+  ref_id: string;
 }
 const Leaderboard: React.FC<ILeaderboardProps> = props => {
   const { mutateAsync, data, isLoading } =
@@ -66,7 +66,9 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
   } else {
     content = (
       <div className="flex flex-col space-y-6">
-        {data?.notification?.map((val, index) => <div>{val.message}</div>)}
+        {data?.notifications?.map((val, index) => (
+          <div key={val.id}>{val.message}</div>
+        ))}
 
         {!noMoreFetch && !firstFetch && (
           <Button

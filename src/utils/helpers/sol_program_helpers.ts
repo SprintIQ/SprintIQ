@@ -13,9 +13,9 @@ import {
   getMultipleAccounts,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import { SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
+import { type SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
-import { AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
+import { type AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
 
 import idl from "../../sprintiq_program/idl.json";
 import { getOrCreateAssociatedTokenAccount } from "./getOrCreateAssociatedAccount";
@@ -47,7 +47,10 @@ export const sendFunds = async (
     console.log("---provider set up");
     const programId = PROGRAMID;
     console.log(programId);
-    const program = new Program(idl as unknown as Idl, programId);
+    const program = new Program(
+      idl as unknown as Idl,
+      programId as unknown as Provider,
+    );
     console.log("here");
 
     const gameCreatorAssociatedUsdcToken = await getAssociatedTokenAddress(
@@ -78,6 +81,7 @@ export const sendFunds = async (
     };
     //Initialization transaction
     const txHash = await program.methods
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       .initAndSendFunds(new BN(amount))
       .accounts({
         tokenAccountOwnerPda: tokenAccountOwnerPda,
@@ -114,7 +118,10 @@ export const sendFundsToPlayers = async (
     setProvider(provider);
     console.log("---provider set up");
     const programId = PROGRAMID;
-    const program = new Program(idl as unknown as Idl, programId);
+    const program = new Program(
+      idl as unknown as Idl,
+      programId as unknown as Provider,
+    );
     console.log("here");
 
     const [tokenAccountOwnerPda] = PublicKey.findProgramAddressSync(
