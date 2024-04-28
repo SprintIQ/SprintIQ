@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { Toaster } from "sonner";
 
 import Badge from "../icons/Badge.icon";
 import Bell from "../icons/Bell.icon";
@@ -99,6 +100,7 @@ const Home: NextPage = () => {
   }
   return (
     <main>
+      <Toaster />
       <header className="flex w-full items-center justify-between bg-black/[0.12] px-16 py-12">
         <Image
           className="relative h-5 w-auto lg:h-8"
@@ -115,8 +117,9 @@ const Home: NextPage = () => {
           >
             Create
           </Link>
-
-          <Bell className="h-auto w-5" />
+          <Link href="/dashboard/notification">
+            <Bell className="h-auto w-5" />
+          </Link>
         </div>
       </header>
       <section className="mt-8 pb-6 lg:px-6">
