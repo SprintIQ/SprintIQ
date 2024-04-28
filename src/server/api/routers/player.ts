@@ -480,7 +480,17 @@ export const playerRouter = createTRPCRouter({
       // send notifications to winner
       await Promise.all(
         winners.map(async (val, index) => {
+          const exists = await ctx.db.notification.findFirst({
+            where: {
+              user_id: val.user_id,
+              ref_id: input.game_id,
+            },
+          });
+          if (exists) {
+            return;
+          }
           // send notification
+
           await ctx.db.notification.create({
             data: {
               user_id: val.user_id,
