@@ -3,15 +3,13 @@ import {
   BN,
   type Idl,
   Program,
-  type Provider,
   setProvider,
 } from "@coral-xyz/anchor";
 import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
   getAccount,
   getAssociatedTokenAddress,
+  getMint,
   getMultipleAccounts,
-  TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { type SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
@@ -19,9 +17,6 @@ import { type AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
 
 import idl from "../../sprintiq_program/idl.json";
 import { getOrCreateAssociatedTokenAccount } from "./getOrCreateAssociatedAccount";
-
-const decimals = 9;
-const mintDecimals = Math.pow(10, decimals);
 
 type WalletAddressesAndPercentages = {
   wallet_address: string | undefined;
@@ -41,16 +36,17 @@ export const sendFunds = async (
   amount: string,
 ) => {
   console.log("---working");
+
+  const mintInfo = await getMint(connection, usdcDevCoinMintAddress);
+  const mintDecimals = mintInfo.decimals;
+  console.log("mintDecimals", mintDecimals);
   if (publicKey && anchor_wallet) {
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
     console.log("---provider set up");
     const programId = PROGRAMID;
     console.log(programId);
-    const program = new Program(
-      idl as unknown as Idl,
-      programId,
-    );
+    const program = new Program(idl as unknown as Idl, programId);
     console.log("here");
 
     const gameCreatorAssociatedUsdcToken = await getAssociatedTokenAddress(
@@ -82,7 +78,7 @@ export const sendFunds = async (
     //Initialization transaction
     const txHash = await program.methods
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      .initAndSendFunds(new BN(amount))
+      .initAndSendFunds(new BN(parseInt(amount) * mintDecimals))
       .accounts({
         tokenAccountOwnerPda: tokenAccountOwnerPda,
         vaultTokenAccount: tokenVault,
@@ -99,12 +95,15 @@ export const sendFunds = async (
       connection,
       gameCreatorAssociatedUsdcToken,
     );
-    console.log("Owned token amount: " + tokenAccountInfo.amount);
+    console.log(
+      "Owned token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
+    );
     tokenAccountInfo = await getAccount(connection, tokenVault);
-    console.log("Vault token amount: " + tokenAccountInfo.amount);
+    console.log(
+      "Vault token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
+    );
   }
 };
-
 export const sendFundsToPlayers = async (
   publicKey: PublicKey,
   anchor_wallet: AnchorWallet,
@@ -113,15 +112,15 @@ export const sendFundsToPlayers = async (
   signTransaction: SignerWalletAdapterProps["signTransaction"],
 ) => {
   console.log("---working");
+  const mintInfo = await getMint(connection, usdcDevCoinMintAddress);
+  const mintDecimals = mintInfo.decimals;
+  console.log("mintDecimals", mintDecimals);
   if (publicKey && anchor_wallet) {
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
     console.log("---provider set up");
     const programId = PROGRAMID;
-    const program = new Program(
-      idl as unknown as Idl,
-      programId,
-    );
+    const program = new Program(idl as unknown as Idl, programId);
     console.log("here");
 
     const [tokenAccountOwnerPda] = PublicKey.findProgramAddressSync(
@@ -206,14 +205,18 @@ export const sendFundsToPlayers = async (
       console.log(`Transfer tokens to winners`);
       await logTransaction(txHash, connection);
       const tokenAccountInfo = await getAccount(connection, tokenVault);
-      console.log("Vault token amount: " + tokenAccountInfo.amount);
+      console.log(
+        "Vault token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
+      );
 
       const tokenAccountsInfo = await getMultipleAccounts(
         connection,
         tokenAddresses,
       );
       tokenAccountsInfo.map(account => {
-        console.log(`${account.address.toString()}, ${account.amount}`);
+        console.log(
+          `${account.address.toString()}, ${account.amount / BigInt(mintDecimals)}`,
+        );
       });
     } catch (error) {
       console.error("Error invoking transaction:", error);
