@@ -49,7 +49,7 @@ export const sendFunds = async (
     console.log(programId);
     const program = new Program(
       idl as unknown as Idl,
-      programId as unknown as Provider,
+      programId,
     );
     console.log("here");
 
@@ -120,7 +120,7 @@ export const sendFundsToPlayers = async (
     const programId = PROGRAMID;
     const program = new Program(
       idl as unknown as Idl,
-      programId as unknown as Provider,
+      programId,
     );
     console.log("here");
 
