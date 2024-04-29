@@ -54,14 +54,15 @@ export async function getOrCreateAssociatedTokenAccount(
 
     console.log("---- done");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error) {
     // TokenAccountNotFoundError can be possible if the associated address has already received some lamports,
     // becoming a system account. Assuming program derived addressing is safe, this is the only case for the
     // TokenInvalidAccountOwnerError in this code path.
     console.error("Error getting account info", error);
     if (
-      error === "TokenAccountNotFoundError" ||
-      error === "TokenInvalidAccountOwnerError"
+      error instanceof Error &&
+      (error.message === "TokenAccountNotFoundError" ||
+        error.message === "TokenInvalidAccountOwnerError")
     ) {
       // As this isn't atomic, it's possible others can create associated accounts meanwhile.
       try {
