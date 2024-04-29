@@ -16,7 +16,7 @@ import { toast } from "sonner";
 
 import Spinner from "../ui/Spinner";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ICreatedGameProps extends Game {}
+export interface ICreatedGameProps extends Game { }
 
 const CreatedGame: React.FC<ICreatedGameProps> = props => {
   const { mutate, isLoading, data } = api.game.start_game.useMutation();
@@ -135,7 +135,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
         >
           {isLoading ? <Spinner /> : CTAs[props.status]}
         </button>
-        {Status.ongoing &&
+        {Status.ongoing === props.status &&
           (loading ? (
             <BeatLoader color="white" />
           ) : (

@@ -314,7 +314,7 @@ const OptionInput: React.FC<{
             placeholder="Option"
             value={value}
             onChange={onChange}
-            className="relative self-stretch bg-transparent text-[1.25rem] leading-[22.53px] placeholder-[#FFFFFF] outline-none"
+            className="relative self-stretch bg-transparent text-[1.25rem] leading-[22.53px] placeholder-opacity-25 outline-none"
           />
         </div>
       </div>
@@ -330,7 +330,7 @@ const CorrectOptionInput: React.FC<{
 }> = ({ value, onChange }) => (
   <input
     type="text"
-    className="relative flex w-[180px]  items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-[#373737] placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D] "
+    className="relative flex w-[180px]  items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-secondary-700 placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D] "
     placeholder="Set Correct Option"
     value={value}
     onChange={onChange}
@@ -366,10 +366,10 @@ const TimerInput: React.FC<{
       <input
         type="text"
         placeholder="Set Timer"
-        value={value.toString()} // Convert number to string for input value
+        value={value.toString() + 'secs'} // Convert number to string for input value
         onChange={onChange}
         onFocus={() => setShowTimerOverlay(true)} // Show the timer overlay when input is focused
-        className="relative flex w-[100px] items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-[#373737] placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D]"
+        className="relative flex w-[100px] items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-secondary-700 placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D]"
       />
       {showTimerOverlay && (
         <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">

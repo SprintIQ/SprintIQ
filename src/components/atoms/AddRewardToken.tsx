@@ -34,8 +34,6 @@ const AddRewardToken: NextPage = () => {
   } = useQuizContext();
   const [distribution, setDistribution] = useState<Distribution[]>([
     { position: 1, percentage: 0 },
-    { position: 2, percentage: 0 },
-    { position: 3, percentage: 0 },
   ]);
   const [amount, setAmount] = useState<string>("");
   const [loading, setIsLoading] = useState<boolean>(false);
@@ -141,7 +139,7 @@ const AddRewardToken: NextPage = () => {
                   <input
                     type="text"
                     placeholder="Percentage"
-                    value={item.percentage}
+                    value={item.percentage || ''}
                     onChange={e =>
                       handlePercentageChange(index, e.target.value)
                     }

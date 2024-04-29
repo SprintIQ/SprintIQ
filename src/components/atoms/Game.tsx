@@ -66,7 +66,6 @@ const Game: React.FC<IGameProps> = props => {
         game_id: props.gameId,
         question_id: data?.current_question?.id,
       }).then(res => {
-        console.log(res);
         if (res.success && parseInt(props.page) < data?.questions.length) {
           setTimeout(() => {
             void push(
@@ -77,7 +76,7 @@ const Game: React.FC<IGameProps> = props => {
       });
     }
     const timerId = setInterval(() => {
-      const duration = (data?.current_question?.duration ?? 0) / 1000;
+      const duration = (data?.current_question?.duration ?? 0);
       if (duration > 0) {
         setCount(prevCount => {
           if (
@@ -89,7 +88,7 @@ const Game: React.FC<IGameProps> = props => {
               data?.current_question?.duration ?? 0,
               prevCount,
             );
-            handleAnswer("", true);
+            // handleAnswer("", true);
           }
           return prevCount === -1
             ? duration
