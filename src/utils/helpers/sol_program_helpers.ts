@@ -14,6 +14,7 @@ import {
 import { type SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
 import { type AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
+import { toast } from "sonner";
 
 import idl from "../../sprintiq_program/idl.json";
 import { getOrCreateAssociatedTokenAccount } from "./getOrCreateAssociatedAccount";
@@ -38,7 +39,7 @@ export const sendFunds = async (
   console.log("---working");
 
   const mintInfo = await getMint(connection, usdcDevCoinMintAddress);
-  const mintDecimals = mintInfo.decimals;
+  const mintDecimals = Math.pow(10, mintInfo.decimals);
   console.log("mintDecimals", mintDecimals);
   if (publicKey && anchor_wallet) {
     const provider = new AnchorProvider(connection, anchor_wallet, {});
@@ -113,7 +114,7 @@ export const sendFundsToPlayers = async (
 ) => {
   console.log("---working");
   const mintInfo = await getMint(connection, usdcDevCoinMintAddress);
-  const mintDecimals = mintInfo.decimals;
+  const mintDecimals = Math.pow(10, mintInfo.decimals);
   console.log("mintDecimals", mintDecimals);
   if (publicKey && anchor_wallet) {
     const provider = new AnchorProvider(connection, anchor_wallet, {});
@@ -149,10 +150,10 @@ export const sendFundsToPlayers = async (
       const percentages: number[] = [];
 
       // Iterate over the array of wallet addresses and percentages
-      for (const {
-        wallet_address,
-        percentage,
-      } of walletAddressesAndPercentages) {
+      for (const [
+        index,
+        { wallet_address, percentage },
+      ] of walletAddressesAndPercentages.entries()) {
         // Get the associated token address for each wallet address
         if (wallet_address) {
           const walletAddress = new PublicKey(wallet_address);
@@ -162,6 +163,7 @@ export const sendFundsToPlayers = async (
             usdcDevCoinMintAddress,
             walletAddress,
             signTransaction,
+            index, // Pass the index to the function
           );
 
           // Store the token address and percentage
@@ -189,6 +191,7 @@ export const sendFundsToPlayers = async (
         remainingAccounts.push(accountMeta);
       }
       console.log("percentages", Buffer.from(percentages));
+      toast("Now we are sending to funds to all the winners account");
       //send funds to winners transaction
       const txHash = await program.methods
         .sendFundsToPlayers(Buffer.from(percentages))

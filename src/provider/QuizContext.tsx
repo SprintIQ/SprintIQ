@@ -55,8 +55,6 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [distributionGlobal, setDistributionGlobal] = useState<Distribution[]>([
     { position: 1, percentage: 0 },
-    { position: 2, percentage: 0 },
-    { position: 3, percentage: 0 },
   ]);
   const [amountGlobal, setAmountGlobal] = useState<string>("");
 
