@@ -1,5 +1,4 @@
 import ButtonPrimary from "@src/components/button-primary";
-import FrameComponent7 from "@src/components/frame-component7";
 import { useQuizContext } from "@src/provider/QuizContext";
 import type { NextPage } from "next";
 import Image from "next/image";
