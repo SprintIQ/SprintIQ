@@ -8,7 +8,12 @@ import {
 } from "@coral-xyz/anchor";
 import { getAccount, getAssociatedTokenAddress } from "@solana/spl-token";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
+<<<<<<< HEAD
 import { type Connection, PublicKey } from "@solana/web3.js";
+=======
+import { type AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
+import { toast } from "sonner";
+>>>>>>> 10f295dcf527a6855006b2f39673f3b0703d3420
 
 import idl from "../../sprintiq_program/idl.json";
 
@@ -26,6 +31,13 @@ export const sendFunds = async (
   amount: string,
 ) => {
   console.log("---working");
+<<<<<<< HEAD
+=======
+
+  const mintInfo = await getMint(connection, usdcDevCoinMintAddress);
+  const mintDecimals = Math.pow(10, mintInfo.decimals);
+  console.log("mintDecimals", mintDecimals);
+>>>>>>> 10f295dcf527a6855006b2f39673f3b0703d3420
   if (publicKey && anchor_wallet) {
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
@@ -84,7 +96,135 @@ export const sendFunds = async (
     );
     console.log("Owned token amount: " + tokenAccountInfo.amount);
     tokenAccountInfo = await getAccount(connection, tokenVault);
+<<<<<<< HEAD
     console.log("Vault token amount: " + tokenAccountInfo.amount);
+=======
+    console.log(
+      "Vault token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
+    );
+  }
+};
+export const sendFundsToPlayers = async (
+  publicKey: PublicKey,
+  anchor_wallet: AnchorWallet,
+  connection: Connection,
+  walletAddressesAndPercentages: WalletAddressesAndPercentages[],
+  signTransaction: SignerWalletAdapterProps["signTransaction"],
+) => {
+  console.log("---working");
+  const mintInfo = await getMint(connection, usdcDevCoinMintAddress);
+  const mintDecimals = Math.pow(10, mintInfo.decimals);
+  console.log("mintDecimals", mintDecimals);
+  if (publicKey && anchor_wallet) {
+    const provider = new AnchorProvider(connection, anchor_wallet, {});
+    setProvider(provider);
+    console.log("---provider set up");
+    const programId = PROGRAMID;
+    const program = new Program(idl as unknown as Idl, programId);
+    console.log("here");
+
+    const [tokenAccountOwnerPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("token_account_owner_pda"), publicKey.toBuffer()],
+      programId,
+    );
+
+    const [tokenVault] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("sprint_iq_token_vault"),
+        usdcDevCoinMintAddress.toBuffer(),
+        publicKey.toBuffer(),
+      ],
+      programId,
+    );
+
+    console.log("TokenAccountOwnerPda: ", tokenAccountOwnerPda.toString());
+
+    console.log("VaultAccount: ", tokenVault.toString());
+
+    const confirmOptions = {
+      skipPreflight: true,
+    };
+    try {
+      const tokenAddresses: PublicKey[] = [];
+      const percentages: number[] = [];
+
+      // Iterate over the array of wallet addresses and percentages
+      for (const [
+        index,
+        { wallet_address, percentage },
+      ] of walletAddressesAndPercentages.entries()) {
+        // Get the associated token address for each wallet address
+        if (wallet_address) {
+          const walletAddress = new PublicKey(wallet_address);
+          const tokenAddress = await getOrCreateAssociatedTokenAccount(
+            connection,
+            publicKey,
+            usdcDevCoinMintAddress,
+            walletAddress,
+            signTransaction,
+            index, // Pass the index to the function
+          );
+
+          // Store the token address and percentage
+          tokenAddresses.push(tokenAddress.address);
+          percentages.push(percentage);
+
+          console.log(
+            `Wallet address: ${wallet_address}, Token address: ${tokenAddress.address.toString()}`,
+          );
+        }
+      }
+
+      console.log("Token Addresses:", tokenAddresses.toString());
+      console.log("Percentages:", percentages);
+
+      const remainingAccounts: AccountMeta[] = [];
+
+      for (const address of tokenAddresses) {
+        const publicKey = new PublicKey(address.toString());
+        const accountMeta: AccountMeta = {
+          pubkey: publicKey,
+          isWritable: true, // Adjust as needed
+          isSigner: false, // Adjust as needed
+        };
+        remainingAccounts.push(accountMeta);
+      }
+      console.log("percentages", Buffer.from(percentages));
+      toast("Now we are sending to funds to all the winners account");
+      //send funds to winners transaction
+      const txHash = await program.methods
+        .sendFundsToPlayers(Buffer.from(percentages))
+        .accounts({
+          tokenAccountOwnerPda: tokenAccountOwnerPda,
+          vaultTokenAccount: tokenVault,
+          mintOfTokenBeingSent: usdcDevCoinMintAddress,
+          signer: publicKey,
+        })
+        //.signers([pg.wallet.keypair])
+        .remainingAccounts(remainingAccounts)
+        .rpc(confirmOptions);
+
+      console.log(`Transfer tokens to winners`);
+      await logTransaction(txHash, connection);
+      const tokenAccountInfo = await getAccount(connection, tokenVault);
+      console.log(
+        "Vault token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
+      );
+
+      const tokenAccountsInfo = await getMultipleAccounts(
+        connection,
+        tokenAddresses,
+      );
+      tokenAccountsInfo.map(account => {
+        console.log(
+          `${account.address.toString()}, ${account.amount / BigInt(mintDecimals)}`,
+        );
+      });
+    } catch (error) {
+      console.error("Error invoking transaction:", error);
+      // Handle errors appropriately
+    }
+>>>>>>> 10f295dcf527a6855006b2f39673f3b0703d3420
   }
 };
 

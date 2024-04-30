@@ -3,21 +3,18 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import { SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
+import type { SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import {
-  Commitment,
-  Connection,
-  PublicKey,
+  type Commitment,
+  type Connection,
+  type PublicKey,
   Transaction,
 } from "@solana/web3.js";
+import { toast } from "sonner";
 
 import { createAssociatedTokenAccountInstruction } from "./createAssociatedTokenAccountInstruction";
 import { getAccountInfo } from "./getAccountInfo";
 import { getAssociatedTokenAddress } from "./getAssociatedTokenAddress";
-
-type ErrorMessage = {
-  message: string;
-};
 
 export async function getOrCreateAssociatedTokenAccount(
   connection: Connection,
@@ -25,6 +22,7 @@ export async function getOrCreateAssociatedTokenAccount(
   mint: PublicKey,
   owner: PublicKey,
   signTransaction: SignerWalletAdapterProps["signTransaction"],
+  index: number,
   allowOwnerOffCurve = false,
   commitment?: Commitment,
   programId = TOKEN_PROGRAM_ID,
@@ -54,17 +52,19 @@ export async function getOrCreateAssociatedTokenAccount(
 
     console.log("---- done");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error) {
     // TokenAccountNotFoundError can be possible if the associated address has already received some lamports,
     // becoming a system account. Assuming program derived addressing is safe, this is the only case for the
     // TokenInvalidAccountOwnerError in this code path.
     console.error("Error getting account info", error);
     if (
-      error === "TokenAccountNotFoundError" ||
-      error === "TokenInvalidAccountOwnerError"
+      error instanceof Error &&
+      (error.message === "TokenAccountNotFoundError" ||
+        error.message === "TokenInvalidAccountOwnerError")
     ) {
       // As this isn't atomic, it's possible others can create associated accounts meanwhile.
       try {
+        showAlertMessage(index);
         console.log("---- creating associated token account instruction");
         const transaction = new Transaction().add(
           createAssociatedTokenAccountInstruction(
@@ -78,7 +78,7 @@ export async function getOrCreateAssociatedTokenAccount(
         );
         console.log("---- done");
 
-        const blockHash = await connection.getRecentBlockhash();
+        const blockHash = await connection.getLatestBlockhash();
         transaction.feePayer = payer;
         transaction.recentBlockhash = blockHash.blockhash;
         const signed = await signTransaction(transaction);
@@ -87,7 +87,11 @@ export async function getOrCreateAssociatedTokenAccount(
           signed.serialize(),
         );
 
-        await connection.confirmTransaction(signature);
+        await connection.confirmTransaction({
+          blockhash: blockHash.blockhash,
+          lastValidBlockHeight: blockHash.lastValidBlockHeight,
+          signature: signature,
+        });
       } catch (error: unknown) {
         // Ignore all errors; for now there is no API-compatible way to selectively ignore the expected
         // instruction error if the associated account exists already.
@@ -111,4 +115,14 @@ export async function getOrCreateAssociatedTokenAccount(
   if (!account.owner.equals(owner)) throw new Error("TokenInvalidOwnerError");
   console.log("---- done");
   return account;
+}
+
+function getIndexName(index: number) {
+  return `${index === 0 ? "first" : index === 1 ? "second" : index === 2 ? "third" : `${index + 1}th`}`;
+}
+
+function showAlertMessage(index: number) {
+  const name = getIndexName(index);
+  const message = `Ok we are getting the  ${name} winner account where the funds will be sent to`;
+  toast(message);
 }
