@@ -138,10 +138,10 @@ const Game: React.FC<IGameProps> = props => {
           </div>
         )
       }
-      <div className="self-stretch flex flex-row items-start justify-center py-0 px-5">
-        <div className="rounded-3xl flex flex-row items-start justify-start py-0 px-9 relative border-[1px] border-solid border-secondary-700">
-          <div className="h-[27px] w-[123px] relative rounded-3xl box-border hidden z-[0] border-[1px] border-solid border-secondary-700" />
-          <div className="relative leading-[23px] inline-block min-w-[51px] z-[1]">
+      <div className="self-stretch flex flex-row items-start justify-center py-0 px-5 mb-4">
+        <div className="flex flex-row items-start justify-start py-0 px-9 relative border-[1px] border-solid rounded-full border-secondary-700">
+          <div className="h-[27px] w-[123px] relative box-border hidden z-[0] border-[1px] border-solid rounded-full border-secondary-700" />
+          <div className="relative leading-[23px] inline-block min-w-[51px] z-[1] rounded-full border-secondary-700">
             Jaylove
           </div>
           <div className="h-full w-full absolute !m-[0] top-[0px] right-[0px] bottom-[0px] left-[0px] rounded-3xl box-border z-[2] border-[1px] border-solid border-secondary-700" />

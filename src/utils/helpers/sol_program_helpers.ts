@@ -8,12 +8,8 @@ import {
 } from "@coral-xyz/anchor";
 import { getAccount, getAssociatedTokenAddress } from "@solana/spl-token";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
-<<<<<<< HEAD
-import { type Connection, PublicKey } from "@solana/web3.js";
-=======
 import { type AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
 import { toast } from "sonner";
->>>>>>> 10f295dcf527a6855006b2f39673f3b0703d3420
 
 import idl from "../../sprintiq_program/idl.json";
 
@@ -31,13 +27,10 @@ export const sendFunds = async (
   amount: string,
 ) => {
   console.log("---working");
-<<<<<<< HEAD
-=======
 
   const mintInfo = await getMint(connection, usdcDevCoinMintAddress);
   const mintDecimals = Math.pow(10, mintInfo.decimals);
   console.log("mintDecimals", mintDecimals);
->>>>>>> 10f295dcf527a6855006b2f39673f3b0703d3420
   if (publicKey && anchor_wallet) {
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
@@ -96,9 +89,6 @@ export const sendFunds = async (
     );
     console.log("Owned token amount: " + tokenAccountInfo.amount);
     tokenAccountInfo = await getAccount(connection, tokenVault);
-<<<<<<< HEAD
-    console.log("Vault token amount: " + tokenAccountInfo.amount);
-=======
     console.log(
       "Vault token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
     );
@@ -224,7 +214,6 @@ export const sendFundsToPlayers = async (
       console.error("Error invoking transaction:", error);
       // Handle errors appropriately
     }
->>>>>>> 10f295dcf527a6855006b2f39673f3b0703d3420
   }
 };
 
