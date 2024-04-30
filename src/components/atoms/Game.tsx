@@ -138,6 +138,7 @@ const Game: React.FC<IGameProps> = props => {
           </div>
         )
       }
+      
       <div className="h-full w-full border-y-2 border-secondary-700 px-12 py-4 text-lg">
         <div className="flex justify-between">
           <div className="flex flex-col space-y-2">
@@ -178,3 +179,8 @@ const Game: React.FC<IGameProps> = props => {
   );
 };
 export default Game;
+
+
+
+
+

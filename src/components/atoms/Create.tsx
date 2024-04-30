@@ -131,10 +131,10 @@ const CreateGame: NextPage = () => {
       <Toaster />
       <div className="  relative flex w-full flex-col items-start justify-start overflow-hidden rounded-[1.25rem] border border-[#373737] px-2  pt-[1.25rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:gap-[30px] lg:pl-[57px] lg:pr-[57px]  ">
         <section className="  lg:text-41xl font-inter flex max-w-full flex-col items-end justify-start text-center  text-white lg:w-[1456px]  ">
-          <header className="font-inter flex flex-row items-center justify-between self-stretch  text-center text-[#1FC04D] lg:h-[100px]">
+          <header className="font-inter flex flex-row items-center justify-between self-stretch  text-center text-[#1FC04D] h-[100px]">
             <div className="flex h-[20px] w-full flex-row items-center justify-start gap-2 sm:w-[314px] lg:gap-[30px]">
               <div className="flex flex-col items-center justify-start  px-0 pb-0 lg:pt-[3px]">
-                <div className="relative h-[0.9375rem] w-[0.9375rem] cursor-pointer object-contain lg:h-[1.875rem] lg:w-[1.875rem]">
+                <div className="relative cursor-pointer object-contain h-[1.875rem] w-[1.875rem]">
                   <Image
                     fill
                     loading="lazy"
@@ -203,8 +203,8 @@ const CreateGame: NextPage = () => {
                       />
                     ))}
                   </div>
-                  <div className="z-[1] box-border flex  w-fit flex-1 flex-col  justify-between rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[20px] text-[#373737] lg:flex-row lg:items-center lg:gap-[34.8px]">
-                    <div className=" flex flex-row items-center justify-start hover:text-[#1FC04D] ">
+                  <div className="w-full lg:w-fit z-[1] box-border flex flex-1 flex-col  justify-between rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[20px] text-[#373737] lg:flex-row lg:items-center gap-[34.8px]">
+                    <div className="flex flex-row items-center justify-start hover:text-[#1FC04D] ">
                       <button onClick={() => addOption(questionIndex)}>
                         Add More Options
                       </button>

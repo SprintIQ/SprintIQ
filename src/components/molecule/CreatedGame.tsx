@@ -54,7 +54,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
         walletAddressesAndPercentages,
       );
       const creatorPubKey = new PublicKey(creator);
-      //console.log("creators publkey", creatorPubKey.toString());
+      //console.log("creators publickey", creatorPubKey.toString());
 
       if (signTransaction) {
         console.log("signing transaction");
@@ -67,7 +67,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
         )
           .then(() => {
             setIsLoading(false);
-            toast("Rewards has beeen delivered successfully");
+            toast("Rewards has been delivered successfully");
           })
           .catch(err => {
             console.error(err);
@@ -118,9 +118,9 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
     }
   }, [data]);
   return (
-    <div className="flex items-center justify-between rounded-xl bg-secondary-200/10 px-16 py-5">
+    <div className="flex items-center justify-between rounded-xl bg-secondary-200/10 px-2 py-1 lg:px-16 lg:py-5">
       <div>
-        <h2 className="text-xl font-medium sm:text-2xl">
+        <h2 className="text-base font-medium sm:text-2xl">
           {props.title} #{props.game_code}
         </h2>
         <p className="text-2xs font-light sm:text-sm">
@@ -130,7 +130,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
       <div className="flex flex-col items-start space-y-2">
         <button
           disabled={isLoading}
-          className="text-lg font-medium text-secondary-700"
+          className="text-sm text-right font-medium text-secondary-700"
           onClick={handleClick}
         >
           {isLoading ? <Spinner /> : CTAs[props.status]}
@@ -140,7 +140,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
             <BeatLoader color="white" />
           ) : (
             <button
-              className="text-lg font-medium text-secondary-700"
+              className="text-sm font-medium text-right w-full text-secondary-700"
               onClick={onDistributeRewards}
             >
               End Game
