@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   AnchorProvider,
   BN,
@@ -6,9 +9,16 @@ import {
   type Provider,
   setProvider,
 } from "@coral-xyz/anchor";
-import { getAccount, getAssociatedTokenAddress } from "@solana/spl-token";
+import {
+  getAccount,
+  getAssociatedTokenAddress,
+  getMint,
+  getMultipleAccounts,
+  getOrCreateAssociatedTokenAccount,
+} from "@solana/spl-token";
+import { type SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
-import { type AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
+import { type AccountMeta, type Connection, PublicKey, Signer } from "@solana/web3.js";
 import { toast } from "sonner";
 
 import idl from "../../sprintiq_program/idl.json";
@@ -70,7 +80,7 @@ export const sendFunds = async (
     };
     //Initialization transaction
     const txHash = await program.methods
-      .initAndSendFunds(new BN(amount))
+      .initAndSendFunds(new BN(amount) as unknown as any)
       .accounts({
         tokenAccountOwnerPda: tokenAccountOwnerPda,
         vaultTokenAccount: tokenVault,
@@ -148,7 +158,7 @@ export const sendFundsToPlayers = async (
           const walletAddress = new PublicKey(wallet_address);
           const tokenAddress = await getOrCreateAssociatedTokenAccount(
             connection,
-            publicKey,
+            publicKey as unknown as Signer,
             usdcDevCoinMintAddress,
             walletAddress,
             signTransaction,
