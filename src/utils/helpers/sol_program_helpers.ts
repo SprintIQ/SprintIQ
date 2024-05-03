@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -18,7 +19,12 @@ import {
 } from "@solana/spl-token";
 import { type SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
-import { type AccountMeta, type Connection, PublicKey, Signer } from "@solana/web3.js";
+import {
+  type AccountMeta,
+  type Connection,
+  PublicKey,
+  type Signer,
+} from "@solana/web3.js";
 import { toast } from "sonner";
 
 import idl from "../../sprintiq_program/idl.json";
@@ -108,7 +114,7 @@ export const sendFundsToPlayers = async (
   publicKey: PublicKey,
   anchor_wallet: AnchorWallet,
   connection: Connection,
-  walletAddressesAndPercentages: WalletAddressesAndPercentages[],
+  walletAddressesAndPercentages: any[],
   signTransaction: SignerWalletAdapterProps["signTransaction"],
 ) => {
   console.log("---working");
@@ -119,7 +125,9 @@ export const sendFundsToPlayers = async (
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
     console.log("---provider set up");
-    const programId = PROGRAMID;
+    const programId = new PublicKey(
+      "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
+    );
     const program = new Program(idl as unknown as Idl, programId);
     console.log("here");
 
@@ -161,8 +169,8 @@ export const sendFundsToPlayers = async (
             publicKey as unknown as Signer,
             usdcDevCoinMintAddress,
             walletAddress,
-            signTransaction,
-            index, // Pass the index to the function
+            signTransaction as any,
+            index as any, // Pass the index to the function
           );
 
           // Store the token address and percentage
