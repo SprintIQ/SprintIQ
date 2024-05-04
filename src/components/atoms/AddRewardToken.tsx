@@ -105,7 +105,7 @@ const AddRewardToken: NextPage = () => {
     }
   }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
 
-  //console.log("percentages", distribution);
+  console.log("percentages", distribution);
 
   return (
     <div className="font-inter relative flex h-[100vh] w-full items-center justify-center overflow-hidden text-center text-2xl tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] md:text-[35px]">
