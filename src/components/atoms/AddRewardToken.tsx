@@ -96,10 +96,16 @@ const AddRewardToken: NextPage = () => {
                 toast("You game has been sucessfully created");
                 void router.push(`/dashboard/get-code?param=${gameCode}`);
               })
-              .catch(err => console.error("Error creating game", err));
+              .catch(err => {
+                console.error("Error creating game", err);
+                toast("Creating the game failed pls try again");
+                setIsLoading(false);
+              });
           })
           .catch(err => {
             console.error(err);
+            toast("Depositing the funds failed pls try again");
+            setIsLoading(false);
           });
       }
     }
@@ -121,7 +127,7 @@ const AddRewardToken: NextPage = () => {
             <input
               type="text"
               placeholder="USDC$"
-              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-gray-600 outline-none"
+              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-white placeholder-gray-600 outline-none"
               value={amount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setAmount(e.target.value);

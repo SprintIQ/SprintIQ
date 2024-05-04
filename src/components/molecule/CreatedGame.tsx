@@ -11,7 +11,6 @@ import { sendFundsToPlayers } from "@src/utils/helpers/sol_program_helpers";
 import moment from "moment";
 import { useRouter } from "next/router";
 import * as React from "react";
-import { BeatLoader } from "react-spinners";
 import { toast } from "sonner";
 
 import Spinner from "../ui/Spinner";
@@ -133,17 +132,17 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
       <div className="flex flex-col items-start space-y-2">
         <button
           disabled={isLoading}
-          className="text-sm text-right font-medium text-secondary-700"
+          className="text-right text-sm font-medium text-secondary-700"
           onClick={handleClick}
         >
           {isLoading ? <Spinner /> : CTAs[props.status]}
         </button>
         {Status.ongoing === props.status &&
           (loading ? (
-            <BeatLoader color="white" />
+            <Spinner />
           ) : (
             <button
-              className="text-sm font-medium text-right w-full text-secondary-700"
+              className="w-full text-right text-sm font-medium text-secondary-700"
               onClick={onDistributeRewards}
             >
               End Game

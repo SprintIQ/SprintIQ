@@ -15,22 +15,19 @@ import {
   getAssociatedTokenAddress,
   getMint,
   getMultipleAccounts,
-  getOrCreateAssociatedTokenAccount,
 } from "@solana/spl-token";
 import { type SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
-import {
-  type AccountMeta,
-  type Connection,
-  PublicKey,
-  type Signer,
-} from "@solana/web3.js";
+import { type AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
 import { toast } from "sonner";
 
-import idl from "../../sprintiq_program/idl.json";
+type WalletAddressesAndPercentages = {
+  wallet_address: string | undefined;
+  percentage: number;
+};
 
-const decimals = 9;
-const mintDecimals = Math.pow(10, decimals);
+import idl from "../../sprintiq_program/idl.json";
+import { getOrCreateAssociatedTokenAccount } from "./getOrCreateAssociatedAccount";
 
 const usdcDevCoinMintAddress = new PublicKey(
   "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
@@ -86,7 +83,7 @@ export const sendFunds = async (
     };
     //Initialization transaction
     const txHash = await program.methods
-      .initAndSendFunds(new BN(amount) as unknown as any)
+      .initAndSendFunds(new BN(parseInt(amount) * mintDecimals))
       .accounts({
         tokenAccountOwnerPda: tokenAccountOwnerPda,
         vaultTokenAccount: tokenVault,
@@ -114,7 +111,7 @@ export const sendFundsToPlayers = async (
   publicKey: PublicKey,
   anchor_wallet: AnchorWallet,
   connection: Connection,
-  walletAddressesAndPercentages: any[],
+  walletAddressesAndPercentages: WalletAddressesAndPercentages[],
   signTransaction: SignerWalletAdapterProps["signTransaction"],
 ) => {
   console.log("---working");
@@ -152,86 +149,83 @@ export const sendFundsToPlayers = async (
     const confirmOptions = {
       skipPreflight: true,
     };
-    try {
-      const tokenAddresses: PublicKey[] = [];
-      const percentages: number[] = [];
 
-      // Iterate over the array of wallet addresses and percentages
-      for (const [
-        index,
-        { wallet_address, percentage },
-      ] of walletAddressesAndPercentages.entries()) {
-        // Get the associated token address for each wallet address
-        if (wallet_address) {
-          const walletAddress = new PublicKey(wallet_address);
-          const tokenAddress = await getOrCreateAssociatedTokenAccount(
-            connection,
-            publicKey as unknown as Signer,
-            usdcDevCoinMintAddress,
-            walletAddress,
-            signTransaction as any,
-            index as any, // Pass the index to the function
-          );
+    const tokenAddresses: PublicKey[] = [];
+    const percentages: number[] = [];
 
-          // Store the token address and percentage
-          tokenAddresses.push(tokenAddress.address);
-          percentages.push(percentage);
+    // Iterate over the array of wallet addresses and percentages
+    for (const [
+      index,
+      { wallet_address, percentage },
+    ] of walletAddressesAndPercentages.entries()) {
+      // Get the associated token address for each wallet address
+      if (wallet_address) {
+        const walletAddress = new PublicKey(wallet_address);
 
-          console.log(
-            `Wallet address: ${wallet_address}, Token address: ${tokenAddress.address.toString()}`,
-          );
-        }
-      }
-
-      console.log("Token Addresses:", tokenAddresses.toString());
-      console.log("Percentages:", percentages);
-
-      const remainingAccounts: AccountMeta[] = [];
-
-      for (const address of tokenAddresses) {
-        const publicKey = new PublicKey(address.toString());
-        const accountMeta: AccountMeta = {
-          pubkey: publicKey,
-          isWritable: true, // Adjust as needed
-          isSigner: false, // Adjust as needed
-        };
-        remainingAccounts.push(accountMeta);
-      }
-      console.log("percentages", Buffer.from(percentages));
-      toast("Now we are sending to funds to all the winners account");
-      //send funds to winners transaction
-      const txHash = await program.methods
-        .sendFundsToPlayers(Buffer.from(percentages))
-        .accounts({
-          tokenAccountOwnerPda: tokenAccountOwnerPda,
-          vaultTokenAccount: tokenVault,
-          mintOfTokenBeingSent: usdcDevCoinMintAddress,
-          signer: publicKey,
-        })
-        //.signers([pg.wallet.keypair])
-        .remainingAccounts(remainingAccounts)
-        .rpc(confirmOptions);
-
-      console.log(`Transfer tokens to winners`);
-      await logTransaction(txHash, connection);
-      const tokenAccountInfo = await getAccount(connection, tokenVault);
-      console.log(
-        "Vault token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
-      );
-
-      const tokenAccountsInfo = await getMultipleAccounts(
-        connection,
-        tokenAddresses,
-      );
-      tokenAccountsInfo.map(account => {
-        console.log(
-          `${account.address.toString()}, ${account.amount / BigInt(mintDecimals)}`,
+        const tokenAddress = await getOrCreateAssociatedTokenAccount(
+          connection,
+          publicKey,
+          usdcDevCoinMintAddress,
+          walletAddress,
+          signTransaction,
+          index,
         );
-      });
-    } catch (error) {
-      console.error("Error invoking transaction:", error);
-      // Handle errors appropriately
+
+        // Store the token address and percentage
+        tokenAddresses.push(tokenAddress.address);
+        percentages.push(percentage);
+
+        console.log(
+          `Wallet address: ${wallet_address}, Token address: ${tokenAddress.address.toString()}`,
+        );
+      }
     }
+
+    console.log("Token Addresses:", tokenAddresses.toString());
+    console.log("Percentages:", percentages);
+
+    const remainingAccounts: AccountMeta[] = [];
+
+    for (const address of tokenAddresses) {
+      const publicKey = new PublicKey(address.toString());
+      const accountMeta: AccountMeta = {
+        pubkey: publicKey,
+        isWritable: true, // Adjust as needed
+        isSigner: false, // Adjust as needed
+      };
+      remainingAccounts.push(accountMeta);
+    }
+    console.log("percentages", Buffer.from(percentages));
+    toast("Now we are sending to funds to all the winners account");
+    //send funds to winners transaction
+    const txHash = await program.methods
+      .sendFundsToPlayers(Buffer.from(percentages))
+      .accounts({
+        tokenAccountOwnerPda: tokenAccountOwnerPda,
+        vaultTokenAccount: tokenVault,
+        mintOfTokenBeingSent: usdcDevCoinMintAddress,
+        signer: publicKey,
+      })
+      //.signers([pg.wallet.keypair])
+      .remainingAccounts(remainingAccounts)
+      .rpc(confirmOptions);
+
+    console.log(`Transfer tokens to winners`);
+    await logTransaction(txHash, connection);
+    const tokenAccountInfo = await getAccount(connection, tokenVault);
+    console.log(
+      "Vault token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
+    );
+
+    const tokenAccountsInfo = await getMultipleAccounts(
+      connection,
+      tokenAddresses,
+    );
+    tokenAccountsInfo.map(account => {
+      console.log(
+        `${account.address.toString()}, ${account.amount / BigInt(mintDecimals)}`,
+      );
+    });
   }
 };
 
