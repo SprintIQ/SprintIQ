@@ -109,6 +109,9 @@ export const gameRouter = createTRPCRouter({
         skip: input.skip,
         where: {
           creator_id: ctx.user.wallet_address,
+          status: {
+            not: Status.completed,
+          },
         },
         orderBy: {
           created_at: "desc",
@@ -519,10 +522,11 @@ export const gameRouter = createTRPCRouter({
         game: game,
       };
     }),
-  start_game: protectedProcedure
+  change_game_status: protectedProcedure
     .input(
       z.object({
         game_id: z.string(),
+        status: z.enum([Status.completed, Status.ongoing, Status.cancelled]),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -538,13 +542,13 @@ export const gameRouter = createTRPCRouter({
           message: "Game Already Started",
         };
       }
-      const game = await ctx.db.game.update({
+      await ctx.db.game.update({
         where: {
           id: input.game_id,
           creator_id: ctx.user.wallet_address,
         },
         data: {
-          status: Status.ongoing,
+          status: input.status,
         },
       });
       return {

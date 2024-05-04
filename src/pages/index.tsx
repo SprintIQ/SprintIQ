@@ -20,23 +20,23 @@ export default function Page() {
     },
   });
   useEffect(() => {
-    if (publicKey) {
-      void createUser
-        .mutateAsync({
-          wallet_address: publicKey.toBase58(),
-        })
-        .then(res => {
-          if (!res.success) {
-            // TODO implement an error toast
-            return;
-          }
-          void login(res.user!.wallet_address).then(res => {
-            if (res.success) {
-              void push(`/dashboard/${Routes.HOME}`);
-            }
-          });
-        });
-    }
+    // if (publicKey) {
+    //   void createUser
+    //     .mutateAsync({
+    //       wallet_address: publicKey.toBase58(),
+    //     })
+    //     .then(res => {
+    //       if (!res.success) {
+    //         // TODO implement an error toast
+    //         return;
+    //       }
+    //       void login(res.user!.wallet_address).then(res => {
+    //         if (res.success) {
+    //           void push(`/dashboard/${Routes.HOME}`);
+    //         }
+    //       });
+    //     });
+    // }
   }, [publicKey]);
   const content = useMemo(() => {
     if (publicKey) {

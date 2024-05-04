@@ -401,6 +401,58 @@ export const playerRouter = createTRPCRouter({
         history: data,
       };
     }),
+  query_leader_board: protectedProcedure
+    .input(
+      z.object({
+        game_id: z.string(),
+        limit: z.number().optional(),
+        skip: z.number().optional(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const pageSize = input.limit ?? 10;
+      const history = await ctx.db.profileHistory.groupBy({
+        by: ["user_id"],
+        take: pageSize,
+        skip: input.skip ?? 0,
+        where: {
+          game_id: input.game_id,
+          status: HistoryType.answered,
+        },
+        orderBy: [
+          {
+            _sum: {
+              points: "desc",
+            },
+          },
+          {
+            _max: {
+              created_at: "asc",
+            },
+          },
+        ],
+        _sum: {
+          points: true,
+        },
+        _max: {
+          created_at: true,
+        },
+      });
+      const data = await Promise.all(
+        history.map(async val => {
+          const user = await ctx.db.profile.findUnique({
+            where: {
+              id: val.user_id,
+            },
+          });
+          return { ...user, ...val };
+        }),
+      );
+      return {
+        success: true,
+        history: data,
+      };
+    }),
   get_notifications: protectedProcedure
     .input(
       z.object({

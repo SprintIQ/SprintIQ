@@ -16,10 +16,10 @@ import { toast } from "sonner";
 
 import Spinner from "../ui/Spinner";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ICreatedGameProps extends Game {}
+export interface ICreatedGameProps extends Game { }
 
 const CreatedGame: React.FC<ICreatedGameProps> = props => {
-  const { mutate, isLoading, data } = api.game.start_game.useMutation();
+  const { mutateAsync, isLoading, data } = api.game.change_game_status.useMutation();
   const getWinners = api.player.get_winners.useQuery({
     game_id: props.id.toString(),
   });
@@ -29,57 +29,63 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
   const { publicKey, signTransaction } = useWallet();
   const [loading, setIsLoading] = React.useState<boolean>(false);
   // callback not needed here creates more performance overhead than plain functions in this case
-  const onDistributeRewards = () => {
-    setIsLoading(true);
-    // get the winners and creator publickey
-    const winners = getWinners.data?.winners;
-    const creator = getGame.data?.game?.creator_id;
+  const onDistributeRewards = async () => {
+    try {
+      setIsLoading(true);
+      // get the winners and creator publickey
+      const winners = getWinners.data?.winners;
+      const creator = getGame.data?.game?.creator_id;
 
-    // Check if winners array exists and has elements
-    if (
-      winners &&
-      winners.length > 0 &&
-      publicKey &&
-      anchor_wallet &&
-      creator
-    ) {
-      // Map over the winners array to extract wallet_address and percentage
-      const walletAddressesAndPercentages = winners.map(winner => {
-        const { wallet_address } = winner;
-        const { percentage } = winner.position;
-        return { wallet_address, percentage };
-      });
-      console.log(
-        "Wallet addresses and percentages:",
-        walletAddressesAndPercentages,
-      );
-      const creatorPubKey = new PublicKey(creator);
-      //console.log("creators publickey", creatorPubKey.toString());
-
-      if (signTransaction) {
-        console.log("signing transaction");
-        sendFundsToPlayers(
-          creatorPubKey,
-          anchor_wallet,
-          connection,
+      // Check if winners array exists and has elements
+      if (
+        winners &&
+        winners.length > 0 &&
+        publicKey &&
+        anchor_wallet &&
+        creator
+      ) {
+        // Map over the winners array to extract wallet_address and percentage
+        const walletAddressesAndPercentages = winners.map(winner => {
+          const { wallet_address } = winner;
+          const { percentage } = winner.position;
+          return { wallet_address, percentage };
+        });
+        console.log(
+          "Wallet addresses and percentages:",
           walletAddressesAndPercentages,
-          signTransaction,
-        )
-          .then(() => {
-            setIsLoading(false);
-            toast("Rewards has been delivered successfully");
-          })
-          .catch(err => {
-            console.error(err);
-            setIsLoading(false);
-            toast("Something went wrong, pls try again ");
+        );
+        const creatorPubKey = new PublicKey(creator);
+        //console.log("creators publickey", creatorPubKey.toString());
+
+        if (signTransaction) {
+          console.log("signing transaction");
+          // use async await instead of promise.
+          const response = await sendFundsToPlayers(
+            creatorPubKey,
+            anchor_wallet,
+            connection,
+            walletAddressesAndPercentages,
+            signTransaction,
+          );
+          setIsLoading(false);
+          await mutateAsync({
+            game_id: props.id,
+            status: Status.completed,
           });
-        setIsLoading(false);
+          toast("Rewards has been delivered successfully");
+          setIsLoading(false);
+        }
+        else {
+          toast("Failed to sign transaction, Please try again");
+          setIsLoading(false);
+        }
       }
-    } else {
-      toast("Wallet adapter isnt working pls try again");
+    } catch (err) {
+      console.error(err);
       setIsLoading(false);
+      toast("Something went wrong, pls try again ");
     }
+
   };
   const { push } = useRouter();
   const CTAs = {
@@ -91,12 +97,18 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
   };
   const goToLeaderBoard = () =>
     void push(`/dashboard/${Routes.LEADER_BOARD}?gameId=${props.id}`);
-  const handleClick = () => {
+  const handleClick = async () => {
     switch (props.status) {
       case Status.created:
-        mutate({
+        const response = await mutateAsync({
           game_id: props.id,
+          status: Status.ongoing,
         });
+        if (response.success) {
+          goToLeaderBoard();
+        } else {
+          toast("Failed to start game, Please try again");
+        }
         break;
       case Status.completed:
         goToLeaderBoard();
@@ -133,7 +145,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
       <div className="flex flex-col items-start space-y-2">
         <button
           disabled={isLoading}
-          className="text-sm text-right font-medium text-secondary-700"
+          className="text-right text-sm font-medium text-secondary-700"
           onClick={handleClick}
         >
           {isLoading ? <Spinner /> : CTAs[props.status]}
@@ -143,7 +155,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
             <BeatLoader color="white" />
           ) : (
             <button
-              className="text-sm font-medium text-right w-full text-secondary-700"
+              className="w-full text-right text-sm font-medium text-secondary-700"
               onClick={onDistributeRewards}
             >
               End Game
