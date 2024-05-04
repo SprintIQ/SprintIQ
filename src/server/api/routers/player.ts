@@ -164,7 +164,7 @@ export const playerRouter = createTRPCRouter({
         };
       }
     }),
-  get_anwsered: protectedProcedure
+  get_answered: protectedProcedure
     .input(
       z.object({
         game_id: z.string(),

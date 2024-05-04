@@ -20,17 +20,17 @@ const Game: React.FC<IGameProps> = props => {
   } = api.player.get_questions.useMutation();
   const { mutateAsync, data: answer } =
     api.player.answer_question.useMutation();
-  const { mutateAsync: getAnwsered, data: answered } =
-    api.player.get_anwsered.useMutation();
+  const { mutateAsync: getAnswered, data: answered } =
+    api.player.get_answered.useMutation();
 
   const [count, setCount] = React.useState(-1);
-  const [answeres, setAnswered] = React.useState(false);
-  const [anwsering, setAnwsering] = React.useState(false);
+  const [answers, setAnswered] = React.useState(false);
+  const [answering, setAnswering] = React.useState(false);
   const { push } = useRouter();
   const handleAnswer = (option_id: string, time_elapsed?: boolean) => {
     if (!data) return;
-    setAnwsering(true);
-    setAnwsering(true);
+    setAnswering(true);
+    setAnswering(true);
     void mutateAsync({
       game_id: props.gameId,
       question_id: data?.current_question?.id ?? "",
@@ -45,7 +45,7 @@ const Game: React.FC<IGameProps> = props => {
           void push(
             `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
           ).then(() => {
-            setAnwsering(false);
+            setAnswering(false);
             setAnswered(false);
             setCount(-1);
           });
@@ -62,7 +62,7 @@ const Game: React.FC<IGameProps> = props => {
   React.useEffect(() => {
     if (isLoading) return;
     if (data?.current_question?.id && props.gameId) {
-      void getAnwsered({
+      void getAnswered({
         game_id: props.gameId,
         question_id: data?.current_question?.id,
       }).then(res => {
@@ -107,10 +107,10 @@ const Game: React.FC<IGameProps> = props => {
       <span>Loading.....</span>
     </section>
   ) : (
-    <section className="relative py-4">
+    <section className="relative py-4 self-stretch flex flex-col items-start justify-start text-center text-sm text-white font-inter">
       {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        (answeres || answered?.success) && (
+        (answers || answered?.success) && (
           <div
             data-wrong={
               answer?.details?.points === 0 || answered?.details?.points === 0
@@ -138,6 +138,15 @@ const Game: React.FC<IGameProps> = props => {
           </div>
         )
       }
+      <div className="self-stretch flex flex-row items-start justify-center py-0 px-5 mb-4">
+        <div className="flex flex-row items-start justify-start py-0 px-9 relative border-[1px] border-solid rounded-full border-secondary-700">
+          <div className="h-[27px] w-[123px] relative box-border hidden z-[0] border-[1px] border-solid rounded-full border-secondary-700" />
+          <div className="relative leading-[23px] inline-block min-w-[51px] z-[1] rounded-full border-secondary-700">
+            Jaylove
+          </div>
+          <div className="h-full w-full absolute !m-[0] top-[0px] right-[0px] bottom-[0px] left-[0px] rounded-3xl box-border z-[2] border-[1px] border-solid border-secondary-700" />
+        </div>
+      </div>
       <div className="h-full w-full border-y-2 border-secondary-700 px-12 py-4 text-lg">
         <div className="flex justify-between">
           <div className="flex flex-col space-y-2">
@@ -169,7 +178,7 @@ const Game: React.FC<IGameProps> = props => {
               key={option.id}
               onClick={() => handleAnswer(option.id)}
               option={option}
-              disabled={answeres || answered?.success}
+              disabled={answers || answered?.success}
             />
           ))}
         </div>
@@ -178,3 +187,8 @@ const Game: React.FC<IGameProps> = props => {
   );
 };
 export default Game;
+
+
+
+
+

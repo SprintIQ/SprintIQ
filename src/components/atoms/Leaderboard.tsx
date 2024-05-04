@@ -7,7 +7,7 @@ import { PublicKey } from "@solana/web3.js";
 import { useQuizContext } from "@src/provider/QuizContext";
 import { api } from "@src/utils/api";
 import { Routes } from "@src/utils/constants/constants";
-import { sendFundsToPlayers } from "@src/utils/helpers/sol_program_helpers";
+// import { sendFundsToPlayers } from "@src/utils/helpers/sol_program_helpers";
 import Link from "next/link";
 import * as React from "react";
 import { TfiReload } from "react-icons/tfi";

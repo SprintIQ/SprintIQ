@@ -121,7 +121,7 @@ const AddRewardToken: NextPage = () => {
             <input
               type="text"
               placeholder="USDC$"
-              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-gray-600 text-white outline-none"
+              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-gray-600 outline-none"
               value={amount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setAmount(e.target.value);

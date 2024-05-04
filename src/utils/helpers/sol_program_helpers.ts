@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   AnchorProvider,
   BN,
   type Idl,
   Program,
+  type Provider,
   setProvider,
 } from "@coral-xyz/anchor";
 import {
@@ -10,25 +15,26 @@ import {
   getAssociatedTokenAddress,
   getMint,
   getMultipleAccounts,
+  getOrCreateAssociatedTokenAccount,
 } from "@solana/spl-token";
 import { type SignerWalletAdapterProps } from "@solana/wallet-adapter-base";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
-import { type AccountMeta, type Connection, PublicKey } from "@solana/web3.js";
+import {
+  type AccountMeta,
+  type Connection,
+  PublicKey,
+  type Signer,
+} from "@solana/web3.js";
 import { toast } from "sonner";
 
 import idl from "../../sprintiq_program/idl.json";
-import { getOrCreateAssociatedTokenAccount } from "./getOrCreateAssociatedAccount";
 
-type WalletAddressesAndPercentages = {
-  wallet_address: string | undefined;
-  percentage: number;
-};
+const decimals = 9;
+const mintDecimals = Math.pow(10, decimals);
 
 const usdcDevCoinMintAddress = new PublicKey(
   "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
 );
-
-const PROGRAMID = new PublicKey("J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd");
 
 export const sendFunds = async (
   publicKey: PublicKey,
@@ -45,7 +51,9 @@ export const sendFunds = async (
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
     console.log("---provider set up");
-    const programId = PROGRAMID;
+    const programId = new PublicKey(
+      "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
+    );
     console.log(programId);
     const program = new Program(idl as unknown as Idl, programId);
     console.log("here");
@@ -78,8 +86,7 @@ export const sendFunds = async (
     };
     //Initialization transaction
     const txHash = await program.methods
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      .initAndSendFunds(new BN(parseInt(amount) * mintDecimals))
+      .initAndSendFunds(new BN(amount) as unknown as any)
       .accounts({
         tokenAccountOwnerPda: tokenAccountOwnerPda,
         vaultTokenAccount: tokenVault,
@@ -96,9 +103,7 @@ export const sendFunds = async (
       connection,
       gameCreatorAssociatedUsdcToken,
     );
-    console.log(
-      "Owned token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
-    );
+    console.log("Owned token amount: " + tokenAccountInfo.amount);
     tokenAccountInfo = await getAccount(connection, tokenVault);
     console.log(
       "Vault token amount: " + tokenAccountInfo.amount / BigInt(mintDecimals),
@@ -109,7 +114,7 @@ export const sendFundsToPlayers = async (
   publicKey: PublicKey,
   anchor_wallet: AnchorWallet,
   connection: Connection,
-  walletAddressesAndPercentages: WalletAddressesAndPercentages[],
+  walletAddressesAndPercentages: any[],
   signTransaction: SignerWalletAdapterProps["signTransaction"],
 ) => {
   console.log("---working");
@@ -120,7 +125,9 @@ export const sendFundsToPlayers = async (
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
     console.log("---provider set up");
-    const programId = PROGRAMID;
+    const programId = new PublicKey(
+      "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
+    );
     const program = new Program(idl as unknown as Idl, programId);
     console.log("here");
 
@@ -159,11 +166,11 @@ export const sendFundsToPlayers = async (
           const walletAddress = new PublicKey(wallet_address);
           const tokenAddress = await getOrCreateAssociatedTokenAccount(
             connection,
-            publicKey,
+            publicKey as unknown as Signer,
             usdcDevCoinMintAddress,
             walletAddress,
-            signTransaction,
-            index, // Pass the index to the function
+            signTransaction as any,
+            index as any, // Pass the index to the function
           );
 
           // Store the token address and percentage
@@ -253,24 +260,3 @@ export function generateGameCode(length: number): string {
   }
   return result;
 }
-
-export const checkIfTokenAccountExists = async (
-  connection: Connection,
-  receiverTokenAccountAddress: PublicKey,
-) => {
-  // Check if the receiver's token account exists
-  try {
-    await getAccount(connection, receiverTokenAccountAddress, "confirmed");
-
-    return true;
-  } catch (thrownObject) {
-    const error = thrownObject as Error;
-    // error.message is am empty string
-    // TODO: fix upstream
-    if (error.name === "TokenAccountNotFoundError") {
-      return false;
-    }
-
-    throw error;
-  }
-};
