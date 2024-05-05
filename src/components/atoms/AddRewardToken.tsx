@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
 import { BeatLoader } from "react-spinners";
 import { toast, Toaster } from "sonner";
@@ -37,6 +38,7 @@ const AddRewardToken: NextPage = () => {
   ]);
   const [amount, setAmount] = useState<string>("");
   const [loading, setIsLoading] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   const { connection } = useConnection();
   const anchor_wallet = useAnchorWallet();
@@ -56,7 +58,23 @@ const AddRewardToken: NextPage = () => {
   const handlePercentageChange = (index: number, value: string) => {
     setDistribution(prevDistribution => {
       const updatedDistribution = [...prevDistribution];
-      updatedDistribution[index].percentage = parseInt(value, 10) || 0; // Convert value to integer
+      updatedDistribution[index].percentage = parseInt(value, 10) || 0;
+      return updatedDistribution;
+    });
+
+    // Validate total percentage
+    const totalPercentage = distribution.reduce(
+      (total, item) => total + item.percentage,
+      0,
+    );
+
+    setIsValid(totalPercentage === 100);
+  };
+
+  const handleRemovePercentage = (index: number) => {
+    setDistribution(prevDistribution => {
+      const updatedDistribution = [...prevDistribution];
+      updatedDistribution.splice(index, 1); // Remove the percentage at the specified index
       return updatedDistribution;
     });
   };
@@ -152,9 +170,18 @@ const AddRewardToken: NextPage = () => {
                     className=" bg-transparent outline-none placeholder:text-gray-600 "
                   />
                   <p>%</p>
+                  <div onClick={() => handleRemovePercentage(index)}>
+                    <AiOutlineDelete className="ml-2 cursor-pointer text-[#175611]" />
+                  </div>
                 </div>
               </div>
             ))}
+            {/* Error message */}
+            {!isValid && (
+              <p className="mt-2 text-red-500">
+                Total percentage must add up to 100%
+              </p>
+            )}
             <button
               className="my-4 flex items-center text-sm text-gray-600 hover:text-gray-900"
               onClick={handleAddMore}

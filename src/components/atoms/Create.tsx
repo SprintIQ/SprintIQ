@@ -4,7 +4,8 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
-// import { RiAddLine } from "react-icons/ri";
+import { AiOutlineDelete } from "react-icons/ai";
+import { RiCloseCircleLine } from "react-icons/ri";
 import { toast, Toaster } from "sonner";
 
 interface Question {
@@ -97,10 +98,26 @@ const CreateGame: NextPage = () => {
     ]);
   };
 
+  const handleRemoveQuestion = (index: number) => {
+    setQuestions(prevQuestions => {
+      const updatedQuestions = [...prevQuestions];
+      updatedQuestions.splice(index, 1); // Remove the question at the specified index
+      return updatedQuestions;
+    });
+  };
+
   const addOption = (questionIndex: number) => {
     const updatedQuestions = [...questions];
     updatedQuestions[questionIndex].options.push("");
     setQuestions(updatedQuestions);
+  };
+
+  const handleRemoveOption = (questionIndex: number, optionIndex: number) => {
+    setQuestions(prevQuestions => {
+      const updatedQuestions = [...prevQuestions];
+      updatedQuestions[questionIndex].options.splice(optionIndex, 1); // Remove the option at the specified index
+      return updatedQuestions;
+    });
   };
 
   const onBackPress = useCallback(() => {
@@ -130,10 +147,10 @@ const CreateGame: NextPage = () => {
       <Toaster />
       <div className="  relative flex w-full flex-col items-start justify-start overflow-hidden rounded-[1.25rem] border border-[#373737] px-2  pt-[1.25rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:gap-[30px] lg:pl-[57px] lg:pr-[57px]  ">
         <section className="  lg:text-41xl font-inter flex max-w-full flex-col items-end justify-start text-center  text-white lg:w-[1456px]  ">
-          <header className="font-inter flex flex-row items-center justify-between self-stretch  text-center text-[#1FC04D] h-[100px]">
+          <header className="font-inter flex h-[100px] flex-row items-center justify-between  self-stretch text-center text-[#1FC04D]">
             <div className="flex h-[20px] w-full flex-row items-center justify-start gap-2 sm:w-[314px] lg:gap-[30px]">
               <div className="flex flex-col items-center justify-start  px-0 pb-0 lg:pt-[3px]">
-                <div className="relative cursor-pointer object-contain h-[1.875rem] w-[1.875rem]">
+                <div className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain">
                   <Image
                     fill
                     loading="lazy"
@@ -172,37 +189,65 @@ const CreateGame: NextPage = () => {
           <div className="flex w-full max-w-full flex-col justify-start">
             {questions.map((question, questionIndex) => (
               <div key={questionIndex}>
-                <div className="mt-7 flex w-full max-w-full flex-wrap items-start justify-start gap-[29px] self-stretch lg:flex-row">
-                  <p className="relative self-stretch text-[2rem] leading-[23px]">
-                    {question.questionNumber}
-                  </p>
+                <div className="-ml-20 mt-7 flex w-full max-w-full flex-col  items-center justify-start gap-[29px] self-stretch lg:ml-0 lg:flex-row">
+                  <div className=" flex w-1/2 flex-row items-center justify-start ">
+                    <p className="relative self-stretch text-[2rem] leading-[23px]">
+                      {question.questionNumber}
+                    </p>
 
-                  <div className="box-border flex w-full max-w-full flex-1 flex-col items-start justify-start gap-y-[20px] px-0 pb-0 lg:flex-row lg:gap-x-5 lg:gap-y-0">
-                    <QuestionInput
-                      value={question.question}
-                      onChange={e =>
-                        handleQuestionChange(questionIndex, e.target.value)
-                      }
-                    />
+                    <div className="ml-3 box-border flex w-full max-w-full flex-1 flex-col items-start justify-start gap-y-[20px] px-0 pb-0 lg:flex-row lg:gap-x-5 lg:gap-y-0">
+                      <QuestionInput
+                        value={question.question}
+                        onChange={e =>
+                          handleQuestionChange(questionIndex, e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className=" flex w-1/2 flex-row items-center justify-start ">
+                    <div>
+                      <ImageOrVideoInput
+                        onChange={e => {
+                          handleImageOrVideoChange(questionIndex, e);
+                        }}
+                      />
+                    </div>
+                    <div
+                      onClick={() => handleRemoveQuestion(questionIndex)}
+                      className=" -mt-3 ml-2 "
+                    >
+                      <RiCloseCircleLine className="cursor-pointer" size={30} />
+                    </div>
                   </div>
                 </div>
                 <div className="mt-4 flex flex-col gap-y-[20px] lg:flex-row lg:items-center">
                   <div className="mr-6">
                     {question.options.map((option, optionIndex) => (
-                      <OptionInput
-                        key={optionIndex}
-                        value={option}
-                        onChange={e =>
-                          handleOptionChange(
-                            questionIndex,
-                            optionIndex,
-                            e.target.value,
-                          )
-                        }
-                      />
+                      <div key={optionIndex} className="flex items-center  ">
+                        {/* Option input field */}
+                        <OptionInput
+                          value={option}
+                          onChange={e =>
+                            handleOptionChange(
+                              questionIndex,
+                              optionIndex,
+                              e.target.value,
+                            )
+                          }
+                        />
+                        {/* Delete icon */}
+                        <div
+                          className=" -mt-2 cursor-pointer "
+                          onClick={() =>
+                            handleRemoveOption(questionIndex, optionIndex)
+                          }
+                        >
+                          <AiOutlineDelete />
+                        </div>
+                      </div>
                     ))}
                   </div>
-                  <div className="w-full lg:w-fit z-[1] box-border flex flex-1 flex-col  justify-between rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[20px] text-[#373737] lg:flex-row lg:items-center gap-[34.8px]">
+                  <div className="z-[1] box-border flex w-full flex-1 flex-col justify-between  gap-[34.8px] rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[20px] text-[#373737] lg:w-fit lg:flex-row lg:items-center">
                     <div className="flex flex-row items-center justify-start hover:text-[#1FC04D] ">
                       <button onClick={() => addOption(questionIndex)}>
                         Add More Options
@@ -365,7 +410,7 @@ const TimerInput: React.FC<{
       <input
         type="text"
         placeholder="Set Timer"
-        value={value.toString() + 'secs'} // Convert number to string for input value
+        value={value.toString() + "secs"} // Convert number to string for input value
         onChange={onChange}
         onFocus={() => setShowTimerOverlay(true)} // Show the timer overlay when input is focused
         className="relative flex w-[100px] items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-secondary-700 placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D]"
