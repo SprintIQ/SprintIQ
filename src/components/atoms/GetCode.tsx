@@ -1,3 +1,4 @@
+import { Routes } from "@src/utils/constants/constants";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -6,13 +7,19 @@ import { toast, Toaster } from "sonner";
 
 const GetCode: NextPage = () => {
   const router = useRouter();
-  const { param,  } = router.query;
+  const { param, gameId } = router.query;
   const onPolygonIconClick = useCallback(() => {
     void router.push("/dashboard/add-reward-token");
   }, [router]);
 
   const onContinue = useCallback(() => {
-    void router.push("/dashboard/home");
+    if (gameId) {
+      void router.push(
+        `/dashboard/${Routes.LEADER_BOARD}?gameId=${gameId as string}`,
+      );
+    } else {
+      void router.push("/dashboard/home");
+    }
   }, [router]);
 
   return (

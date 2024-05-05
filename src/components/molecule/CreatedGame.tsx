@@ -16,10 +16,11 @@ import { toast } from "sonner";
 
 import Spinner from "../ui/Spinner";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ICreatedGameProps extends Game { }
+export interface ICreatedGameProps extends Game {}
 
 const CreatedGame: React.FC<ICreatedGameProps> = props => {
-  const { mutateAsync, isLoading, data } = api.game.change_game_status.useMutation();
+  const { mutateAsync, isLoading, data } =
+    api.game.change_game_status.useMutation();
   const getWinners = api.player.get_winners.useQuery({
     game_id: props.id.toString(),
   });
@@ -74,8 +75,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
           });
           toast("Rewards has been delivered successfully");
           setIsLoading(false);
-        }
-        else {
+        } else {
           toast("Failed to sign transaction, Please try again");
           setIsLoading(false);
         }
@@ -85,7 +85,6 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
       setIsLoading(false);
       toast("Something went wrong, pls try again ");
     }
-
   };
   const { push } = useRouter();
   const CTAs = {
@@ -105,7 +104,9 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
           status: Status.ongoing,
         });
         if (response.success) {
-          goToLeaderBoard();
+          void push(
+            `/dashboard/${Routes.GET_CODE}?gameId=${props.id}&param=${props.game_code}`,
+          );
         } else {
           toast("Failed to start game, Please try again");
         }
@@ -127,11 +128,6 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
         break;
     }
   };
-  React.useEffect(() => {
-    if (data?.success) {
-      goToLeaderBoard();
-    }
-  }, [data]);
   return (
     <div className="flex items-center justify-between rounded-xl bg-secondary-200/10 px-2 py-1 lg:px-16 lg:py-5">
       <div>
