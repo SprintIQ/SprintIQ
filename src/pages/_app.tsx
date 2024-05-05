@@ -114,7 +114,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <WalletProvider
         wallets={wallets}
         localStorageKey={COOKIE_KEY}
-        // autoConnect
+        autoConnect
         onError={connectionErrorHandler}
       >
         <WalletModalProvider>

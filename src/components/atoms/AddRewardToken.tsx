@@ -85,6 +85,7 @@ const AddRewardToken: NextPage = () => {
 
   const onDepositForGameButtonPress = useCallback(() => {
     if (amount.trim() === "" || distribution.some(d => d.percentage === 0)) {
+      console.log('here')
       // Show an alert error if either amount or any distribution is empty
       toast(
         "Please enter an amount and fill in all percentages before continuing.",

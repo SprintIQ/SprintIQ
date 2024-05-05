@@ -15,7 +15,7 @@ import { toast } from "sonner";
 
 import Spinner from "../ui/Spinner";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ICreatedGameProps extends Game {}
+export interface ICreatedGameProps extends Game { }
 
 const CreatedGame: React.FC<ICreatedGameProps> = props => {
   const { mutateAsync, isLoading, data } =
@@ -35,7 +35,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
       // get the winners and creator publickey
       const winners = getWinners.data?.winners;
       const creator = getGame.data?.game?.creator_id;
-
+      console.log("winners", winners);
       // Check if winners array exists and has elements
       if (
         winners &&
@@ -78,6 +78,9 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
           toast("Failed to sign transaction, Please try again");
           setIsLoading(false);
         }
+      } else {
+        toast("No winners found");
+        setIsLoading(false);
       }
     } catch (err) {
       console.error(err);
