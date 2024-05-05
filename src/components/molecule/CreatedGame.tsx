@@ -11,7 +11,6 @@ import { sendFundsToPlayers } from "@src/utils/helpers/sol_program_helpers";
 import moment from "moment";
 import { useRouter } from "next/router";
 import * as React from "react";
-import { BeatLoader } from "react-spinners";
 import { toast } from "sonner";
 
 import Spinner from "../ui/Spinner";
@@ -148,7 +147,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
         </button>
         {Status.ongoing === props.status &&
           (loading ? (
-            <BeatLoader color="white" />
+            <Spinner />
           ) : (
             <button
               className="w-full text-right text-sm font-medium text-secondary-700"
