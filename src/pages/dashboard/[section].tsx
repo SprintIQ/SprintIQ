@@ -7,6 +7,7 @@ interface DashboardProps {
   section: Routes;
   gameId: string;
   page: string;
+  state: string;
 }
 const Dashboard: NextPage<DashboardProps> = props => {
   return (
@@ -15,19 +16,20 @@ const Dashboard: NextPage<DashboardProps> = props => {
         currentSection={props.section}
         gameId={props.gameId}
         page={props.page}
+        state={props.state}
       />
     </DashboardLayout>
   );
 };
 
 Dashboard.getInitialProps = async ctx => {
-  const { section, gameId, page } = ctx.query as {
+  const { section, gameId, page, state } = ctx.query as {
     section: Routes;
     gameId: string;
     page: string;
-
+    state: string;
   };
-  return { section, gameId, page };
+  return { section, gameId, page, state };
 };
 
 export default Dashboard;

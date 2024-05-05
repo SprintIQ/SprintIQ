@@ -110,4 +110,12 @@ export const authRouter = createTRPCRouter({
         };
       }
     }),
+  get_details: protectedProcedure.query(async ({ ctx }) => {
+    const user = await ctx.db.profile.findUnique({
+      where: {
+        id: ctx.user.id,
+      },
+    });
+    return user;
+  }),
 });

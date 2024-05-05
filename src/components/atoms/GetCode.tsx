@@ -6,7 +6,7 @@ import { toast, Toaster } from "sonner";
 
 const GetCode: NextPage = () => {
   const router = useRouter();
-  const { param } = router.query;
+  const { param,  } = router.query;
   const onPolygonIconClick = useCallback(() => {
     void router.push("/dashboard/add-reward-token");
   }, [router]);
@@ -16,8 +16,8 @@ const GetCode: NextPage = () => {
   }, [router]);
 
   return (
-    <div className="font-inter relative h-[100vh] w-full overflow-hidden text-center text-2xl md:text-[35px] tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] px-10 flex justify-center items-center">
-      <div className=" z-[1] m-auto box-border flex w-[200px] md:w-[527px] max-w-full flex-col items-center justify-start gap-[20px] rounded-[2.5rem] md:border-[1px] border-solid md:border-[#175611] md:bg-[#0a2913] md:px-5 py-[100px] ">
+    <div className="font-inter relative flex h-[100vh] w-full items-center justify-center overflow-hidden px-10 text-center text-2xl tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] md:text-[35px]">
+      <div className=" z-[1] m-auto box-border flex w-[200px] max-w-full flex-col items-center justify-start gap-[20px] rounded-[2.5rem] border-solid py-[100px] md:w-[527px] md:border-[1px] md:border-[#175611] md:bg-[#0a2913] md:px-5 ">
         <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-inherit">
           Game Token
         </h1>
@@ -26,10 +26,10 @@ const GetCode: NextPage = () => {
             {param}
           </h1>
         </div>
-        <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center text-[12px] md:text-[1rem] font-normal text-inherit leading-snug px-5 md:px-0">
+        <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center px-5 text-[12px] font-normal leading-snug text-inherit md:px-0 md:text-[1rem]">
           Participants can access Game with this code
         </h1>
-        <div className="flex md:w-[300px] flex-row  justify-center">
+        <div className="flex flex-row justify-center  md:w-[300px]">
           <button
             className="z-[2]  flex  w-full flex-row items-center  justify-center rounded-[2.5rem] bg-[#1FC04D] px-3 py-3  [border:none]"
             onClick={onContinue}
@@ -44,7 +44,7 @@ const GetCode: NextPage = () => {
         <div className="absolute left-[7px] top-[-140px] h-[1100px] w-[1009.4px] object-cover">
           <Image fill alt="" src="/group-1143@2x.png" />
         </div>
-        <div className="absolute left-[7px] top-[117px] z-[1] h-[48.1px] w-[48.1px] cursor-pointer object-contain hidden lg:block">
+        <div className="absolute left-[7px] top-[117px] z-[1] hidden h-[48.1px] w-[48.1px] cursor-pointer object-contain lg:block">
           <Image
             fill
             loading="lazy"
