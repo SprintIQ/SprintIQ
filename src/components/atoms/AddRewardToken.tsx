@@ -113,44 +113,43 @@ const AddRewardToken: NextPage = () => {
       if (!checkPercentages()) {
         return;
       }
-      setTimeout(() => {
-        if (wallet.publicKey && anchor_wallet) {
-          setIsLoading(true);
-          sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
-            .then(() => {
-              const gameCode = generateGameCode(6);
-              toast("You have successfully deposited");
-              setIsLoading(false);
-              setAmountGlobal(amount);
-              setDistributionGlobal(distribution);
 
-              void createGame
-                .mutateAsync({
-                  title: quizTitleGlobal,
-                  description: quizTitleGlobal,
-                  game_code: gameCode,
-                  reward: parseInt(amount, 10),
-                  percentages: distribution,
-                  questions: questionsGlobal,
-                })
-                .then(res => {
-                  console.log("Game created response", res);
-                  toast("You game has been sucessfully created");
-                  void router.push(`/dashboard/get-code?param=${gameCode}`);
-                })
-                .catch(err => {
-                  console.error("Error creating game", err);
-                  toast("Creating the game failed pls try again");
-                  setIsLoading(false);
-                });
-            })
-            .catch(err => {
-              console.error(err);
-              toast("Depositing the funds failed pls try again");
-              setIsLoading(false);
-            });
-        }
-      }, 10000);
+      if (wallet.publicKey && anchor_wallet) {
+        setIsLoading(true);
+        sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
+          .then(() => {
+            const gameCode = generateGameCode(6);
+            toast("You have successfully deposited");
+            setIsLoading(false);
+            setAmountGlobal(amount);
+            setDistributionGlobal(distribution);
+
+            void createGame
+              .mutateAsync({
+                title: quizTitleGlobal,
+                description: quizTitleGlobal,
+                game_code: gameCode,
+                reward: parseInt(amount, 10),
+                percentages: distribution,
+                questions: questionsGlobal,
+              })
+              .then(res => {
+                console.log("Game created response", res);
+                toast("You game has been sucessfully created");
+                void router.push(`/dashboard/get-code?param=${gameCode}`);
+              })
+              .catch(err => {
+                console.error("Error creating game", err);
+                toast("Creating the game failed pls try again");
+                setIsLoading(false);
+              });
+          })
+          .catch(err => {
+            console.error(err);
+            toast("Depositing the funds failed pls try again");
+            setIsLoading(false);
+          });
+      }
     }
   }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
 
