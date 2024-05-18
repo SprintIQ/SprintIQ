@@ -24,6 +24,18 @@ export interface Distribution {
   percentage: number;
 }
 
+const defaultQuestions = [
+  {
+    questionNumber: 1,
+    question: "",
+    type: "text",
+    options: [""],
+    answer: "",
+    points: 0,
+    duration: 0,
+  },
+];
+
 const AddRewardToken: NextPage = () => {
   const router = useRouter();
   const createGame = api.game.full_game_create.useMutation();
@@ -38,7 +50,6 @@ const AddRewardToken: NextPage = () => {
   ]);
   const [amount, setAmount] = useState<string>("");
   const [loading, setIsLoading] = useState<boolean>(false);
-  const [isValid, setIsValid] = useState<boolean>(true);
 
   const { connection } = useConnection();
   const anchor_wallet = useAnchorWallet();
@@ -61,14 +72,6 @@ const AddRewardToken: NextPage = () => {
       updatedDistribution[index].percentage = parseInt(value, 10) || 0;
       return updatedDistribution;
     });
-
-    // Validate total percentage
-    const totalPercentage = distribution.reduce(
-      (total, item) => total + item.percentage,
-      0,
-    );
-
-    setIsValid(totalPercentage === 100);
   };
 
   const handleRemovePercentage = (index: number) => {
@@ -83,54 +86,77 @@ const AddRewardToken: NextPage = () => {
     void router.push("/dashboard/add-reward");
   }, [router]);
 
+  const checkPercentages = () => {
+    const totalPercentage = distribution.reduce(
+      (total, item) => total + item.percentage,
+      0,
+    );
+    if (totalPercentage !== 100) {
+      toast("Total percentage must add up to 100.");
+      return false;
+    }
+    return true;
+  };
+
   const onDepositForGameButtonPress = useCallback(() => {
-    if (amount.trim() === "" || distribution.some(d => d.percentage === 0)) {
+    if (
+      amount.trim() === "" ||
+      distribution.some(d => d.percentage === 0) ||
+      JSON.stringify(questionsGlobal) === JSON.stringify(defaultQuestions) ||
+      quizTitleGlobal === ""
+    ) {
       // Show an alert error if either amount or any distribution is empty
       toast(
         "Please enter an amount and fill in all percentages before continuing.",
       );
     } else {
-      if (wallet.publicKey && anchor_wallet) {
-        setIsLoading(true);
-        sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
-          .then(() => {
-            const gameCode = generateGameCode(6);
-            toast("You have successfully deposited");
-            setIsLoading(false);
-            setAmountGlobal(amount);
-            setDistributionGlobal(distribution);
-
-            void createGame
-              .mutateAsync({
-                title: quizTitleGlobal,
-                description: quizTitleGlobal,
-                game_code: gameCode,
-                reward: parseInt(amount, 10),
-                percentages: distribution,
-                questions: questionsGlobal,
-              })
-              .then(res => {
-                console.log("Game created response", res);
-                toast("You game has been sucessfully created");
-                void router.push(`/dashboard/get-code?param=${gameCode}`);
-              })
-              .catch(err => {
-                console.error("Error creating game", err);
-                toast("Creating the game failed pls try again");
-                setIsLoading(false);
-              });
-          })
-          .catch(err => {
-            console.error(err);
-            toast("Depositing the funds failed pls try again");
-            setIsLoading(false);
-          });
+      if (!checkPercentages()) {
+        return;
       }
+      setTimeout(() => {
+        if (wallet.publicKey && anchor_wallet) {
+          setIsLoading(true);
+          sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
+            .then(() => {
+              const gameCode = generateGameCode(6);
+              toast("You have successfully deposited");
+              setIsLoading(false);
+              setAmountGlobal(amount);
+              setDistributionGlobal(distribution);
+
+              void createGame
+                .mutateAsync({
+                  title: quizTitleGlobal,
+                  description: quizTitleGlobal,
+                  game_code: gameCode,
+                  reward: parseInt(amount, 10),
+                  percentages: distribution,
+                  questions: questionsGlobal,
+                })
+                .then(res => {
+                  console.log("Game created response", res);
+                  toast("You game has been sucessfully created");
+                  void router.push(`/dashboard/get-code?param=${gameCode}`);
+                })
+                .catch(err => {
+                  console.error("Error creating game", err);
+                  toast("Creating the game failed pls try again");
+                  setIsLoading(false);
+                });
+            })
+            .catch(err => {
+              console.error(err);
+              toast("Depositing the funds failed pls try again");
+              setIsLoading(false);
+            });
+        }
+      }, 10000);
     }
   }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
 
-  console.log("percentages", distribution);
-
+  // console.log("percentages", distribution);
+  // console.log("questions global", questionsGlobal);
+  // console.log("quiz global", quizTitleGlobal);
   return (
     <div className="font-inter relative flex h-[100vh] w-full items-center justify-center overflow-hidden text-center text-2xl tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] md:text-[35px]">
       <Toaster />
@@ -176,12 +202,6 @@ const AddRewardToken: NextPage = () => {
                 </div>
               </div>
             ))}
-            {/* Error message */}
-            {!isValid && (
-              <p className="mt-2 text-red-500">
-                Total percentage must add up to 100%
-              </p>
-            )}
             <button
               className="my-4 flex items-center text-sm text-gray-600 hover:text-gray-900"
               onClick={handleAddMore}

@@ -205,18 +205,18 @@ const CreateGame: NextPage = () => {
                     </div>
                   </div>
                   <div className=" flex w-1/2 flex-row items-center justify-start ">
-                    <div>
+                    {/* <div>
                       <ImageOrVideoInput
                         onChange={e => {
                           handleImageOrVideoChange(questionIndex, e);
                         }}
                       />
-                    </div>
+                    </div> */}
                     <div
                       onClick={() => handleRemoveQuestion(questionIndex)}
                       className=" -mt-3 ml-2 "
                     >
-                      <RiCloseCircleLine className="cursor-pointer" size={30} />
+                      <RiCloseCircleLine className="cursor-pointer" size={40} />
                     </div>
                   </div>
                 </div>
