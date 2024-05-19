@@ -26,33 +26,29 @@ const Game: React.FC<IGameProps> = props => {
     api.auth.get_details.useQuery();
   const [count, setCount] = React.useState(-1);
   const [answers, setAnswered] = React.useState(false);
-  const [answering, setAnswering] = React.useState(false);
   const { push } = useRouter();
-  const handleAnswer = (option_id: string, time_elapsed?: boolean) => {
+  const handleAnswer = async (option_id: string, time_elapsed?: boolean) => {
     if (!data) return;
-    setAnswering(true);
-    setAnswering(true);
-    void mutateAsync({
+    const res = await mutateAsync({
       game_id: props.gameId,
       question_id: data?.current_question?.id ?? "",
       option_id,
       time_elapsed,
-    }).then(res => {
-      setTimeout(() => {
-        setAnswered(res.success);
-      }, 2000);
-      if (res.success && parseInt(props.page) < data?.questions.length) {
-        setTimeout(() => {
-          void push(
-            `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
-          ).then(() => {
-            setAnswering(false);
-            setAnswered(false);
-            setCount(-1);
-          });
-        }, 5000);
-      }
     });
+    setTimeout(() => {
+      setAnswered(res.success);
+      // add a little delay before moving to the next question
+    }, 2000);
+    if (res.success && parseInt(props.page) < data?.questions.length) {
+      setTimeout(() => {
+        void push(
+          `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
+        ).then(() => {
+          setAnswered(false);
+          setCount(-1);
+        });
+      }, 5000);
+    }
   };
   React.useEffect(() => {
     void getQuestions({
@@ -60,37 +56,27 @@ const Game: React.FC<IGameProps> = props => {
       page: parseInt(props.page),
     });
   }, [props]);
+  const handleAnswered = async () => {
+    if (!(data?.current_question?.id && props.gameId)) return;
+    const res = await getAnswered({
+      game_id: props.gameId,
+      question_id: data?.current_question?.id,
+    });
+    if (res.success && parseInt(props.page) < data?.questions.length) {
+      setTimeout(() => {
+        void push(
+          `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
+        ).then(() => setCount(-1));
+      }, 3000);
+    }
+  };
   React.useEffect(() => {
     if (isLoading) return;
-    if (data?.current_question?.id && props.gameId) {
-      void getAnswered({
-        game_id: props.gameId,
-        question_id: data?.current_question?.id,
-      }).then(res => {
-        if (res.success && parseInt(props.page) < data?.questions.length) {
-          setTimeout(() => {
-            void push(
-              `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
-            ).then(() => setCount(-1));
-          }, 3000);
-        }
-      });
-    }
+    void handleAnswered();
     const timerId = setInterval(() => {
       const duration = data?.current_question?.duration ?? 0;
       if (duration > 0) {
         setCount(prevCount => {
-          if (
-            (data?.current_question?.duration ?? 0) > 0 &&
-            prevCount - 1 === 0
-          ) {
-            console.log(
-              "ran",
-              data?.current_question?.duration ?? 0,
-              prevCount,
-            );
-            // handleAnswer("", true);
-          }
           return prevCount === -1
             ? duration
             : prevCount > 0
@@ -133,7 +119,9 @@ const Game: React.FC<IGameProps> = props => {
               <Button
                 text="Finish"
                 className="mx-auto mt-4 px-6 py-2 text-lg text-white"
-                onClick={() => push(`/dashboard/${Routes.REWARD}`)}
+                onClick={() =>
+                  push(`/dashboard/${Routes.REWARD}?gameId=${props.gameId}`)
+                }
               />
             )}
           </div>
