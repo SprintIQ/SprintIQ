@@ -172,7 +172,7 @@ export const gameRouter = createTRPCRouter({
       });
       if (input.percentages) {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        input.percentages.forEach(async p => {
+        for (const p of input.percentages) {
           const percentages = await ctx.db.percentages.findFirst({
             where: {
               game_id: game.id,
@@ -200,7 +200,7 @@ export const gameRouter = createTRPCRouter({
               },
             });
           }
-        });
+        }
       }
       return {
         success: true,
@@ -226,7 +226,7 @@ export const gameRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const questions = await Promise.all(
         input.map(async q => {
-          return await ctx.db.question.create({
+          return ctx.db.question.create({
             data: {
               type: q.type,
               question: q.question,
@@ -330,7 +330,7 @@ export const gameRouter = createTRPCRouter({
       });
       if (input.options) {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        input.options.forEach(async o => {
+        for (const o of input.options) {
           const option = await ctx.db.options.findFirst({
             where: {
               question_id: question.id,
@@ -354,7 +354,7 @@ export const gameRouter = createTRPCRouter({
               },
             });
           }
-        });
+        }
       }
       return {
         success: true,
@@ -494,7 +494,7 @@ export const gameRouter = createTRPCRouter({
         },
       });
       if (game) {
-        input.questions.forEach(async data => {
+        for (const data of input.questions) {
           const question = await ctx.db.question.create({
             data: {
               question: data.question,
@@ -506,16 +506,16 @@ export const gameRouter = createTRPCRouter({
             },
           });
           if (question) {
-            data.options.forEach(async data => {
+            for (const data1 of data.options) {
               const option = await ctx.db.options.create({
                 data: {
-                  value: data,
+                  value: data1,
                   question_id: question.id,
                 },
               });
-            });
+            }
           }
-        });
+        }
       }
       return {
         success: true,

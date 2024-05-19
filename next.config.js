@@ -21,7 +21,11 @@ const config = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ["firebasestorage.googleapis.com"],
+    remotePatterns: [
+      {
+        hostname: "firebasestorage.googleapis.com",
+      },
+    ],
     dangerouslyAllowSVG: true,
   },
 };

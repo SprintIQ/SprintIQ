@@ -1,10 +1,11 @@
 import { HistoryType, Status } from "@prisma/client";
 import {
   createTRPCRouter,
-  loginProcedure,
   protectedProcedure,
-  publicProcedure,
+  wsRoute,
 } from "@src/server/api/trpc";
+import { observable } from "@trpc/server/observable";
+import { EventEmitter } from "events";
 import { z } from "zod";
 
 export interface PrismaProfile {
@@ -16,7 +17,37 @@ export interface PrismaProfile {
   created_at: Date;
   is_subscribed: boolean;
 }
+
+export interface Winners {
+  user_id: string;
+  _sum: { points: number | null };
+  _max: { created_at: Date | null };
+  id?: string | undefined;
+  wallet_address?: string | undefined;
+  username?: string | undefined;
+  nonce?: number | undefined;
+  avatar_url?: string | undefined;
+  created_at?: Date | undefined;
+}
+const ee = new EventEmitter();
 export const playerRouter = createTRPCRouter({
+  game_result: wsRoute
+    .input(
+      z.object({
+        game_id: z.string(),
+      }),
+    )
+    .subscription(({ input, ctx }) => {
+      return observable<{ ended: boolean; data: Array<Winners> }>(emit => {
+        ee.on(`game_finished_${input.game_id}`, data => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          emit.next({ ended: true, data: data || [] });
+        });
+        return () => {
+          ee.off(`game_finished_${input.game_id}`, () => {});
+        };
+      });
+    }),
   join_game: protectedProcedure
     .input(
       z.object({
@@ -529,7 +560,7 @@ export const playerRouter = createTRPCRouter({
           return { ...user, ...val };
         }),
       );
-      // send notifications to winner
+      ee.emit(`game_finished_${input.game_id}`, winners); // send notifications to winner
       await Promise.all(
         winners.map(async (val, index) => {
           const exists = await ctx.db.notification.findFirst({
