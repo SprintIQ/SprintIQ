@@ -190,7 +190,7 @@ const CreateGame: NextPage = () => {
             {questions.map((question, questionIndex) => (
               <div key={questionIndex}>
                 <div className="-ml-20 mt-7 flex w-full max-w-full flex-col  items-center justify-start gap-[29px] self-stretch lg:ml-0 lg:flex-row">
-                  <div className=" flex w-1/2 flex-row items-center justify-start ">
+                  <div className=" flex w-full flex-row items-center justify-start ">
                     <p className="relative self-stretch text-[2rem] leading-[23px]">
                       {question.questionNumber}
                     </p>
@@ -204,14 +204,7 @@ const CreateGame: NextPage = () => {
                       />
                     </div>
                   </div>
-                  <div className=" flex w-1/2 flex-row items-center justify-start ">
-                    <div>
-                      <ImageOrVideoInput
-                        onChange={e => {
-                          handleImageOrVideoChange(questionIndex, e);
-                        }}
-                      />
-                    </div>
+                  <div className="">
                     <div
                       onClick={() => handleRemoveQuestion(questionIndex)}
                       className=" -mt-3 ml-2 "

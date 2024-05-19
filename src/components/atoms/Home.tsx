@@ -1,5 +1,6 @@
 import { type Game } from "@prisma/client";
 import { api } from "@src/utils/api";
+import { Routes } from "@src/utils/constants/constants";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,11 +25,18 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
   const { mutateAsync, isLoading } = api.game.get_created_games.useMutation();
   const { data, isLoading: userDataIsLoading } =
     api.auth.get_details.useQuery();
+  // api.randomNumber.useSubscription(undefined, {
+  //   onData(n) {
+  //     console.log(n);
+  //   },
+  // });
   const { push } = useRouter();
   const elements = useMemo(
     () => [
       {
-        click: () => {},
+        click: () => {
+          void push(`/dashboard/${Routes.CREATE}`);
+        },
         text: "New Game",
         Icon: GameBoard,
       },
@@ -108,14 +116,14 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
           <h3 className="w-3/4 text-center text-lg md:text-3xl">
             This is your unique gamer identity
           </h3>
-          <span className="border-secondary-900 rounded-full border bg-secondary-700 px-6 py-1 text-white">
+          <span className="rounded-full border border-secondary-900 bg-secondary-700 px-6 py-1 text-white">
             {userDataIsLoading ? "Loading..." : data?.username}
           </span>
           <p className="w-3/5 text-center text-sm text-grey-300">
             It will be visible to the admin and other gamers
           </p>
           <Link
-            href="/dashboard"
+            href={`/dashboard/${Routes.HOME}`}
             className="mt-4 rounded-full bg-secondary-700 px-8 py-2 lg:py-2.5"
           >
             Continue
