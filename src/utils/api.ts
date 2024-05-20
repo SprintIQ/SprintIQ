@@ -13,17 +13,23 @@ import {
 } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import getConfig from "next/config";
 import superjson from "superjson";
+const { publicRuntimeConfig } = getConfig();
 
+const { APP_URL, WS_URL } = publicRuntimeConfig;
+console.log({ APP_URL, WS_URL });
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.APP_URL) return process.env.APP_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
+console.log(WS_URL);
 const wsClient = createWSClient({
-  url: process.env.WS_URL ?? `ws://localhost:3001`,
+  url: `ws://sprintiq-staging.onrender.com`,
 });
+console.log({ wsClient });
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
