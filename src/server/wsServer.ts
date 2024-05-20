@@ -4,7 +4,7 @@ import { applyWSSHandler } from "@trpc/server/adapters/ws";
 import ws from "ws";
 
 const wss = new ws.Server({
-  port: parseInt(process.env.PORT || "") ?? 3001,
+  port: parseInt(process.env.PORT ?? "") ?? 3001,
 });
 const handler = applyWSSHandler({
   wss,
