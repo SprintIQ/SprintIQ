@@ -28,7 +28,7 @@ const getBaseUrl = () => {
 };
 console.log(WS_URL);
 const wsClient = createWSClient({
-  url: `ws://${process.env.VERCEL_URL ?? "localhost:3000"}`,
+  url: `ws://${process.env.RENDER_EXTERNAL_HOSTNAME ?? "localhost:3000"}`,
 });
 console.log({ wsClient });
 
