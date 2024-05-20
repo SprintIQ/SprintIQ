@@ -18,16 +18,17 @@ import superjson from "superjson";
 const { publicRuntimeConfig } = getConfig();
 
 const { APP_URL, WS_URL } = publicRuntimeConfig;
-console.log({ APP_URL, WS_URL });
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.APP_URL) return process.env.APP_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+  if (process.env.RENDER_EXTERNAL_HOSTNAME)
+    return `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 console.log(WS_URL);
 const wsClient = createWSClient({
-  url: `ws://sprintiq-staging.onrender.com`,
+  url: `ws://${process.env.VERCEL_URL ?? "localhost:3000"}`,
 });
 console.log({ wsClient });
 

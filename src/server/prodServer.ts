@@ -21,7 +21,7 @@ void app.prepare().then(() => {
   });
   const wss = new ws.Server({ server });
   const handler = applyWSSHandler({ wss, router: appRouter, createContext });
-
+  console.log(wss);
   process.on("SIGTERM", () => {
     console.log("SIGTERM");
     handler.broadcastReconnectNotification();
