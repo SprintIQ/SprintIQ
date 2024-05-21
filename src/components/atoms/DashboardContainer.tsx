@@ -20,19 +20,21 @@ export interface IDashboardContainerProps {
   currentSection: Routes;
   gameId: string;
   page: string;
+  state: string;
 }
 
 const DashboardContainer: React.FC<IDashboardContainerProps> = ({
   currentSection,
   gameId,
   page,
+  state,
 }) => {
   const { currentProfile } = React.useContext(ProfileContext);
 
   const renderSelected = () => {
     switch (currentSection) {
       case Routes.HOME:
-        return <Home />;
+        return <Home state={state} />;
       case Routes.JOIN:
         return <JoinGame />;
       case Routes.GAME:

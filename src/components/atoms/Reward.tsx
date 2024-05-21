@@ -1,3 +1,5 @@
+import { type Winners } from "@src/server/api/routers/player";
+import { api } from "@src/utils/api";
 import * as React from "react";
 
 import Abstract from "../icons/Abstract.icon";
@@ -9,19 +11,39 @@ export interface IRewardProps {
 }
 
 const Reward: React.FC<IRewardProps> = props => {
+  const [gameEnded, setEnded] = React.useState<boolean>(false);
+  const [isWinner, setWinner] = React.useState<boolean>(false);
+  const { data, isLoading } = api.auth.get_details.useQuery();
+  const handleWinnerCheck = (winners: Array<Winners>) => {
+    return winners.some(
+      winner => winner.wallet_address === data?.wallet_address,
+    );
+  };
+  api.player.game_result.useSubscription(
+    { game_id: props.gameId ?? "" },
+    {
+      onData(game) {
+        if (game.ended) {
+          setEnded(true);
+          const isWinner = handleWinnerCheck(game.data);
+          setWinner(isWinner);
+        }
+      },
+    },
+  );
+
   let content;
-  if (true) {
+  if (!gameEnded || isLoading) {
     content = (
       <div className="z-10 m-auto text-5xl font-bold text-secondary-700">
         Getting your Results...
       </div>
     );
-  }
-  if (false) {
+  } else if (gameEnded && isWinner) {
     content = (
       <div className="z-10 flex flex-col items-center space-y-4">
         <h2 className="text-4xl font-bold text-secondary-700">
-          Congratulations
+          CongrQatulations
         </h2>
         <p className="w-7/12 text-center text-2xl">
           You are one of the top winners
@@ -29,8 +51,7 @@ const Reward: React.FC<IRewardProps> = props => {
         <Button className="" text="Claim Rewards" />
       </div>
     );
-  }
-  if (false) {
+  } else if (gameEnded && !isWinner) {
     content = <div></div>;
   }
   return (

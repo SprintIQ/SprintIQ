@@ -5,6 +5,7 @@ import {
   publicProcedure,
 } from "@src/server/api/trpc";
 import { z } from "zod";
+import {observable} from "@trpc/server/observable";
 
 export interface PrismaProfile {
   id: string;
@@ -110,4 +111,22 @@ export const authRouter = createTRPCRouter({
         };
       }
     }),
+  get_details: protectedProcedure.query(async ({ ctx }) => {
+    const user = await ctx.db.profile.findUnique({
+      where: {
+        id: ctx.user.id,
+      },
+    });
+    return user;
+  }),
+  randomNumber: publicProcedure.subscription(() => {
+    return observable<number>((emit) => {
+      const int = setInterval(() => {
+        emit.next(Math.random());
+      }, 500);
+      return () => {
+        clearInterval(int);
+      };
+    });
+  }),
 });
