@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { appRouter } from "@src/server/api/root";
 import { createTRPCContext } from "@src/server/api/trpc";
 import { COOKIE_KEY } from "@src/utils/constants/constants";
@@ -37,4 +39,6 @@ export default createNextApiHandler({
     }
     return {};
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 });

@@ -16,9 +16,6 @@ import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import getConfig from "next/config";
 import superjson from "superjson";
-const { publicRuntimeConfig } = getConfig();
-
-const { APP_URL, } = publicRuntimeConfig;
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.APP_URL) return process.env.APP_URL;
@@ -53,9 +50,9 @@ export const api = createTRPCNext<AppRouter>({
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
-        // wsLink({
-        //   client: wsClient,
-        // }),
+        wsLink({
+          client: wsClient,
+        }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
         }),

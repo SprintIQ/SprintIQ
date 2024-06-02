@@ -19,7 +19,7 @@ const Hero: NextPage = () => {
         </h1>
         <Subtract className="absolute inset-x-0 top-8 mx-auto w-3/4 lg:top-20" />
       </div>
-      <div className="md:mx-auto mx-8 mt-12 w-fit rounded-3xl border border-secondary-700 lg:px-6 px-3 py-3">
+      <div className="mx-8 mt-12 w-fit rounded-3xl border border-secondary-700 px-3 py-3 md:mx-auto lg:px-6">
         <p className="">
           Conquer Quizzes, Expand Knowledge, and Thrive in the Blockchain
           Revolution

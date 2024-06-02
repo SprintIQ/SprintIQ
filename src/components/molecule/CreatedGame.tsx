@@ -15,7 +15,7 @@ import { toast } from "sonner";
 
 import Spinner from "../ui/Spinner";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ICreatedGameProps extends Game { }
+export interface ICreatedGameProps extends Game {}
 
 const CreatedGame: React.FC<ICreatedGameProps> = props => {
   const { mutateAsync, isLoading, data } =

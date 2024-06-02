@@ -50,7 +50,7 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
     >
       <div className=" flex w-full flex-row flex-wrap items-start justify-start gap-[20px] md:gap-[38px]">
         <button
-          className="hover:bg-forestgreen box-border flex  w-full lg:w-[300px] flex-1 cursor-pointer flex-row items-start justify-center whitespace-nowrap rounded-[2.5rem] bg-[#1FC04D] px-5 py-4 [border:none]"
+          className="hover:bg-forestgreen box-border flex  w-full flex-1 cursor-pointer flex-row items-start justify-center whitespace-nowrap rounded-[2.5rem] bg-[#1FC04D] px-5 py-4 [border:none] lg:w-[300px]"
           style={buttonPrimary1Style}
           onClick={onButtonPrimaryClick}
         >
@@ -62,7 +62,7 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
           </div>
         </button>
         <button
-          className="hover:bg-forestgreen box-border flex w-full lg:w-[300px] cursor-pointer flex-row items-start justify-center rounded-[40px] bg-[#1FC04D] px-5 py-4 [border:none]"
+          className="hover:bg-forestgreen box-border flex w-full cursor-pointer flex-row items-start justify-center rounded-[40px] bg-[#1FC04D] px-5 py-4 [border:none] lg:w-[300px]"
           onClick={onButtonPrimary1Click}
         >
           <div className="text-11xl font-inter mq450:text-lg mq1050:text-5xl relative inline-block w-[83px] min-w-[83px] text-center text-white">

@@ -1,3 +1,4 @@
+import Spinner from "@src/components/ui/Spinner";
 import { api } from "@src/utils/api";
 import { Routes } from "@src/utils/constants/constants";
 import { useRouter } from "next/router";
@@ -5,7 +6,6 @@ import * as React from "react";
 
 import Button from "../ui/Button";
 import Option from "./Option";
-import Spinner from "@src/components/ui/Spinner";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IGameProps {
@@ -91,7 +91,7 @@ const Game: React.FC<IGameProps> = props => {
   }, [data?.current_question, isLoading]);
 
   return isLoading ? (
-    <section className="grid items-center min-h-screen">
+    <section className="grid min-h-screen items-center">
       <Spinner />
     </section>
   ) : (
