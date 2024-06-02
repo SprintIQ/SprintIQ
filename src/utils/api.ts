@@ -26,10 +26,9 @@ const getBaseUrl = () => {
     return `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
-console.log(WS_URL);
-// const wsClient = createWSClient({
-//   url: `ws://172-232-109-30.ip.linodeusercontent.com:3001`,
-// });
+const wsClient = createWSClient({
+  url: process.env.WS_URL ?? `ws://localhost:3000`,
+});
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({

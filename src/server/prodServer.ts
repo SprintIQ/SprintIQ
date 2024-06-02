@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { createServer } from "node:http";
 import { parse } from "node:url";
 

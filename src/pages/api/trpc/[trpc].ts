@@ -1,11 +1,10 @@
-import { env } from "@src/env";
 import { appRouter } from "@src/server/api/root";
 import { createTRPCContext } from "@src/server/api/trpc";
 import { COOKIE_KEY } from "@src/utils/constants/constants";
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 
 // export API handler
-const ENV = env.NODE_ENV;
+const ENV = process.env.NODE_ENV;
 export default createNextApiHandler({
   router: appRouter,
   createContext: createTRPCContext,
