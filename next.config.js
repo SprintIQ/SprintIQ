@@ -20,6 +20,11 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    APP_URL: process.env.APP_URL,
+    WS_URL: process.env.WS_URL,
+  },
   images: {
     remotePatterns: [
       {

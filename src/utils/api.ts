@@ -13,12 +13,17 @@ import {
 } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import getConfig from "next/config";
 import superjson from "superjson";
+const { publicRuntimeConfig } = getConfig();
 
+const { APP_URL, WS_URL } = publicRuntimeConfig;
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.APP_URL) return process.env.APP_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+  if (process.env.RENDER_EXTERNAL_HOSTNAME)
+    return `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 const wsClient = createWSClient({
@@ -47,9 +52,9 @@ export const api = createTRPCNext<AppRouter>({
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
-        wsLink({
-          client: wsClient,
-        }),
+        // wsLink({
+        //   client: wsClient,
+        // }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
         }),
