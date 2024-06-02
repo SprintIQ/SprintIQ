@@ -4,16 +4,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build",
+    "build:1-next": "cross-env NODE_ENV=production next build",
+    "build:2-server": "tsc --project tsconfig.server.json",
+    "build": "run-s build:*",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start",
     "ws:start": "bun run ./src/server/wsServer.ts",
+    "start": "cross-env NODE_ENV=production bun run dist/server/prodServer.js",
     "typecheck": "tsc --pretty --noEmit",
-    "prepare": "husky"
+    "server:build": "tsc --build tsconfig.json .",
+    "prepare": "husky && ts-patch install -s"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.29.0",
@@ -33,6 +36,7 @@
     "@trpc/react-query": "^10.45.1",
     "@trpc/server": "^10.45.1",
     "clsx": "^2.1.0",
+    "cross-env": "^7.0.3",
     "events": "^3.3.0",
     "firebase": "^10.10.0",
     "firebase-admin": "^12.0.0",
@@ -76,12 +80,15 @@
     "eslint-plugin-tailwindcss": "^3.15.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "prisma": "^5.12.0",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.4.2"
+    "ts-patch": "^3.1.2",
+    "typescript": "^5.4.2",
+    "typescript-transform-paths": "^3.4.7"
   },
   "ct3aMetadata": {
     "initVersion": "7.29.0"

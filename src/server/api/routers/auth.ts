@@ -4,8 +4,8 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@src/server/api/trpc";
+import { observable } from "@trpc/server/observable";
 import { z } from "zod";
-import {observable} from "@trpc/server/observable";
 
 export interface PrismaProfile {
   id: string;
@@ -120,7 +120,7 @@ export const authRouter = createTRPCRouter({
     return user;
   }),
   randomNumber: publicProcedure.subscription(() => {
-    return observable<number>((emit) => {
+    return observable<number>(emit => {
       const int = setInterval(() => {
         emit.next(Math.random());
       }, 500);

@@ -154,10 +154,9 @@ export const sendFundsToPlayers = async (
     const percentages: number[] = [];
 
     // Iterate over the array of wallet addresses and percentages
-    for (const [
-      index,
-      { wallet_address, percentage },
-    ] of walletAddressesAndPercentages.entries()) {
+    for (const [index, { wallet_address, percentage }] of Object.entries(
+      walletAddressesAndPercentages,
+    )) {
       // Get the associated token address for each wallet address
       if (wallet_address) {
         const walletAddress = new PublicKey(wallet_address);
@@ -168,7 +167,7 @@ export const sendFundsToPlayers = async (
           usdcDevCoinMintAddress,
           walletAddress,
           signTransaction,
-          index,
+          parseInt(index),
         );
 
         // Store the token address and percentage

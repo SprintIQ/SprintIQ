@@ -22,7 +22,7 @@ const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 const wsClient = createWSClient({
-  url: process.env.WS_URL ?? `ws://localhost:3001`,
+  url: process.env.WS_URL ?? `ws://localhost:3000`,
 });
 
 /** A set of type-safe react-query hooks for your tRPC API. */
