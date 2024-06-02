@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /**
  * This is the client-side entrypoint for your tRPC API. It is used to create the `api` object which
  * contains the Next.js App-wrapper, as well as your type-safe React Query hooks.
@@ -17,7 +18,7 @@ import getConfig from "next/config";
 import superjson from "superjson";
 const { publicRuntimeConfig } = getConfig();
 
-const { APP_URL, WS_URL } = publicRuntimeConfig;
+const { APP_URL, } = publicRuntimeConfig;
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.APP_URL) return process.env.APP_URL;
