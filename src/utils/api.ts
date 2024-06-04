@@ -20,14 +20,15 @@ import superjson from "superjson";
 dotenv.config();
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return window.location.origin;
-  if (process.env.APP_URL) return process.env.APP_URL;
+  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
   if (process.env.RENDER_EXTERNAL_HOSTNAME)
     return `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
+console.log(process.env.WS_URL);
 const wsClient = createWSClient({
-  url: process.env.WS_URL ?? `ws://localhost:3000`,
+  url: process.env.NEXT_PUBLIC_WS_URL ?? `ws://localhost:3000`,
 });
 
 /** A set of type-safe react-query hooks for your tRPC API. */
