@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:prepare": "rm -r ./dist",
     "build:1-next": "cross-env NODE_ENV=production next build",
     "build:2-server": "tsc --project tsconfig.server.json",
     "build": "run-s build:*",
