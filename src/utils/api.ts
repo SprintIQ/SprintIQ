@@ -14,10 +14,12 @@ import {
 } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import dotenv from "dotenv";
 import getConfig from "next/config";
 import superjson from "superjson";
+dotenv.config();
 const getBaseUrl = () => {
-  if (typeof window !== "undefined") return ""; // browser should use relative url
+  if (typeof window !== "undefined") return window.location.origin;
   if (process.env.APP_URL) return process.env.APP_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
   if (process.env.RENDER_EXTERNAL_HOSTNAME)
