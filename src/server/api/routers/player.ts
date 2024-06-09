@@ -4,8 +4,6 @@ import {
   protectedProcedure,
   wsRoute,
 } from "@src/server/api/trpc";
-import { observable } from "@trpc/server/observable";
-import { EventEmitter } from "events";
 import { z } from "zod";
 
 export interface PrismaProfile {
@@ -22,14 +20,13 @@ export interface Winners {
   user_id: string;
   _sum: { points: number | null };
   _max: { created_at: Date | null };
-  id?: string | undefined;
-  wallet_address?: string | undefined;
-  username?: string | undefined;
-  nonce?: number | undefined;
-  avatar_url?: string | undefined;
-  created_at?: Date | undefined;
+  id?: string | null;
+  wallet_address?: string | null;
+  username?: string | null;
+  nonce?: number | null;
+  avatar_url?: string | null;
+  created_at?: Date | null;
 }
-const ee = new EventEmitter();
 export const playerRouter = createTRPCRouter({
   game_result: wsRoute
     .input(
@@ -37,16 +34,60 @@ export const playerRouter = createTRPCRouter({
         game_id: z.string(),
       }),
     )
-    .subscription(({ input, ctx }) => {
-      return observable<{ ended: boolean; data: Array<Winners> }>(emit => {
-        ee.on(`game_finished_${input.game_id}`, data => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          emit.next({ ended: true, data: data || [] });
-        });
-        return () => {
-          ee.off(`game_finished_${input.game_id}`, () => {});
-        };
+    .query(async ({ input, ctx }) => {
+      const game = await ctx.db.game.findFirst({
+        where: {
+          id: input.game_id,
+          status: HistoryType.completed,
+        },
+        include: {
+          percentages: true,
+        },
       });
+      if (!game) {
+        return {
+          ended: true,
+          data: [],
+        };
+      }
+      const positions = game?.percentages ?? [];
+      const history = await ctx.db.profileHistory.groupBy({
+        by: ["user_id"],
+        take: positions.length,
+        where: {
+          game_id: input.game_id,
+          status: HistoryType.answered,
+        },
+        orderBy: [
+          {
+            _sum: {
+              points: "desc",
+            },
+          },
+          {
+            _max: {
+              created_at: "asc",
+            },
+          },
+        ],
+        _sum: {
+          points: true,
+        },
+        _max: {
+          created_at: true,
+        },
+      });
+      const winners: Winners[] = await Promise.all(
+        history.map(async val => {
+          const user = await ctx.db.profile.findUnique({
+            where: {
+              id: val.user_id,
+            },
+          });
+          return { ...user, ...val };
+        }),
+      );
+      return { ended: true, data: winners };
     }),
   join_game: protectedProcedure
     .input(
@@ -560,7 +601,6 @@ export const playerRouter = createTRPCRouter({
           return { ...user, ...val };
         }),
       );
-      ee.emit(`game_finished_${input.game_id}`, winners); // send notifications to winner
       await Promise.all(
         winners.map(async (val, index) => {
           const exists = await ctx.db.notification.findFirst({

@@ -70,7 +70,7 @@ export const authRouter = createTRPCRouter({
       };
       return {
         success: true,
-        user: user,
+        user,
       };
     } catch (e) {
       return {

@@ -155,7 +155,6 @@ export const loginProcedure = publicProcedure.use(
 );
 export const protectedProcedure = t.procedure.use(
   t.middleware(async ({ ctx, next }) => {
-    console.log({ data: ctx._session, ctx });
     if (!ctx._session) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }

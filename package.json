@@ -4,16 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:1-next": "cross-env NODE_ENV=production next build",
-    "build:2-server": "tsc --project tsconfig.server.json",
-    "build": "run-s build:*",
+    "build": "cross-env NODE_ENV=production next build",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "ws:start": "bun run ./src/server/wsServer.ts",
-    "start": "cross-env NODE_ENV=production bun run dist/src/server/prodServer.js",
+    "start": "next start",
     "typecheck": "tsc --pretty --noEmit",
     "server:build": "tsc --build tsconfig.json .",
     "prepare": "husky && ts-patch install -s"

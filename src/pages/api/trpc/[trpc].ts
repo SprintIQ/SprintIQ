@@ -19,9 +19,9 @@ export default createNextApiHandler({
           );
         }
       : undefined,
+
   responseMeta({ ctx, paths, errors }) {
     const allOk = errors.length === 0;
-    console.log("Setting cookie...");
     if (
       allOk &&
       ctx?._session &&
@@ -40,5 +40,4 @@ export default createNextApiHandler({
     return {};
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
 });

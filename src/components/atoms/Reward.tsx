@@ -19,18 +19,17 @@ const Reward: React.FC<IRewardProps> = props => {
       winner => winner.wallet_address === data?.wallet_address,
     );
   };
-  api.player.game_result.useSubscription(
-    { game_id: props.gameId ?? "" },
-    {
-      onData(game) {
-        if (game.ended) {
-          setEnded(true);
-          const isWinner = handleWinnerCheck(game.data);
-          setWinner(isWinner);
-        }
-      },
-    },
-  );
+  const { data: winners } = api.player.game_result.useQuery({
+    game_id: props.gameId ?? "",
+  });
+  React.useEffect(() => {
+    if (winners?.ended) {
+      setEnded(true);
+      if (winners.data) {
+        setWinner(handleWinnerCheck(winners.data));
+      }
+    }
+  }, [winners]);
 
   let content;
   if (!gameEnded || isLoading) {
