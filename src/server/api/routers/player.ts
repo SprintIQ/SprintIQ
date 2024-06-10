@@ -4,6 +4,7 @@ import {
   protectedProcedure,
   wsRoute,
 } from "@src/server/api/trpc";
+import { positionHelper } from "@src/utils/lib";
 import { z } from "zod";
 
 export interface PrismaProfile {
@@ -375,6 +376,7 @@ export const playerRouter = createTRPCRouter({
             points: totalPoints,
           },
         });
+
         return {
           success: true,
           message: "Finished Game",
@@ -617,7 +619,7 @@ export const playerRouter = createTRPCRouter({
           await ctx.db.notification.create({
             data: {
               user_id: val.user_id,
-              message: `you took position ${index + 1}`,
+              message: `Congratulations! You just claimed ${positionHelper(index + 1)} position for ${game?.title}`,
               ref_id: input.game_id,
             },
           });

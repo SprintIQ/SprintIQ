@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Status } from "@prisma/client";
+import { HistoryType, Status } from "@prisma/client";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -551,6 +551,42 @@ export const gameRouter = createTRPCRouter({
           status: input.status,
         },
       });
+      if (input.status === Status.completed) {
+        const history = await ctx.db.profileHistory.groupBy({
+          by: ["user_id"],
+          where: {
+            game_id: input.game_id,
+            status: HistoryType.answered,
+          },
+          orderBy: [
+            {
+              _sum: {
+                points: "desc",
+              },
+            },
+            {
+              _max: {
+                created_at: "asc",
+              },
+            },
+          ],
+          _sum: {
+            points: true,
+          },
+          _max: {
+            created_at: true,
+          },
+        });
+        for (const data of history) {
+          await ctx.db.notification.create({
+            data: {
+              user_id: data.user_id,
+              message: `Thank you for joining ${gameStarted?.title}`,
+              ref_id: input.game_id,
+            },
+          });
+        }
+      }
       return {
         success: true,
         message: "Game Started Successfully",
