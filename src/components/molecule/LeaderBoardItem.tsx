@@ -39,9 +39,9 @@ const LeaderBoardItem: React.FC<ILeaderBoardItemProps> = props => {
         <div className="flex items-center space-x-4">
           <span>{props.username}</span>
           <span>
-            <Image
+            <img
               src={props?.avatar_url!}
-              alt={props?.username!}
+              alt={props?.username}
               width={40}
               height={40}
             />
