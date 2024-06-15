@@ -14,6 +14,7 @@ export default function Page() {
   const { login } = useContext(ProfileContext);
   const { push } = useRouter();
   const { setVisible: setModalVisible } = useWalletModal();
+  const [isFirstConnect, setIsFirstConnect] = React.useState(false);
   const {
     buttonState,
     onConnect,
@@ -22,10 +23,9 @@ export default function Page() {
     walletIcon,
     walletName,
   } = useWalletMultiButton({
-    onSelectWallet({ wallets, onSelectWallet }) {
+    onSelectWallet() {
       setModalVisible(true);
-      console.log({ wallets, onSelectWallet });
-      console.log(wallets.toLocaleString());
+      setIsFirstConnect(true);
     },
   });
   const handleRedirect = () => {
@@ -47,6 +47,11 @@ export default function Page() {
         });
     }
   };
+  useEffect(() => {
+    if (isFirstConnect) {
+      handleRedirect();
+    }
+  }, [publicKey, isFirstConnect]);
   const content = useMemo(() => {
     if (publicKey) {
       const base58 = publicKey.toBase58();
@@ -61,6 +66,7 @@ export default function Page() {
       case "no-wallet":
         console.log("no wallet");
         onSelectWallet?.();
+        handleRedirect();
         break;
       case "has-wallet":
         console.log("has wallet");
