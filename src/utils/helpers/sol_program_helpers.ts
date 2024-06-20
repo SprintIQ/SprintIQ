@@ -61,15 +61,14 @@ export const sendFunds = async (
     );
 
     const [tokenAccountOwnerPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("token_account_owner_pda"), publicKey.toBuffer()],
+      [publicKey.toBuffer().subarray(0, 3)],
       programId,
     );
 
     const [tokenVault] = PublicKey.findProgramAddressSync(
       [
-        Buffer.from("sprint_iq_token_vault"),
-        usdcDevCoinMintAddress.toBuffer(),
-        publicKey.toBuffer(),
+        usdcDevCoinMintAddress.toBuffer().subarray(0, 3),
+        publicKey.toBuffer().subarray(0, 3),
       ],
       programId,
     );
