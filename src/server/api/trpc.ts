@@ -38,7 +38,7 @@ type CreateContextOptions = Record<string, never>;
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
 const createInnerTRPCContext = (_opts: CreateNextContextOptions): Context => {
-  const session: string | undefined = _opts?.req.cookies[COOKIE_KEY];
+  const session: string | undefined = _opts?.req?.cookies?.[COOKIE_KEY];
   return {
     db,
     helper: HelperService,
@@ -53,7 +53,7 @@ const createInnerTRPCContext = (_opts: CreateNextContextOptions): Context => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
+export const createTRPCContext = (_opts: any) => {
   return createInnerTRPCContext(_opts);
 };
 
@@ -78,7 +78,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     };
   },
 });
-
+export const wsRoute = t.procedure;
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
@@ -141,6 +141,7 @@ export const loginProcedure = publicProcedure.use(
 );
 export const protectedProcedure = t.procedure.use(
   t.middleware(async ({ ctx, next }) => {
+    console.log({ data: ctx._session });
     if (!ctx._session) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }

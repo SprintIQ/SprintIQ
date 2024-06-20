@@ -1,3 +1,4 @@
+import { type Notification } from "@prisma/client";
 import { api } from "@src/utils/api";
 import { Routes } from "@src/utils/constants/constants";
 import Link from "next/link";
@@ -12,11 +13,7 @@ import Spinner from "../ui/Spinner";
 export interface INotificationProps {
   gameId: string;
 }
-interface INotification {
-  user_id: string;
-  message: string;
-  ref_id: string;
-}
+type INotification = Notification;
 const Notification: React.FC<INotificationProps> = props => {
   const { mutateAsync, data, isLoading } =
     api.player.get_notifications.useMutation();
@@ -28,9 +25,9 @@ const Notification: React.FC<INotificationProps> = props => {
     const newPlayers = (
       await mutateAsync({
         limit: PAGE_SIZE,
-        skip: players.length,
+        skip: reset ? 0 : players.length,
       })
-    )?.notifications as Array<INotification>;
+    )?.notifications;
     if (newPlayers.length < PAGE_SIZE) {
       setNoMoreFetch(true);
     }
@@ -66,9 +63,7 @@ const Notification: React.FC<INotificationProps> = props => {
   } else {
     content = (
       <div className="flex flex-col space-y-6">
-        {data?.notifications?.map(val => (
-          <NotificationItem key={val.id} {...val} />
-        ))}
+        {players?.map(val => <NotificationItem key={val.id} {...val} />)}
 
         {!noMoreFetch && !firstFetch && (
           <Button

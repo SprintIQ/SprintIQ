@@ -5,6 +5,7 @@ import * as React from "react";
 
 import Button from "../ui/Button";
 import Option from "./Option";
+import Spinner from "@src/components/ui/Spinner";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IGameProps {
@@ -22,36 +23,33 @@ const Game: React.FC<IGameProps> = props => {
     api.player.answer_question.useMutation();
   const { mutateAsync: getAnswered, data: answered } =
     api.player.get_answered.useMutation();
-
+  const { data: userData, isLoading: userDataIsLoading } =
+    api.auth.get_details.useQuery();
   const [count, setCount] = React.useState(-1);
   const [answers, setAnswered] = React.useState(false);
-  const [answering, setAnswering] = React.useState(false);
   const { push } = useRouter();
-  const handleAnswer = (option_id: string, time_elapsed?: boolean) => {
+  const handleAnswer = async (option_id: string, time_elapsed?: boolean) => {
     if (!data) return;
-    setAnswering(true);
-    setAnswering(true);
-    void mutateAsync({
+    const res = await mutateAsync({
       game_id: props.gameId,
       question_id: data?.current_question?.id ?? "",
       option_id,
       time_elapsed,
-    }).then(res => {
-      setTimeout(() => {
-        setAnswered(res.success);
-      }, 2000);
-      if (res.success && parseInt(props.page) < data?.questions.length) {
-        setTimeout(() => {
-          void push(
-            `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
-          ).then(() => {
-            setAnswering(false);
-            setAnswered(false);
-            setCount(-1);
-          });
-        }, 5000);
-      }
     });
+    setTimeout(() => {
+      setAnswered(res.success);
+      // add a little delay before moving to the next question
+    }, 2000);
+    if (res.success && parseInt(props.page) < data?.questions.length) {
+      setTimeout(() => {
+        void push(
+          `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
+        ).then(() => {
+          setAnswered(false);
+          setCount(-1);
+        });
+      }, 5000);
+    }
   };
   React.useEffect(() => {
     void getQuestions({
@@ -59,37 +57,27 @@ const Game: React.FC<IGameProps> = props => {
       page: parseInt(props.page),
     });
   }, [props]);
+  const handleAnswered = async () => {
+    if (!(data?.current_question?.id && props.gameId)) return;
+    const res = await getAnswered({
+      game_id: props.gameId,
+      question_id: data?.current_question?.id,
+    });
+    if (res.success && parseInt(props.page) < data?.questions.length) {
+      setTimeout(() => {
+        void push(
+          `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
+        ).then(() => setCount(-1));
+      }, 3000);
+    }
+  };
   React.useEffect(() => {
     if (isLoading) return;
-    if (data?.current_question?.id && props.gameId) {
-      void getAnswered({
-        game_id: props.gameId,
-        question_id: data?.current_question?.id,
-      }).then(res => {
-        if (res.success && parseInt(props.page) < data?.questions.length) {
-          setTimeout(() => {
-            void push(
-              `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
-            ).then(() => setCount(-1));
-          }, 3000);
-        }
-      });
-    }
+    void handleAnswered();
     const timerId = setInterval(() => {
-      const duration = (data?.current_question?.duration ?? 0);
+      const duration = data?.current_question?.duration ?? 0;
       if (duration > 0) {
         setCount(prevCount => {
-          if (
-            (data?.current_question?.duration ?? 0) > 0 &&
-            prevCount - 1 === 0
-          ) {
-            console.log(
-              "ran",
-              data?.current_question?.duration ?? 0,
-              prevCount,
-            );
-            // handleAnswer("", true);
-          }
           return prevCount === -1
             ? duration
             : prevCount > 0
@@ -103,11 +91,11 @@ const Game: React.FC<IGameProps> = props => {
   }, [data?.current_question, isLoading]);
 
   return isLoading ? (
-    <section className="grid items-center text-center">
-      <span>Loading.....</span>
+    <section className="grid items-center min-h-screen">
+      <Spinner />
     </section>
   ) : (
-    <section className="relative py-4 self-stretch flex flex-col items-start justify-start text-center text-sm text-white font-inter">
+    <section className="font-inter relative flex flex-col items-start justify-start self-stretch py-4 text-center text-sm text-white">
       {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         (answers || answered?.success) && (
@@ -132,19 +120,21 @@ const Game: React.FC<IGameProps> = props => {
               <Button
                 text="Finish"
                 className="mx-auto mt-4 px-6 py-2 text-lg text-white"
-                onClick={() => push(`/dashboard/${Routes.REWARD}`)}
+                onClick={() =>
+                  push(`/dashboard/${Routes.REWARD}?gameId=${props.gameId}`)
+                }
               />
             )}
           </div>
         )
       }
-      <div className="self-stretch flex flex-row items-start justify-center py-0 px-5 mb-4">
-        <div className="flex flex-row items-start justify-start py-0 px-9 relative border-[1px] border-solid rounded-full border-secondary-700">
-          <div className="h-[27px] w-[123px] relative box-border hidden z-[0] border-[1px] border-solid rounded-full border-secondary-700" />
-          <div className="relative leading-[23px] inline-block min-w-[51px] z-[1] rounded-full border-secondary-700">
-            Jaylove
+      <div className="mb-4 flex flex-row items-start justify-center self-stretch px-5 py-0">
+        <div className="relative flex flex-row items-start justify-start rounded-full border-[1px] border-solid border-secondary-700 px-9 py-0">
+          <div className="relative z-[0] box-border hidden h-[27px] w-[123px] rounded-full border-[1px] border-solid border-secondary-700" />
+          <div className="relative z-[1] inline-block rounded-full border-secondary-700 px-8 py-4 leading-[23px]">
+            {userDataIsLoading ? "Loading..." : userData?.username}
           </div>
-          <div className="h-full w-full absolute !m-[0] top-[0px] right-[0px] bottom-[0px] left-[0px] rounded-3xl box-border z-[2] border-[1px] border-solid border-secondary-700" />
+          <div className="absolute bottom-[0px] left-[0px] right-[0px] top-[0px] z-[2] !m-[0] box-border h-full w-full rounded-3xl border-[1px] border-solid border-secondary-700" />
         </div>
       </div>
       <div className="h-full w-full border-y-2 border-secondary-700 px-12 py-4 text-lg">
@@ -187,8 +177,3 @@ const Game: React.FC<IGameProps> = props => {
   );
 };
 export default Game;
-
-
-
-
-

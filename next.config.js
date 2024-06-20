@@ -20,8 +20,17 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    APP_URL: process.env.APP_URL,
+    WS_URL: process.env.WS_URL,
+  },
   images: {
-    domains: ["firebasestorage.googleapis.com"],
+    remotePatterns: [
+      {
+        hostname: "firebasestorage.googleapis.com",
+      },
+    ],
     dangerouslyAllowSVG: true,
   },
 };

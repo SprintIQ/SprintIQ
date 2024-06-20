@@ -13,13 +13,22 @@ export default function Page() {
   const createUser = api.auth.create.useMutation();
   const { login } = useContext(ProfileContext);
   const { push } = useRouter();
-  const { buttonState, onConnect, publicKey } = useWalletMultiButton({
+  const { setVisible: setModalVisible } = useWalletModal();
+  const {
+    buttonState,
+    onConnect,
+    publicKey,
+    onSelectWallet,
+    walletIcon,
+    walletName,
+  } = useWalletMultiButton({
     onSelectWallet({ wallets, onSelectWallet }) {
       setModalVisible(true);
       console.log({ wallets, onSelectWallet });
+      console.log(wallets.toLocaleString());
     },
   });
-  useEffect(() => {
+  const handleRedirect = () => {
     if (publicKey) {
       void createUser
         .mutateAsync({
@@ -32,12 +41,12 @@ export default function Page() {
           }
           void login(res.user!.wallet_address).then(res => {
             if (res.success) {
-              void push(`/dashboard/${Routes.HOME}`);
+              void push(`/dashboard/${Routes.HOME}?state=connected`);
             }
           });
         });
     }
-  }, [publicKey]);
+  };
   const content = useMemo(() => {
     if (publicKey) {
       const base58 = publicKey.toBase58();
@@ -46,18 +55,23 @@ export default function Page() {
       return LABELS[buttonState];
     }
   }, [buttonState, publicKey]);
-  const { setVisible: setModalVisible } = useWalletModal();
   const handleSignIn = () => {
+    console.log("signin in....", buttonState);
     switch (buttonState) {
       case "no-wallet":
-        setModalVisible(true);
+        console.log("no wallet");
+        onSelectWallet?.();
         break;
       case "has-wallet":
+        console.log("has wallet");
         if (onConnect) {
+          console.log("has wallet connect");
           onConnect();
+          handleRedirect();
         }
         break;
       case "connected":
+        handleRedirect();
         // redirect user to dashboard
         break;
     }

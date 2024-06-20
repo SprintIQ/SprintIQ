@@ -5,16 +5,31 @@
  * We also create a few inference helpers for input and output types.
  */
 import { type AppRouter } from "@src/server/api/root";
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import {
+  createWSClient,
+  httpBatchLink,
+  loggerLink,
+  wsLink,
+} from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import getConfig from "next/config";
 import superjson from "superjson";
+const { publicRuntimeConfig } = getConfig();
 
+const { APP_URL, WS_URL } = publicRuntimeConfig;
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
+  if (process.env.APP_URL) return process.env.APP_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+  if (process.env.RENDER_EXTERNAL_HOSTNAME)
+    return `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
+console.log(WS_URL);
+// const wsClient = createWSClient({
+//   url: `ws://172-232-109-30.ip.linodeusercontent.com:3001`,
+// });
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
@@ -38,6 +53,9 @@ export const api = createTRPCNext<AppRouter>({
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
+        // wsLink({
+        //   client: wsClient,
+        // }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
         }),
