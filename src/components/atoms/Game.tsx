@@ -140,7 +140,7 @@ const Game: React.FC<IGameProps> = props => {
       <div className="h-full w-full border-y-2 border-secondary-700 px-12 py-4 text-lg">
         <div className="flex justify-between">
           <div className="flex flex-col space-y-2">
-            <h1 className="w-36 rounded-full border-2 border-secondary-100 bg-secondary-700 px-3 py-1 text-right">
+            <h1 className="w-20 rounded-full border-2 border-secondary-100 bg-secondary-700 px-3 py-1 text-right">
               {props.page}/{data?.questions.length}
             </h1>
             <span>Score: {data?.score ?? 0}</span>

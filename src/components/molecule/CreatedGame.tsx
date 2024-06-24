@@ -148,17 +148,6 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
         >
           {isLoading ? <Spinner /> : CTAs[props.status]}
         </button>
-        {Status.ongoing === props.status &&
-          (loading ? (
-            <Spinner />
-          ) : (
-            <button
-              className="w-full text-right text-sm font-medium text-secondary-700"
-              onClick={onDistributeRewards}
-            >
-              End Game
-            </button>
-          ))}
       </div>
     </div>
   );

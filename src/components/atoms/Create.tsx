@@ -205,14 +205,6 @@ const CreateGame: NextPage = () => {
                     </div>
                   </div>
                   <div className=" flex w-1/2 flex-row items-center justify-start ">
-                    {/* <div>
-                      <ImageOrVideoInput
-                        onChange={e => {
-                          handleImageOrVideoChange(questionIndex, e);
-                        }}
-                      />
-                    </div> */}
-
                     <div
                       onClick={() => handleRemoveQuestion(questionIndex)}
                       className=" -mt-3 ml-2 "
@@ -314,7 +306,7 @@ const QuestionInput: React.FC<{
     placeholder="Question"
     value={value}
     onChange={onChange}
-    className="relative box-border w-full border-b-[1px] border-solid border-[#373737] bg-transparent text-[20px] outline-none"
+    className="relative box-border w-full border-b-[1px] border-solid border-[#373737] bg-transparent text-[25px] outline-none"
   />
 );
 
