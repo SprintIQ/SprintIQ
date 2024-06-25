@@ -29,14 +29,14 @@ const LeaderBoardItem: React.FC<ILeaderBoardItemProps> = props => {
     }
   };
   return (
-    <section className="flex items-center justify-between">
+    <section className="flex items-center justify-between text-center">
       <div className="flex basis-4/12 space-x-8">
         <span
           className={`${renderPositionClassName(props.position)} grid h-10 w-10 place-content-center rounded-full`}
         >
           {props.position}
         </span>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 text-center">
           <span>{props.username}</span>
           <span>
             <img

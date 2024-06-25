@@ -306,7 +306,7 @@ const QuestionInput: React.FC<{
     placeholder="Question"
     value={value}
     onChange={onChange}
-    className="relative box-border w-full border-b-[1px] border-solid border-[#373737] bg-transparent text-[25px] outline-none"
+    className="relative box-border w-full border-b-[1px] border-solid border-[#373737] bg-transparent text-[25px] outline-none text-center"
   />
 );
 

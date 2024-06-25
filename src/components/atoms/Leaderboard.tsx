@@ -40,7 +40,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     );
   } else {
     content = (
-      <div className="flex flex-col space-y-6">
+      <div className="flex flex-col space-y-6 items-center">
         {(data?.history ?? [])?.map((val, index) => (
           <LeaderBoardItem key={val.id} {...val} position={index + 1} />
         ))}
@@ -48,20 +48,21 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     );
   }
   return (
-    <main>
-      <section className="px-6 py-24">
-        <Toaster />
-        <Link href={`/dashboard/${Routes.HOME}`} className="cursor-pointer">
-          <div className="hidden h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent lg:block" />
-        </Link>
-        <div className="mx-auto w-10/12 rounded-xl border border-secondary-700 bg-secondary-300/10">
-          <div className="flex items-center justify-center space-x-2 border-b border-b-secondary-700 py-16 text-center text-3xl font-bold text-secondary-700">
-            <h1>Leaderboard</h1>
-          </div>
-          <div className="px-16 py-8">{content}</div>
-        </div>
-      </section>
-    </main>
+   <main>
+  <section className="px-4 py-8 flex flex-col justify-center lg:py-24">
+    <Toaster />
+    <Link href={`/dashboard/${Routes.HOME}`} className="cursor-pointer ">
+      <div className="hidden h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent lg:block" />
+    </Link>
+    <div className="mx-auto w-10/12 rounded-xl border border-secondary-700 bg-secondary-300/10 mt-8 lg:mt-16">
+      <div className="flex items-center justify-center space-x-2 border-b border-b-secondary-700 py-4 text-center text-2xl font-bold text-secondary-700">
+        <h1>Leaderboard</h1>
+      </div>
+      <div className="px-4 py-8">{content}</div>
+    </div>
+  </section>
+</main> 
+
   );
 };
 export default Leaderboard;
