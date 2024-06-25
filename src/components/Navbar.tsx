@@ -3,8 +3,8 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { ProfileContext } from "@src/provider/ProfileProvider";
 import { api } from "@src/utils/api";
 import { LABELS, Routes } from "@src/utils/constants/constants";
-import { useRouter } from "next/router";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo } from "react";
 export default function Page() {
   const createUser = api.auth.create.useMutation();

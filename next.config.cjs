@@ -38,9 +38,10 @@ const config = {
 module.exports = config;
 // Injected content via Sentry wizard below
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withSentryConfig } = require("@sentry/nextjs");
 
-module.exports =  withSentryConfig(module.exports, {
+module.exports = withSentryConfig(module.exports, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 

@@ -4,7 +4,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import {
-  PublicKey,
+  type PublicKey,
   SystemProgram,
   SYSVAR_RENT_PUBKEY,
   TransactionInstruction,
