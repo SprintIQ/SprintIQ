@@ -15,12 +15,6 @@ const NotificationItem: React.FC<INotificationItemProps> = props => {
         <h2 className="ml-4 font-medium">{props.message}.</h2>
         {/* <p className="text-gray-500">{moment(props.created_at).fromNow()}</p> */}
         {/* </div> */}
-
-        {props.ref_id && (
-          <button className="ml-4 text-sm font-medium text-secondary-700 lg:text-lg">
-            View Reward
-          </button>
-        )}
       </div>
     </section>
   );
