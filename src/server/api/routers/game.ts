@@ -586,6 +586,20 @@ export const gameRouter = createTRPCRouter({
             },
           });
         }
+        await ctx.db.notification.create({
+          data: {
+            user_id: ctx.user?.id,
+            message: `You just ended ${gameStarted?.title}`,
+            ref_id: input.game_id,
+          },
+        });
+        await ctx.db.notification.create({
+          data: {
+            user_id: ctx.user?.id,
+            message: `Rewards have been successfully distributed to winners of ${gameStarted?.title}`,
+            ref_id: input.game_id,
+          },
+        });
       }
       return {
         success: true,
