@@ -47,7 +47,7 @@ export const playerRouter = createTRPCRouter({
       });
       if (!game) {
         return {
-          ended: true,
+          ended: false,
           data: [],
         };
       }
@@ -100,15 +100,18 @@ export const playerRouter = createTRPCRouter({
       const game = await ctx.db.game.findFirst({
         where: {
           game_code: input.game_code,
-          NOT: {
-            creator_id: ctx.user.id,
-          },
         },
       });
       if (!game) {
         return {
           success: false,
           error: "Game with code not found",
+        };
+      }
+      if (game.creator_id === ctx.user.wallet_address) {
+        return {
+          success: false,
+          error: "You cannot join your own game",
         };
       }
 
@@ -538,7 +541,7 @@ export const playerRouter = createTRPCRouter({
       const pageSize = input.limit ?? 10;
       const notifications = await ctx.db.notification.findMany({
         where: {
-          user_id: ctx.user.id,
+          user_id: { in: [ctx.user.id, ctx.user.wallet_address] },
         },
         skip: input.skip ?? 0,
         take: pageSize,
@@ -615,11 +618,17 @@ export const playerRouter = createTRPCRouter({
             return;
           }
           // send notification
-
           await ctx.db.notification.create({
             data: {
               user_id: val.user_id,
               message: `Congratulations! You just claimed ${positionHelper(index + 1)} position for ${game?.title}`,
+              ref_id: input.game_id,
+            },
+          });
+          await ctx.db.notification.create({
+            data: {
+              user_id: val.user_id,
+              message: `You have received your reward for ${game?.title}`,
               ref_id: input.game_id,
             },
           });
