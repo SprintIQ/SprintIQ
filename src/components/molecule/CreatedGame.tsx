@@ -31,6 +31,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
   // callback not needed here creates more performance overhead than plain functions in this case
   const onDistributeRewards = async () => {
     try {
+      await getWinners.refetch();
       setIsLoading(true);
       // get the winners and creator publickey
       const winners = getWinners.data?.winners;
@@ -141,7 +142,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
         </p>
       </div>
       <div className="flex flex-col items-start space-y-2">
-      <button
+        <button
           disabled={isLoading}
           className="text-right text-sm font-medium text-secondary-700"
           onClick={handleClick}
