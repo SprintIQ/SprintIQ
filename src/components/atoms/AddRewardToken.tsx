@@ -38,7 +38,7 @@ const defaultQuestions = [
 
 const AddRewardToken: NextPage = () => {
   const router = useRouter();
-  const createGame = api.game.full_game_create.useMutation();
+  const createGame = api.game.full_game_create.useMutation<any>();
   const {
     setAmountGlobal,
     setDistributionGlobal,
@@ -54,6 +54,7 @@ const AddRewardToken: NextPage = () => {
   const { connection } = useConnection();
   const anchor_wallet = useAnchorWallet();
   const wallet = useWallet();
+  const publickey = wallet.publicKey;
   // console.log("anchor_wallet", anchor_wallet);
   // console.log("quizTitleGlobal", quizTitleGlobal);
   // console.log("questionsGlobal", questionsGlobal);
@@ -114,39 +115,42 @@ const AddRewardToken: NextPage = () => {
         return;
       }
 
-      if (wallet.publicKey && anchor_wallet) {
+      if (publickey && anchor_wallet) {
         setIsLoading(true);
-        sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
-          .then(() => {
-            const gameCode = generateGameCode(6);
-            toast("You have successfully deposited");
-            setIsLoading(false);
-            setAmountGlobal(amount);
-            setDistributionGlobal(distribution);
-
-            void createGame
-              .mutateAsync({
-                title: quizTitleGlobal,
-                description: quizTitleGlobal,
-                game_code: gameCode,
-                reward: parseInt(amount, 10),
-                percentages: distribution,
-                questions: questionsGlobal,
-              })
-              .then(res => {
-                console.log("Game created response", res);
+        const gameCode = generateGameCode(6);
+        void createGame
+          .mutateAsync({
+            title: quizTitleGlobal,
+            description: quizTitleGlobal,
+            game_code: gameCode,
+            reward: parseInt(amount, 10),
+            percentages: distribution,
+            questions: questionsGlobal,
+          })
+          .then(res => {
+            console.log("Game created response", res);
+            const gameId = res.game?.id;
+            if (!gameId) {
+              throw new Error("Game Id not provided");
+            }
+            sendFunds(publickey, anchor_wallet, connection, gameId, amount)
+              .then(() => {
+                toast("You have successfully deposited");
+                setIsLoading(false);
+                setAmountGlobal(amount);
+                setDistributionGlobal(distribution);
                 toast("You game has been sucessfully created");
                 void router.push(`/dashboard/get-code?param=${gameCode}`);
               })
               .catch(err => {
-                console.error("Error creating game", err);
-                toast("Creating the game failed pls try again");
+                console.error(err);
+                toast("Depositing the funds failed pls try again");
                 setIsLoading(false);
               });
           })
           .catch(err => {
-            console.error(err);
-            toast("Depositing the funds failed pls try again");
+            console.error("Error creating game", err);
+            toast("Creating the game failed pls try again");
             setIsLoading(false);
           });
       }

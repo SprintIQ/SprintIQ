@@ -37,6 +37,7 @@ export const sendFunds = async (
   publicKey: PublicKey,
   anchor_wallet: AnchorWallet,
   connection: Connection,
+  gameId: string,
   amount: string,
 ) => {
   console.log("---working");
@@ -66,10 +67,7 @@ export const sendFunds = async (
     );
 
     const [tokenVault] = PublicKey.findProgramAddressSync(
-      [
-        usdcDevCoinMintAddress.toBuffer().subarray(0, 3),
-        publicKey.toBuffer().subarray(0, 3),
-      ],
+      [Buffer.from(gameId)],
       programId,
     );
 
@@ -82,7 +80,7 @@ export const sendFunds = async (
     };
     //Initialization transaction
     const txHash = await program.methods
-      .initAndSendFunds(new BN(parseInt(amount) * mintDecimals))
+      .initAndSendFunds(gameId, new BN(parseInt(amount) * mintDecimals))
       .accounts({
         tokenAccountOwnerPda: tokenAccountOwnerPda,
         vaultTokenAccount: tokenVault,
@@ -110,6 +108,7 @@ export const sendFundsToPlayers = async (
   publicKey: PublicKey,
   anchor_wallet: AnchorWallet,
   connection: Connection,
+  gameId: string,
   walletAddressesAndPercentages: WalletAddressesAndPercentages[],
   signTransaction: SignerWalletAdapterProps["signTransaction"],
 ) => {
@@ -128,16 +127,12 @@ export const sendFundsToPlayers = async (
     console.log("here");
 
     const [tokenAccountOwnerPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("token_account_owner_pda"), publicKey.toBuffer()],
+      [publicKey.toBuffer().subarray(0, 3)],
       programId,
     );
 
     const [tokenVault] = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("sprint_iq_token_vault"),
-        usdcDevCoinMintAddress.toBuffer(),
-        publicKey.toBuffer(),
-      ],
+      [Buffer.from(gameId)],
       programId,
     );
 
@@ -197,7 +192,7 @@ export const sendFundsToPlayers = async (
     toast("Now we are sending to funds to all the winners account");
     //send funds to winners transaction
     const txHash = await program.methods
-      .sendFundsToPlayers(Buffer.from(percentages))
+      .sendFundsToPlayers(gameId, Buffer.from(percentages))
       .accounts({
         tokenAccountOwnerPda: tokenAccountOwnerPda,
         vaultTokenAccount: tokenVault,
