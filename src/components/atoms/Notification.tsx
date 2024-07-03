@@ -77,7 +77,7 @@ const Notification: React.FC<INotificationProps> = props => {
   }
   return (
     <main>
-      <section className="px-6 py-24">
+      <section className="py-24">
         <Link href={`/dashboard/${Routes.HOME}`} className="cursor-pointer">
           <div className="hidden h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent lg:block" />
         </Link>
@@ -92,7 +92,7 @@ const Notification: React.FC<INotificationProps> = props => {
               }}
             />
           </div>
-          <div className="px-16 py-8">{content}</div>
+          <div className="min-h-screen flex flex-col px-16 py-12">{content}</div>
         </div>
       </section>
     </main>

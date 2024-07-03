@@ -130,7 +130,7 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
           </Link>
         </section>
       )}
-      <header className="flex w-full items-center justify-between bg-black/[0.12] px-16 py-12">
+      <header className="flex w-full items-center justify-between bg-black/[0.12] px-6 py-12">
         <Image
           className="relative h-5 w-auto lg:h-8"
           loading="lazy"
@@ -141,7 +141,7 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
         />
         <div className="flex items-center justify-start gap-8">
           <Link
-            className="ml-5 mt-2 rounded-lg bg-gradient-to-r from-green-700 via-green-700 to-green-700 px-1.5 py-0.5 text-center text-sm font-medium text-white shadow-lg shadow-green-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-green-300 sm:rounded-xl md:px-6 md:py-2 dark:shadow-lg  dark:shadow-green-800/80 dark:focus:ring-green-800"
+            className="ml-5 mt- rounded-lg bg-gradient-to-r from-green-700 via-green-700 to-green-700 px-1.5 py-0.5 text-center text-sm font-medium text-white shadow-lg shadow-green-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-green-300 sm:rounded-xl md:px-6 md:py-2 dark:shadow-lg  dark:shadow-green-800/80 dark:focus:ring-green-800"
             href="/dashboard/create"
           >
             Create
