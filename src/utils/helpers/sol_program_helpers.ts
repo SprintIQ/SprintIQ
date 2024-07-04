@@ -49,9 +49,10 @@ export const sendFunds = async (
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
     console.log("---provider set up");
-    const programId = new PublicKey(
-      "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
-    );
+    // const programId = new PublicKey(
+    //   "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
+    // );
+    const programId = new PublicKey("FaM1pdQPtMx7QEeFGHKnAUzH1g6exGinTZBkBn3LtXT9")
     console.log(programId);
     const program = new Program(idl as unknown as Idl, programId);
     console.log("here");
@@ -120,9 +121,10 @@ export const sendFundsToPlayers = async (
     const provider = new AnchorProvider(connection, anchor_wallet, {});
     setProvider(provider);
     console.log("---provider set up");
-    const programId = new PublicKey(
-      "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
-    );
+    // const programId = new PublicKey(
+    //   "J1s7LQHYsHS82cw983LA5kC17ZNwBJXRmgVpa6fcWxd",
+    // );
+    const programId = new PublicKey("FaM1pdQPtMx7QEeFGHKnAUzH1g6exGinTZBkBn3LtXT9")
     const program = new Program(idl as unknown as Idl, programId);
     console.log("here");
 
