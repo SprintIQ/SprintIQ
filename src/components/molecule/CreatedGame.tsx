@@ -64,6 +64,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
             creatorPubKey,
             anchor_wallet,
             connection,
+            props.id,
             walletAddressesAndPercentages,
             signTransaction,
           );
