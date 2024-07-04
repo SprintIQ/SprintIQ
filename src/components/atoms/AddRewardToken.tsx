@@ -120,7 +120,7 @@ const AddRewardToken: NextPage = () => {
         setIsLoading(true);
         const gameCode = generateGameCode(6);
 
-        //Hash the gameCode and user's publickey to store as the game unique id 
+        //Hash the gameCode and user's publickey 
         const gameCodeBuffer = Buffer.from(gameCode)
         const pubkeyBuffer = Buffer.from(wallet.publicKey.toString())
         const combinedBuffer = Buffer.concat([gameCodeBuffer,pubkeyBuffer])

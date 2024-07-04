@@ -12,6 +12,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { toast } from "sonner";
+import * as crypto from 'crypto';
 
 import Spinner from "../ui/Spinner";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -28,6 +29,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
   const anchor_wallet = useAnchorWallet();
   const { publicKey, signTransaction } = useWallet();
   const [loading, setIsLoading] = React.useState<boolean>(false);
+  const [isGameEnded, setIsGameEnded] = React.useState<boolean>(false)
   // callback not needed here creates more performance overhead than plain functions in this case
   const onDistributeRewards = async () => {
     try {
@@ -55,7 +57,17 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
           walletAddressesAndPercentages,
         );
         const creatorPubKey = new PublicKey(creator);
-        //console.log("creators publickey", creatorPubKey.toString());
+        if(!props.game_code){
+          return Error("No game code found")
+        }
+        const game_code = props.game_code;
+         //Hash the gameCode and user's publickey 
+         const gameCodeBuffer = Buffer.from(game_code)
+         const pubkeyBuffer = Buffer.from(creatorPubKey.toString())
+         const combinedBuffer = Buffer.concat([gameCodeBuffer,pubkeyBuffer])
+         const hash = crypto.createHash('sha256').update(combinedBuffer).digest();
+         //we are using  the first six characters as the game_id hash
+         const game_id_hash = hash.toString('base64').substring(0,6);
 
         if (signTransaction) {
           console.log("signing transaction");
@@ -64,7 +76,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
             creatorPubKey,
             anchor_wallet,
             connection,
-            props.id,
+            game_id_hash,
             walletAddressesAndPercentages,
             signTransaction,
           );
@@ -75,6 +87,7 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
           });
           toast("Rewards has been delivered successfully");
           setIsLoading(false);
+          setIsGameEnded(true);
         } else {
           toast("Failed to sign transaction, Please try again");
           setIsLoading(false);
@@ -153,12 +166,18 @@ const CreatedGame: React.FC<ICreatedGameProps> = props => {
           (loading ? (
             <Spinner />
           ) : (
-            <button
+           <>
+           {isGameEnded ?  <button
+              className="w-full text-right text-sm font-medium text-white"
+            >
+              Game ended
+            </button>:  <button
               className="w-full text-right text-sm font-medium text-secondary-700"
               onClick={onDistributeRewards}
             >
               End Game
-            </button>
+            </button>}
+           </>
           ))}
       </div>
     </div>
