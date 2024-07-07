@@ -21,6 +21,8 @@ next-env.d.ts
 # production
 /build
 
+dist
+.idea
 # misc
 .DS_Store
 *.pem
@@ -33,8 +35,9 @@ yarn-error.log*
 
 # local env files
 # do not commit any .env files to git, except for the .env.example file. https://create.t3.gg/en/usage/env-variables#using-environment-variables
+
 .env
-.env*.local
+!.env.*.local
 
 # vercel
 .vercel
@@ -47,3 +50,5 @@ run.js
 
 # workspace
 .vscode
+# Sentry Config File
+.env.sentry-build-plugin

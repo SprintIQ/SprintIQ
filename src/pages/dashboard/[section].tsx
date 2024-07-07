@@ -5,18 +5,31 @@ import { type NextPage } from "next";
 
 interface DashboardProps {
   section: Routes;
+  gameId: string;
+  page: string;
+  state: string;
 }
 const Dashboard: NextPage<DashboardProps> = props => {
   return (
     <DashboardLayout>
-      <DashboardContainer currentSection={props.section} />
+      <DashboardContainer
+        currentSection={props.section}
+        gameId={props.gameId}
+        page={props.page}
+        state={props.state}
+      />
     </DashboardLayout>
   );
 };
 
 Dashboard.getInitialProps = async ctx => {
-  const { section } = ctx.query as { section: Routes };
-  return { section };
+  const { section, gameId, page, state } = ctx.query as {
+    section: Routes;
+    gameId: string;
+    page: string;
+    state: string;
+  };
+  return { section, gameId, page, state };
 };
 
 export default Dashboard;

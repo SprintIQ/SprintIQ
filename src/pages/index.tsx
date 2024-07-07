@@ -1,22 +1,34 @@
 import { useWalletMultiButton } from "@solana/wallet-adapter-base-ui";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { CreatorIn, PlayerIn } from "@src/components";
+import GetStarted from "@src/components/icons/GetStarted.icon";
 import { ProfileContext } from "@src/provider/ProfileProvider";
 import { api } from "@src/utils/api";
-import { LABELS } from "@src/utils/constants/constants";
+import { LABELS, Routes } from "@src/utils/constants/constants";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo } from "react";
+
+import Hero from "../components/Hero";
+import Navbar from "../components/Navbar";
 export default function Page() {
   const createUser = api.auth.create.useMutation();
   const { login } = useContext(ProfileContext);
   const { push } = useRouter();
-  const { buttonState, onConnect, publicKey } = useWalletMultiButton({
-    onSelectWallet({ wallets, onSelectWallet }) {
+  const { setVisible: setModalVisible } = useWalletModal();
+  const [isFirstConnect, setIsFirstConnect] = React.useState(false);
+  const {
+    buttonState,
+    onConnect,
+    publicKey,
+    onSelectWallet,
+    walletIcon,
+    walletName,
+  } = useWalletMultiButton({
+    onSelectWallet() {
       setModalVisible(true);
-      console.log({ wallets, onSelectWallet });
+      setIsFirstConnect(true);
     },
   });
-  useEffect(() => {
+  const handleRedirect = () => {
     if (publicKey) {
       void createUser
         .mutateAsync({
@@ -29,12 +41,17 @@ export default function Page() {
           }
           void login(res.user!.wallet_address).then(res => {
             if (res.success) {
-              void push("/dashboard");
+              void push(`/dashboard/${Routes.HOME}?state=connected`);
             }
           });
         });
     }
-  }, [publicKey]);
+  };
+  useEffect(() => {
+    if (isFirstConnect) {
+      handleRedirect();
+    }
+  }, [publicKey, isFirstConnect]);
   const content = useMemo(() => {
     if (publicKey) {
       const base58 = publicKey.toBase58();
@@ -43,42 +60,37 @@ export default function Page() {
       return LABELS[buttonState];
     }
   }, [buttonState, publicKey]);
-  const { setVisible: setModalVisible } = useWalletModal();
   const handleSignIn = () => {
+    console.log("signin in....", buttonState);
     switch (buttonState) {
       case "no-wallet":
-        setModalVisible(true);
+        console.log("no wallet");
+        onSelectWallet?.();
+        handleRedirect();
         break;
       case "has-wallet":
+        console.log("has wallet");
         if (onConnect) {
+          console.log("has wallet connect");
           onConnect();
+          handleRedirect();
         }
         break;
       case "connected":
+        handleRedirect();
         // redirect user to dashboard
         break;
     }
   };
   return (
-    <section className="flex h-screen w-full flex-col content-center items-center justify-center space-y-24">
-      <button
-        onClick={handleSignIn}
-        className="group flex flex-col space-y-3 text-grey-300 transition-colors duration-300 hover:text-secondary-700"
-      >
-        <div className="rounded-3xl border border-grey-300 p-4 transition-colors duration-300 group-hover:border-secondary-700">
-          <PlayerIn />
-        </div>
-        <span>Player</span>
-      </button>
-      <button
-        onClick={handleSignIn}
-        className="group flex flex-col space-y-3 text-grey-300 transition-colors duration-300 hover:text-secondary-700"
-      >
-        <div className="rounded-3xl border border-grey-300 p-4 transition-colors  duration-300 group-hover:border-secondary-700">
-          <CreatorIn />
-        </div>
-        <span>Creator</span>
-      </button>
-    </section>
+    <div className="relative  flex w-full flex-col  tracking-[normal]">
+      <Navbar />
+      <section className="mx-auto mt-16 flex h-full w-full flex-col items-center justify-center">
+        <Hero />
+        <button onClick={handleSignIn}>
+          <GetStarted className="mt-8 w-36" />
+        </button>
+      </section>
+    </div>
   );
 }

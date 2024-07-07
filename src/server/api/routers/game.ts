@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { HistoryType, Status } from "@prisma/client";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -94,17 +96,32 @@ export const gameRouter = createTRPCRouter({
         games: games,
       };
     }),
-  get_created_games: protectedProcedure.query(async ({ ctx }) => {
-    const games = await ctx.db.game.findMany({
-      where: {
-        creator_id: ctx.user.wallet_address,
-      },
-    });
-    return {
-      success: true,
-      games: games,
-    };
-  }),
+  get_created_games: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        skip: z.number().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const games = await ctx.db.game.findMany({
+        take: input.limit,
+        skip: input.skip,
+        where: {
+          creator_id: ctx.user.wallet_address,
+          status: {
+            not: Status.completed,
+          },
+        },
+        orderBy: {
+          created_at: "desc",
+        },
+      });
+      return {
+        success: true,
+        games: games,
+      };
+    }),
   get_game: publicProcedure
     .input(
       z.object({
@@ -155,7 +172,7 @@ export const gameRouter = createTRPCRouter({
       });
       if (input.percentages) {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        input.percentages.forEach(async p => {
+        for (const p of input.percentages) {
           const percentages = await ctx.db.percentages.findFirst({
             where: {
               game_id: game.id,
@@ -183,7 +200,7 @@ export const gameRouter = createTRPCRouter({
               },
             });
           }
-        });
+        }
       }
       return {
         success: true,
@@ -209,7 +226,7 @@ export const gameRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const questions = await Promise.all(
         input.map(async q => {
-          return await ctx.db.question.create({
+          return ctx.db.question.create({
             data: {
               type: q.type,
               question: q.question,
@@ -262,6 +279,14 @@ export const gameRouter = createTRPCRouter({
         where: {
           game_id: input.game_id,
         },
+        select: {
+          description: true,
+          question: true,
+          points: true,
+          options: true,
+          duration: true,
+          game_id: true,
+        },
       });
       return {
         success: true,
@@ -305,7 +330,7 @@ export const gameRouter = createTRPCRouter({
       });
       if (input.options) {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        input.options.forEach(async o => {
+        for (const o of input.options) {
           const option = await ctx.db.options.findFirst({
             where: {
               question_id: question.id,
@@ -329,7 +354,7 @@ export const gameRouter = createTRPCRouter({
               },
             });
           }
-        });
+        }
       }
       return {
         success: true,
@@ -416,7 +441,6 @@ export const gameRouter = createTRPCRouter({
             type: z.enum(["text", "image", "video"]),
             question: z.string(),
             description: z.string().optional(),
-            game_id: z.string(),
             answer: z.string(),
             points: z.number(),
             // duration in milliseconds
@@ -427,6 +451,31 @@ export const gameRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      const query = [];
+      // check if game with
+      if (input.game_code) {
+        query.push({
+          game_code: input.game_code,
+        });
+      }
+      if (input.title) {
+        query.push({
+          title: input.title,
+          creator_id: ctx.user.wallet_address,
+        });
+      }
+      const game_exists = await ctx.db.game.findFirst({
+        where: {
+          OR: query,
+        },
+      });
+
+      if (game_exists) {
+        return {
+          success: false,
+          error: "Game already exists",
+        };
+      }
       const game = await ctx.db.game.create({
         data: {
           title: input.title,
@@ -442,25 +491,119 @@ export const gameRouter = createTRPCRouter({
               })),
             },
           },
-          questions: {
-            createMany: {
-              data: input.questions.map(q => ({
-                ...q,
-                options: {
-                  createMany: {
-                    data: q.options.map(o => ({
-                      value: o,
-                    })),
-                  },
-                },
-              })),
-            },
-          },
         },
       });
+      if (game) {
+        for (const data of input.questions) {
+          const question = await ctx.db.question.create({
+            data: {
+              question: data.question,
+              description: data.description,
+              answer: data.answer,
+              points: data.points,
+              duration: data.duration,
+              game_id: game.id,
+            },
+          });
+          if (question) {
+            for (const data1 of data.options) {
+              const option = await ctx.db.options.create({
+                data: {
+                  value: data1,
+                  question_id: question.id,
+                },
+              });
+            }
+          }
+        }
+      }
       return {
         success: true,
         game: game,
+      };
+    }),
+  change_game_status: protectedProcedure
+    .input(
+      z.object({
+        game_id: z.string(),
+        status: z.enum([Status.completed, Status.ongoing, Status.cancelled]),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const gameStarted = await ctx.db.game.findFirst({
+        where: {
+          id: input.game_id,
+          creator_id: ctx.user.wallet_address,
+        },
+      });
+      if (!gameStarted || gameStarted?.status === Status.completed) {
+        return {
+          success: false,
+          message: "Game Already Started",
+        };
+      }
+      await ctx.db.game.update({
+        where: {
+          id: input.game_id,
+          creator_id: ctx.user.wallet_address,
+        },
+        data: {
+          status: input.status,
+        },
+      });
+      if (input.status === Status.completed) {
+        const history = await ctx.db.profileHistory.groupBy({
+          by: ["user_id"],
+          where: {
+            game_id: input.game_id,
+            status: HistoryType.answered,
+          },
+          orderBy: [
+            {
+              _sum: {
+                points: "desc",
+              },
+            },
+            {
+              _max: {
+                created_at: "asc",
+              },
+            },
+          ],
+          _sum: {
+            points: true,
+          },
+          _max: {
+            created_at: true,
+          },
+        });
+        for (const data of history) {
+          await ctx.db.notification.create({
+            data: {
+              user_id: data.user_id,
+              message: `Thank you for joining ${gameStarted?.title}`,
+              ref_id: input.game_id,
+            },
+          });
+        }
+        await ctx.db.notification.create({
+          data: {
+            user_id: ctx.user?.id,
+            message: `You just ended ${gameStarted?.title}`,
+            ref_id: input.game_id,
+          },
+        });
+        await ctx.db.notification.create({
+          data: {
+            user_id: ctx.user?.id,
+            message: `Rewards have been successfully distributed to winners of ${gameStarted?.title}`,
+            ref_id: input.game_id,
+          },
+        });
+      }
+      return {
+        success: true,
+        message: "Game Started Successfully",
       };
     }),
 });

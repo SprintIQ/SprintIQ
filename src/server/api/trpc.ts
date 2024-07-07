@@ -38,7 +38,19 @@ type CreateContextOptions = Record<string, never>;
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
 const createInnerTRPCContext = (_opts: CreateNextContextOptions): Context => {
-  const session: string | undefined = _opts?.req.cookies[COOKIE_KEY];
+  const cookieString = _opts.req.headers.cookie;
+  const cookies = cookieString?.split(";") ?? "";
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  let session: string | undefined = _opts?.req.cookies?.[COOKIE_KEY];
+  for (const cookie of cookies) {
+    const [name, value] = cookie.trim().split("=");
+    if (name === COOKIE_KEY && !session) {
+      console.log("Extracted cookie value:", value);
+      session = value;
+      break; // Exit loop after finding the desired cookie
+    }
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   return {
     db,
     helper: HelperService,
@@ -53,7 +65,9 @@ const createInnerTRPCContext = (_opts: CreateNextContextOptions): Context => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createTRPCContext = (_opts: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   return createInnerTRPCContext(_opts);
 };
 
@@ -78,7 +92,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     };
   },
 });
-
+export const wsRoute = t.procedure;
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
