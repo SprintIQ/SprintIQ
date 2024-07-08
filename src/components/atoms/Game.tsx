@@ -150,7 +150,7 @@ const Game: React.FC<IGameProps> = props => {
           </span>
         </div>
       </div>
-      <div className="mx-auto w-9/12 px-10 py-16">
+      <div className="mx-auto w-9/12 px-8 py-14">
         <h2 className="text-center text-3xl font-medium">
           {data?.current_question?.question}
         </h2>
