@@ -9,6 +9,7 @@ import React, { useContext, useEffect, useMemo } from "react";
 
 import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
+import Spinner from "../components/ui/Spinner";
 export default function Page() {
   const createUser = api.auth.create.useMutation();
   const { login } = useContext(ProfileContext);
@@ -90,7 +91,11 @@ export default function Page() {
       <section className="mx-auto mt-16 flex h-full w-full flex-col items-center justify-center">
         <Hero />
         <button onClick={handleSignIn}>
-          <GetStarted className="mt-8 w-36" />
+          {createUser.isLoading ? (
+            <Spinner />
+          ) : (
+            <GetStarted className="mt-8 w-36" />
+          )}
         </button>
       </section>
     </div>
