@@ -66,13 +66,17 @@ const Reward: React.FC<IRewardProps> = props => {
                 transition={{ type: "spring", stiffness: 300, damping: 5 }}
                 className="absolute left-[5px] top-[8px] z-[4] flex h-[70px] w-[calc(100%_-_5px)] items-center justify-center font-extrabold leading-[22.53px]"
               >
-                <Image
+                <m.img
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
                   className="w-100 h-100 absolute rotate-2 transform"
                   src="/y.png"
                   alt=""
                   width={"100"}
                   height={"100"}
                 />
+
                 {position}
               </m.div>
             </div>
@@ -97,11 +101,13 @@ const Reward: React.FC<IRewardProps> = props => {
           </div>
         </section>
         <div className="mt-8 flex flex-row items-center justify-end py-8 pl-[67px] pr-[65px]">
-          <button className="z-[1] flex cursor-pointer flex-row items-center justify-start rounded-[100px] bg-green-500 px-8 py-4 [border:none]">
-            <div className="font-inter relative inline-block min-w-[45px] items-center text-center text-[16px] text-white">
-              Finish
-            </div>
-          </button>
+          <Link href={`/dashboard/${Routes.HOME}`}>
+            <button className="z-[1] flex cursor-pointer flex-row items-center justify-start rounded-[100px] bg-green-500 px-8 py-4 [border:none]">
+              <div className="font-inter relative inline-block min-w-[45px] items-center text-center text-[16px] text-white">
+                Finish
+              </div>
+            </button>
+          </Link>
         </div>
       </div>
     );
@@ -131,7 +137,7 @@ const Reward: React.FC<IRewardProps> = props => {
   return (
     <section className="relative grid min-h-screen place-content-center overflow-hidden">
       <Abstract className="absolute inset-0 w-full" />
-      <div className="z-10">{content}</div>
+      <div className="z-10 w-full">{content}</div>
     </section>
   );
 };

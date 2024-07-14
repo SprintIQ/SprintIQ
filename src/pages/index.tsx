@@ -7,10 +7,9 @@ import { LABELS, Routes } from "@src/utils/constants/constants";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo } from "react";
 
-
 import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
-import Spinner from "@src/components/ui/Spinner";
+import Spinner from "../components/ui/Spinner";
 export default function Page() {
   const createUser = api.auth.create.useMutation();
   const { login } = useContext(ProfileContext);
@@ -22,6 +21,8 @@ export default function Page() {
     onConnect,
     publicKey,
     onSelectWallet,
+    walletIcon,
+    walletName,
   } = useWalletMultiButton({
     onSelectWallet() {
       setModalVisible(true);
@@ -29,6 +30,7 @@ export default function Page() {
     },
   });
   const handleRedirect = () => {
+    // isLoading: true
     if (publicKey) {
       void createUser
         .mutateAsync({
@@ -46,12 +48,21 @@ export default function Page() {
           });
         });
     }
+    // isLoading: false
   };
   useEffect(() => {
     if (isFirstConnect) {
       handleRedirect();
     }
   }, [publicKey, isFirstConnect]);
+  const content = useMemo(() => {
+    if (publicKey) {
+      const base58 = publicKey.toBase58();
+      return base58.slice(0, 4) + ".." + base58.slice(-4);
+    } else if (buttonState === "connecting" || buttonState === "has-wallet") {
+      return LABELS[buttonState];
+    }
+  }, [buttonState, publicKey]);
   const handleSignIn = () => {
     console.log("signin in....", buttonState);
     switch (buttonState) {
@@ -74,15 +85,21 @@ export default function Page() {
         break;
     }
   };
-  return (    
+  return (
     <div className="relative  flex w-full flex-col  tracking-[normal]">
       <Navbar />
       <section className="mx-auto mt-16 flex h-full w-full flex-col items-center justify-center">
         <Hero />
-        <button onClick={handleSignIn}>
-          <GetStarted className="mt-8 w-36"/>
-        </button>
+        {false ? (
+          <div className="mt-16 w-36">
+            <Spinner />
+          </div>
+        ) : (
+          <button onClick={handleSignIn}>
+            <GetStarted className="mt-8 w-36" />
+          </button>
+        )}
       </section>
     </div>
-  );
+  );    
 }

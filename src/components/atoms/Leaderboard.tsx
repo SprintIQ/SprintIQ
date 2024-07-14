@@ -40,7 +40,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     );
   } else {
     content = (
-      <div className="flex flex-col items-center space-y-6">
+      <div className="flex flex-col items-center space-y-8">
         {(data?.history ?? [])?.map((val, index) => (
           <LeaderBoardItem key={val.id} {...val} position={index + 1} />
         ))}

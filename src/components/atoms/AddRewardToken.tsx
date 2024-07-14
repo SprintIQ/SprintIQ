@@ -9,6 +9,7 @@ import {
   generateGameCode,
   sendFunds,
 } from "@src/utils/helpers/sol_program_helpers";
+import * as crypto from "crypto";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -18,7 +19,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
 import { BeatLoader } from "react-spinners";
 import { toast, Toaster } from "sonner";
-import * as crypto from 'crypto';
 
 export interface Distribution {
   position: number;
@@ -39,6 +39,7 @@ const defaultQuestions = [
 
 const AddRewardToken: NextPage = () => {
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const createGame = api.game.full_game_create.useMutation<any>();
   const {
     setAmountGlobal,
@@ -120,19 +121,27 @@ const AddRewardToken: NextPage = () => {
         setIsLoading(true);
         const gameCode = generateGameCode(6);
 
-        //Hash the gameCode and user's publickey 
-        const gameCodeBuffer = Buffer.from(gameCode)
-        const pubkeyBuffer = Buffer.from(wallet.publicKey.toString())
-        const combinedBuffer = Buffer.concat([gameCodeBuffer,pubkeyBuffer])
-        const hash = crypto.createHash('sha256').update(combinedBuffer).digest();
+        //Hash the gameCode and user's publickey
+        const gameCodeBuffer = Buffer.from(gameCode);
+        const pubkeyBuffer = Buffer.from(wallet.publicKey.toString());
+        const combinedBuffer = Buffer.concat([gameCodeBuffer, pubkeyBuffer]);
+        const hash = crypto
+          .createHash("sha256")
+          .update(combinedBuffer)
+          .digest();
         //we are using  the first six characters as the game_id hash
-        const game_id_hash = hash.toString('base64').substring(0,6);
+        const game_id_hash = hash.toString("base64").substring(0, 6);
 
-        console.log( `Game id Hash: ${game_id_hash}`);
+        console.log(`Game id Hash: ${game_id_hash}`);
 
-        sendFunds(wallet.publicKey, anchor_wallet, connection, game_id_hash, amount)
+        sendFunds(
+          wallet.publicKey,
+          anchor_wallet,
+          connection,
+          game_id_hash,
+          amount,
+        )
           .then(() => {
-           
             toast("You have successfully deposited");
             setIsLoading(false);
             setAmountGlobal(amount);
