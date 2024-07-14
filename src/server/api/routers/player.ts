@@ -300,6 +300,7 @@ export const playerRouter = createTRPCRouter({
           options: true,
           duration: true,
           game_id: true,
+          answer: false,
         },
         orderBy: {
           created_at: "asc",

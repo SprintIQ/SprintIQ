@@ -7,7 +7,6 @@ import { LABELS, Routes } from "@src/utils/constants/constants";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo } from "react";
 
-
 import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 export default function Page() {
@@ -30,6 +29,7 @@ export default function Page() {
     },
   });
   const handleRedirect = () => {
+    // isLoading: true
     if (publicKey) {
       void createUser
         .mutateAsync({
@@ -47,6 +47,7 @@ export default function Page() {
           });
         });
     }
+    // isLoading: false
   };
   useEffect(() => {
     if (isFirstConnect) {
@@ -83,7 +84,7 @@ export default function Page() {
         break;
     }
   };
-  return (    
+  return (
     <div className="relative  flex w-full flex-col  tracking-[normal]">
       <Navbar />
       <section className="mx-auto mt-16 flex h-full w-full flex-col items-center justify-center">

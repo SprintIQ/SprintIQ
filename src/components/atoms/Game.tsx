@@ -89,7 +89,11 @@ const Game: React.FC<IGameProps> = props => {
 
     return () => clearInterval(timerId); // cleanup on unmount
   }, [data?.current_question, isLoading]);
-
+  React.useEffect(() => {
+    if (count === 0) {
+      void handleAnswer("", true);
+    }
+  }, [count]);
   return isLoading ? (
     <section className="grid min-h-screen items-center">
       <Spinner />
