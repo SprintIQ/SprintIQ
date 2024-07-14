@@ -18,6 +18,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
 import { BeatLoader } from "react-spinners";
 import { toast, Toaster } from "sonner";
+import * as crypto from 'crypto';
 
 export interface Distribution {
   position: number;
@@ -38,7 +39,7 @@ const defaultQuestions = [
 
 const AddRewardToken: NextPage = () => {
   const router = useRouter();
-  const createGame = api.game.full_game_create.useMutation();
+  const createGame = api.game.full_game_create.useMutation<any>();
   const {
     setAmountGlobal,
     setDistributionGlobal,
@@ -54,6 +55,7 @@ const AddRewardToken: NextPage = () => {
   const { connection } = useConnection();
   const anchor_wallet = useAnchorWallet();
   const wallet = useWallet();
+  const publickey = wallet.publicKey;
   // console.log("anchor_wallet", anchor_wallet);
   // console.log("quizTitleGlobal", quizTitleGlobal);
   // console.log("questionsGlobal", questionsGlobal);
@@ -116,9 +118,21 @@ const AddRewardToken: NextPage = () => {
 
       if (wallet.publicKey && anchor_wallet) {
         setIsLoading(true);
-        sendFunds(wallet.publicKey, anchor_wallet, connection, amount)
+        const gameCode = generateGameCode(6);
+
+        //Hash the gameCode and user's publickey 
+        const gameCodeBuffer = Buffer.from(gameCode)
+        const pubkeyBuffer = Buffer.from(wallet.publicKey.toString())
+        const combinedBuffer = Buffer.concat([gameCodeBuffer,pubkeyBuffer])
+        const hash = crypto.createHash('sha256').update(combinedBuffer).digest();
+        //we are using  the first six characters as the game_id hash
+        const game_id_hash = hash.toString('base64').substring(0,6);
+
+        console.log( `Game id Hash: ${game_id_hash}`);
+
+        sendFunds(wallet.publicKey, anchor_wallet, connection, game_id_hash, amount)
           .then(() => {
-            const gameCode = generateGameCode(6);
+           
             toast("You have successfully deposited");
             setIsLoading(false);
             setAmountGlobal(amount);
@@ -150,6 +164,46 @@ const AddRewardToken: NextPage = () => {
             setIsLoading(false);
           });
       }
+
+      // if (publickey && anchor_wallet) {
+      //   setIsLoading(true);
+      //   const gameCode = generateGameCode(6);
+      //   void createGame
+      //     .mutateAsync({
+      //       title: quizTitleGlobal,
+      //       description: quizTitleGlobal,
+      //       game_code: gameCode,
+      //       reward: parseInt(amount, 10),
+      //       percentages: distribution,
+      //       questions: questionsGlobal,
+      //     })
+      //     .then(res => {
+      //       console.log("Game created response", res);
+      //       const gameId = res.game?.id;
+      //       if (!gameId) {
+      //         throw new Error("Game Id not provided");
+      //       }
+      //       sendFunds(publickey, anchor_wallet, connection, gameId, amount)
+      //         .then(() => {
+      //           toast("You have successfully deposited");
+      //           setIsLoading(false);
+      //           setAmountGlobal(amount);
+      //           setDistributionGlobal(distribution);
+      //           toast("You game has been sucessfully created");
+      //           void router.push(`/dashboard/get-code?param=${gameCode}`);
+      //         })
+      //         .catch(err => {
+      //           console.error(err);
+      //           toast("Depositing the funds failed pls try again");
+      //           setIsLoading(false);
+      //         });
+      //     })
+      //     .catch(err => {
+      //       console.error("Error creating game", err);
+      //       toast("Creating the game failed pls try again");
+      //       setIsLoading(false);
+      //     });
+      // }
     }
   }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
 
