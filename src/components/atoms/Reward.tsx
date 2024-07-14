@@ -101,11 +101,13 @@ const Reward: React.FC<IRewardProps> = props => {
           </div>
         </section>
         <div className="mt-8 flex flex-row items-center justify-end py-8 pl-[67px] pr-[65px]">
-          <button className="z-[1] flex cursor-pointer flex-row items-center justify-start rounded-[100px] bg-green-500 px-8 py-4 [border:none]">
-            <div className="font-inter relative inline-block min-w-[45px] items-center text-center text-[16px] text-white">
-              Finish
-            </div>
-          </button>
+          <Link href={`/dashboard/${Routes.HOME}`}>
+            <button className="z-[1] flex cursor-pointer flex-row items-center justify-start rounded-[100px] bg-green-500 px-8 py-4 [border:none]">
+              <div className="font-inter relative inline-block min-w-[45px] items-center text-center text-[16px] text-white">
+                Finish
+              </div>
+            </button>
+          </Link>
         </div>
       </div>
     );
