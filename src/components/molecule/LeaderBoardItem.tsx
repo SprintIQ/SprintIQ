@@ -29,26 +29,27 @@ const LeaderBoardItem: React.FC<ILeaderBoardItemProps> = props => {
     }
   };
   return (
-    <section className="flex items-center justify-between text-center">
-      <div className="flex basis-4/12 space-x-8">
+    <section className="flex w-10/12 items-center justify-between text-center">
+      <div className="flex space-x-8">
         <span
           className={`${renderPositionClassName(props.position)} grid h-10 w-10 place-content-center rounded-full`}
         >
           {props.position}
         </span>
-        <div className="flex items-center space-x-4 text-center">
+        <div className="flex w-max items-center space-x-4 text-center">
           <span>{props.username}</span>
           <span>
             <img
               src={props?.avatar_url!}
               alt={props?.username}
-              width={40}
-              height={40}
+              width={300}
+              height={300}
+              className="h-12 w-auto"
             />
           </span>
         </div>
       </div>
-      <span className="text-lg">{props._sum.points} Points</span>
+      <span className="ml-auto w-fit text-lg">{props._sum.points} Points</span>
     </section>
   );
 };
