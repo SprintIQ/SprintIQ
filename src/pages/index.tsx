@@ -90,13 +90,15 @@ export default function Page() {
       <Navbar />
       <section className="mx-auto mt-16 flex h-full w-full flex-col items-center justify-center">
         <Hero />
-        <button onClick={handleSignIn}>
-          {createUser.isLoading ? (
+        {false ? (
+          <div className="mt-16 w-36">
             <Spinner />
-          ) : (
+          </div>
+        ) : (
+          <button onClick={handleSignIn}>
             <GetStarted className="mt-8 w-36" />
-          )}
-        </button>
+          </button>
+        )}
       </section>
     </div>
   );
