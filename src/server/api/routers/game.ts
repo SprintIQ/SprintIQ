@@ -133,6 +133,16 @@ export const gameRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+        select: {
+          percentages: true,
+          title: true,
+          description: true,
+          game_code: true,
+          reward: true,
+          status: true,
+          creator_id: true,
+          created_at: true,
+        },
       });
       return {
         success: true,
