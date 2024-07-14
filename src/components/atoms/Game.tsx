@@ -52,12 +52,12 @@ const Game: React.FC<IGameProps> = props => {
   //   setAnswered(false);
   //   setCount(-1);
   // }, [props.page]);
-  // React.useEffect(() => {
-  //   void getQuestions({
-  //     game_id: props.gameId,
-  //     page: parseInt(props.page),
-  //   });
-  // }, [props]);
+  React.useEffect(() => {
+    void getQuestions({
+      game_id: props.gameId,
+      page: parseInt(props.page),
+    });
+  }, [props]);
   // const handleAnswered = async () => {
   //   if (!(data?.current_question?.id && props.gameId)) return;
   //   const res = await getAnswered({
