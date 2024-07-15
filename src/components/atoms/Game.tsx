@@ -72,29 +72,26 @@ const Game: React.FC<IGameProps> = props => {
       }, 3000);
     }
   };
+  const handleTimer = () => {
+    const duration = data?.current_question?.duration ?? 0;
+    if (duration > 0) {
+      setCount(prevCount => {
+        if (prevCount - 1 === 0) {
+          void handleAnswer("", true);
+        }
+        return prevCount === -1 ? duration : prevCount > 0 ? prevCount - 1 : 0;
+      });
+    }
+  };
   React.useEffect(() => {
     if (isLoading) return;
     void handleAnswered();
-    const timerId = setInterval(() => {
-      const duration = data?.current_question?.duration ?? 0;
-      if (duration > 0) {
-        setCount(prevCount => {
-          return prevCount === -1
-            ? duration
-            : prevCount > 0
-              ? prevCount - 1
-              : 0;
-        });
-      }
-    }, 1000);
+    const timerId = setInterval(handleTimer, 1000);
 
     return () => clearInterval(timerId); // cleanup on unmount
   }, [data?.current_question, isLoading]);
-  React.useEffect(() => {
-    if (count === 0) {
-      void handleAnswer("", true);
-    }
-  }, [count]);
+  const answeredPoints = answered?.details?.points ?? 0;
+  const answerPoints = answer?.details?.points ?? 0;
   return isLoading ? (
     <section className="grid min-h-screen items-center">
       <Spinner />
@@ -105,22 +102,17 @@ const Game: React.FC<IGameProps> = props => {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         (answers || answered?.success) && (
           <div
-            data-wrong={
-              answer?.details?.points === 0 || answered?.details?.points === 0
-            }
-            data-correct={
-              (answer?.details?.points ?? 0) > 0 ||
-              (answered?.details?.points ?? 0) > 0
-            }
+            data-wrong={answerPoints === 0 || answeredPoints === 0}
+            data-correct={answerPoints > 0 || answeredPoints > 0}
             className="data-wrong: fixed inset-0 grid place-content-center bg-black/60 text-7xl font-bold text-red-700 data-correct:text-secondary-700"
           >
             {answered?.success
-              ? (answered?.details?.points ?? 0) === 0
-                ? `-${answered?.details?.points ?? 0}`
-                : `+${answered?.details?.points ?? 0}`
-              : (answer?.details?.points ?? 0) === 0
-                ? `-${answer?.details?.points ?? 0}`
-                : `+${answer?.details?.points ?? 0}`}
+              ? answeredPoints === 0
+                ? `-${answeredPoints}`
+                : `+${answeredPoints}`
+              : answerPoints === 0
+                ? `-${answerPoints}`
+                : `+${answerPoints}`}
             {parseInt(props.page) === data?.questions.length && (
               <Button
                 text="Finish"
@@ -163,12 +155,10 @@ const Game: React.FC<IGameProps> = props => {
           {data?.current_question?.options.map(option => (
             <Option
               data-wrong={
-                answer?.details?.option_id === option.id &&
-                answer?.details?.points === 0
+                answer?.details?.option_id === option.id && answerPoints === 0
               }
               data-correct={
-                answer?.details?.option_id === option.id &&
-                (answer?.details?.points ?? 0) > 0
+                answer?.details?.option_id === option.id && answerPoints > 0
               }
               key={option.id}
               onClick={() => handleAnswer(option.id)}
