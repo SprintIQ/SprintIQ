@@ -48,53 +48,53 @@ const Game: React.FC<IGameProps> = props => {
       }, 5000);
     }
   };
-  // React.useEffect(() => {
-  //   setAnswered(false);
-  //   setCount(-1);
-  // }, [props.page]);
+  React.useEffect(() => {
+    setAnswered(false);
+    setCount(-1);
+  }, [props.page]);
   React.useEffect(() => {
     void getQuestions({
       game_id: props.gameId,
       page: parseInt(props.page),
     });
   }, [props]);
-  // const handleAnswered = async () => {
-  //   if (!(data?.current_question?.id && props.gameId)) return;
-  //   const res = await getAnswered({
-  //     game_id: props.gameId,
-  //     question_id: data?.current_question?.id,
-  //   });
-  //   if (res.success && parseInt(props.page) < data?.questions.length) {
-  //     setTimeout(() => {
-  //       void push(
-  //         `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
-  //       ).then(() => setCount(-1));
-  //     }, 3000);
-  //   }
-  // };
-  // React.useEffect(() => {
-  //   if (isLoading) return;
-  //   void handleAnswered();
-  //   const timerId = setInterval(() => {
-  //     const duration = data?.current_question?.duration ?? 0;
-  //     if (duration > 0) {
-  //       setCount(prevCount => {
-  //         return prevCount === -1
-  //           ? duration
-  //           : prevCount > 0
-  //             ? prevCount - 1
-  //             : 0;
-  //       });
-  //     }
-  //   }, 1000);
+  const handleAnswered = async () => {
+    if (!(data?.current_question?.id && props.gameId)) return;
+    const res = await getAnswered({
+      game_id: props.gameId,
+      question_id: data?.current_question?.id,
+    });
+    if (res.success && parseInt(props.page) < data?.questions.length) {
+      setTimeout(() => {
+        void push(
+          `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
+        ).then(() => setCount(-1));
+      }, 3000);
+    }
+  };
+  React.useEffect(() => {
+    if (isLoading) return;
+    void handleAnswered();
+    const timerId = setInterval(() => {
+      const duration = data?.current_question?.duration ?? 0;
+      if (duration > 0) {
+        setCount(prevCount => {
+          return prevCount === -1
+            ? duration
+            : prevCount > 0
+              ? prevCount - 1
+              : 0;
+        });
+      }
+    }, 1000);
 
-  //   return () => clearInterval(timerId); // cleanup on unmount
-  // }, [data?.current_question, isLoading]);
-  // React.useEffect(() => {
-  //   if (count === 0) {
-  //     void handleAnswer("", true);
-  //   }
-  // }, [count]);
+    return () => clearInterval(timerId); // cleanup on unmount
+  }, [data?.current_question, isLoading]);
+  React.useEffect(() => {
+    if (count === 0) {
+      void handleAnswer("", true);
+    }
+  }, [count]);
   return isLoading ? (
     <section className="grid min-h-screen items-center">
       <Spinner />
@@ -159,7 +159,7 @@ const Game: React.FC<IGameProps> = props => {
         <h2 className="text-center text-3xl font-medium">
           {data?.current_question?.question}
         </h2>
-        <div className= "mx-auto mt-6 flex flex-wrap space-y-4">
+        <div className="mx-auto mt-6 flex flex-wrap space-y-4">
           {data?.current_question?.options.map(option => (
             <Option
               data-wrong={
