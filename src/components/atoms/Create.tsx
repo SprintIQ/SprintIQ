@@ -4,6 +4,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
+import { createPortal } from "react-dom";
 import { AiOutlineDelete } from "react-icons/ai";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { toast, Toaster } from "sonner";
@@ -391,47 +392,49 @@ const CorrectOptionInput: React.FC<{
       >
         {value ? value : "Set Correct Option"}
       </button>
-      {showOptionsOverlay && (
-        <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">
-          <div className="w-full max-w-md rounded bg-gray-800 p-8 shadow-lg">
-            <div className="flex justify-end">
-              <button
-                onClick={() => setShowOptionsOverlay(false)}
-                className="text-gray-500 hover:text-gray-600"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <p className="mb-4 text-center text-[16px] text-[#D9D9D9] ">
-              Select the correct option
-            </p>
-            <div className="flex flex-col items-center">
-              {options.map((option, index) => (
+      {showOptionsOverlay &&
+        createPortal(
+          <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">
+            <div className="w-full max-w-md rounded bg-gray-800 p-8 shadow-lg">
+              <div className="flex justify-end">
                 <button
-                  key={index}
-                  onClick={() => handleOptionSelect(option)}
-                  className="mb-2 w-full rounded-[12px] bg-green-500 px-6 py-2 text-white hover:bg-green-600"
+                  onClick={() => setShowOptionsOverlay(false)}
+                  className="text-gray-500 hover:text-gray-600"
                 >
-                  {option}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
                 </button>
-              ))}
+              </div>
+              <p className="mb-4 text-center text-[16px] text-[#D9D9D9] ">
+                Select the correct option
+              </p>
+              <div className="flex flex-col items-center">
+                {options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleOptionSelect(option)}
+                    className="mb-2 w-full rounded-[12px] bg-green-500 px-6 py-2 text-white hover:bg-green-600"
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 };
