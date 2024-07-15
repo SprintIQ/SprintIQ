@@ -155,11 +155,11 @@ const Game: React.FC<IGameProps> = props => {
           </span>
         </div>
       </div>
-      <div className="mx-auto w-9/12 px-8 py-14">
+      <div className="mx-auto w-9/12 py-12">
         <h2 className="text-center text-3xl font-medium">
           {data?.current_question?.question}
         </h2>
-        <div className="mx-auto mt-6 flex w-10/12 flex-col space-y-6">
+        <div className= "mx-auto mt-6 flex flex-wrap space-y-4">
           {data?.current_question?.options.map(option => (
             <Option
               data-wrong={

@@ -95,7 +95,7 @@ const Reward: React.FC<IRewardProps> = props => {
           <div className="relative mb-2 font-bold leading-[23px] ">
             Congratulations
           </div>
-          <div className="absolute left-[50%] z-[1] mt-8 translate-x-[-50%] text-center text-xl leading-[36px] text-white md:text-2xl">
+          <div className="absolute left-[50%] z-[1] mt-8 translate-x-[-50%] text-center text-xl leading-[30px] text-white md:text-2xl">
             You are one of the <br /> TOP{" "}
             {getGame.data?.game?.percentages?.length ?? 0} WINNERS
           </div>
