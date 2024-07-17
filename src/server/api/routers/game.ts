@@ -33,12 +33,6 @@ export const gameRouter = createTRPCRouter({
           game_code: input.game_code,
         });
       }
-      if (input.title) {
-        query.push({
-          title: input.title,
-          creator_id: ctx.user.wallet_address,
-        });
-      }
       const game_exists = await ctx.db.game.findFirst({
         where: {
           OR: query,
@@ -71,7 +65,7 @@ export const gameRouter = createTRPCRouter({
       }
       return {
         success: true,
-        game: game,
+        game,
       };
     }),
   get_games: publicProcedure
@@ -93,7 +87,7 @@ export const gameRouter = createTRPCRouter({
       });
       return {
         success: true,
-        games: games,
+        games,
       };
     }),
   get_created_games: protectedProcedure
@@ -119,7 +113,7 @@ export const gameRouter = createTRPCRouter({
       });
       return {
         success: true,
-        games: games,
+        games,
       };
     }),
   get_game: publicProcedure
@@ -146,7 +140,7 @@ export const gameRouter = createTRPCRouter({
       });
       return {
         success: true,
-        game: game,
+        game,
       };
     }),
   update_game: protectedProcedure
@@ -214,7 +208,7 @@ export const gameRouter = createTRPCRouter({
       }
       return {
         success: true,
-        game: game,
+        game,
       };
     }),
   create_question: protectedProcedure
@@ -275,7 +269,7 @@ export const gameRouter = createTRPCRouter({
       });
       return {
         success: true,
-        question: question,
+        question,
       };
     }),
   get_questions: publicProcedure
@@ -300,7 +294,7 @@ export const gameRouter = createTRPCRouter({
       });
       return {
         success: true,
-        questions: questions,
+        questions,
       };
     }),
   update_question: protectedProcedure
@@ -347,14 +341,7 @@ export const gameRouter = createTRPCRouter({
               id: o.id,
             },
           });
-          if (!option) {
-            await ctx.db.options.create({
-              data: {
-                question_id: question.id,
-                value: o.value,
-              },
-            });
-          } else {
+          if (option) {
             await ctx.db.options.update({
               where: {
                 id: o.id,
@@ -363,12 +350,19 @@ export const gameRouter = createTRPCRouter({
                 value: o.value,
               },
             });
+          } else {
+            await ctx.db.options.create({
+              data: {
+                question_id: question.id,
+                value: o.value,
+              },
+            });
           }
         }
       }
       return {
         success: true,
-        question: question,
+        question,
       };
     }),
   delete_question: protectedProcedure
@@ -388,7 +382,7 @@ export const gameRouter = createTRPCRouter({
       });
       return {
         success: true,
-        question: question,
+        question,
       };
     }),
   delete_game: protectedProcedure
@@ -406,7 +400,7 @@ export const gameRouter = createTRPCRouter({
       });
       return {
         success: true,
-        game: game,
+        game,
       };
     }),
   delete_option: protectedProcedure
@@ -430,7 +424,7 @@ export const gameRouter = createTRPCRouter({
       });
       return {
         success: true,
-        option: option,
+        option,
       };
     }),
   full_game_create: protectedProcedure
@@ -466,12 +460,6 @@ export const gameRouter = createTRPCRouter({
       if (input.game_code) {
         query.push({
           game_code: input.game_code,
-        });
-      }
-      if (input.title) {
-        query.push({
-          title: input.title,
-          creator_id: ctx.user.wallet_address,
         });
       }
       const game_exists = await ctx.db.game.findFirst({
@@ -517,7 +505,7 @@ export const gameRouter = createTRPCRouter({
           });
           if (question) {
             for (const data1 of data.options) {
-              const option = await ctx.db.options.create({
+              await ctx.db.options.create({
                 data: {
                   value: data1,
                   question_id: question.id,
@@ -529,7 +517,7 @@ export const gameRouter = createTRPCRouter({
       }
       return {
         success: true,
-        game: game,
+        game,
       };
     }),
   change_game_status: protectedProcedure
