@@ -1,17 +1,104 @@
-
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
-import { Toaster } from "sonner";
+import { useCallback, useState } from "react";
+import { Toaster, toast } from "sonner";
 import QuizForm from "../ui/createGame/QuizForm";
+import { useQuizContext } from "../../provider/QuizContext";
 
 const CreateGame: NextPage = () => {
   const router = useRouter();
+  const {
+    quizTitleGlobal,
+    setQuizTitleGlobal,
+    questionsGlobal,
+    setQuestionsGlobal,
+  } = useQuizContext();
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | undefined>();
  
   const onBackPress = useCallback(() => {
     void router.push("/dashboard/home");
   }, [router]);
+
+  const handleQuizTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuizTitleGlobal(e.target.value);
+  };
+
+  const handleQuestionChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuestions = [...questionsGlobal];
+    newQuestions[index].question = e.target.value;
+    setQuestionsGlobal(newQuestions);
+  };
+
+  const handleOptionChange = (questionIndex: number, optionIndex: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuestions = [...questionsGlobal];
+    newQuestions[questionIndex].options[optionIndex] = e.target.value;
+    setQuestionsGlobal(newQuestions);
+    if (optionIndex === selectedOptionIndex) {
+      handleAnswerChange(questionIndex, e.target.value);
+    }
+  };
+
+  const handleAddOption = (questionIndex: number) => {
+    const newQuestions = [...questionsGlobal];
+    newQuestions[questionIndex].options.push("");
+    setQuestionsGlobal(newQuestions);
+  };
+
+  const handleAnswerChange = (questionIndex: number, value: string) => {
+    const newQuestions = [...questionsGlobal];
+    newQuestions[questionIndex].answer = value;
+    setQuestionsGlobal(newQuestions);
+  };
+
+  const handleDurationChange = (questionIndex: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuestions = [...questionsGlobal];
+    newQuestions[questionIndex].duration = Number(e.target.value);
+    setQuestionsGlobal(newQuestions);
+  };
+
+  const addQuestion = () => {
+    setQuestionsGlobal([
+      ...questionsGlobal,
+      {
+        question: "",
+        type: "text",
+        options: [""],
+        answer: "",
+        points: 0,
+        duration: 0,
+      },
+    ]);
+  };
+
+  const handleRemoveOption = (questionIndex: number, optionIndex: number) => {
+    setQuestionsGlobal(prevQuestions => {
+      const updatedQuestions = [...prevQuestions];
+      updatedQuestions[questionIndex].options.splice(optionIndex, 1); // Remove the option at the specified index
+      return updatedQuestions;
+    });
+  };
+
+  const handleRemoveQuestion = (index: number) => {
+    setQuestionsGlobal(prevQuestions => {
+      const updatedQuestions = [...prevQuestions];
+      updatedQuestions.splice(index, 1); // Remove the question at the specified index
+      return updatedQuestions;
+    });
+  };
+
+  const onContinue = useCallback(() => {
+    if (quizTitleGlobal.trim() === "" || questionsGlobal.some(q => q.question.trim() === "")) {
+      // Show an alert error if either quizTitle or any question is empty
+      toast("Please enter a quiz title and fill in all questions before continuing.");
+    } else {
+      // Proceed to the next page if quizTitle and questions are not empty
+      setQuizTitleGlobal(quizTitleGlobal);
+      setQuestionsGlobal(questionsGlobal);
+      void router.push("/dashboard/add-reward");
+    }
+  }, [quizTitleGlobal, questionsGlobal, setQuizTitleGlobal, setQuestionsGlobal, router]);
+
 
   //console.log("This are the questions:", questions);
   return (
@@ -46,7 +133,22 @@ const CreateGame: NextPage = () => {
             </div>
           </header>
         </section>
-        <QuizForm />
+        <QuizForm
+          quizTitleGlobal={quizTitleGlobal}
+          questionsGlobal={questionsGlobal}
+          handleQuizTitleChange={handleQuizTitleChange}
+          handleQuestionChange={handleQuestionChange}
+          handleOptionChange={handleOptionChange}
+          handleAddOption={handleAddOption}
+          handleAnswerChange={handleAnswerChange}
+          handleDurationChange={handleDurationChange}
+          addQuestion={addQuestion}
+          handleRemoveOption={handleRemoveOption}
+          handleRemoveQuestion={handleRemoveQuestion}
+          selectedOptionIndex={selectedOptionIndex}
+          setSelectedOptionIndex={setSelectedOptionIndex}
+          onContinue={onContinue}
+        />
       </div>
     </div>
   );

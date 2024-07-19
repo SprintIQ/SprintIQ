@@ -41,7 +41,7 @@ const CorrectOptionInput: React.FC<{
           className="relative flex w-[180px] items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-secondary-700 outline-none hover:text-[#1FC04D]"
         >
           {/* {value ? value : "Set Correct Option"} */}
-          {selectedOptionIndex !== undefined ? (options[selectedOptionIndex] ? options[selectedOptionIndex] : 'select option') : 'select option'}
+          {selectedOptionIndex !== undefined ? (options[selectedOptionIndex] ? options[selectedOptionIndex] : 'Set Correct Option') : 'Set Correct Option'}
         </button>
         {showOptionsOverlay &&
           createPortal(
