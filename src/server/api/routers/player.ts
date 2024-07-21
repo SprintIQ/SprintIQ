@@ -199,7 +199,6 @@ export const playerRouter = createTRPCRouter({
           game_id: input.game_id,
           user_id: ctx.user.id,
           question_id: input.question_id,
-          status: HistoryType.answered,
         },
       });
       if (questionAnswered) {
@@ -208,37 +207,36 @@ export const playerRouter = createTRPCRouter({
           error: "Already answered Question",
           details: questionAnswered,
         };
-      } else {
-        const points = input?.time_elapsed
-          ? 0
-          : question.answer === option?.value
-            ? question.points
-            : 0;
-        const data = input?.time_elapsed
-          ? {
-              user_id: ctx.user.id,
-              game_id: input.game_id,
-              question_id: input.question_id,
-              points: 0,
-              status: HistoryType.answered,
-            }
-          : {
-              user_id: ctx.user.id,
-              game_id: input.game_id,
-              question_id: input.question_id,
-              option_id: input.option_id,
-              points,
-              status: HistoryType.answered,
-            };
-        const anwsered = await ctx.db.profileHistory.create({
-          data,
-        });
-        return {
-          success: true,
-          message: "Answered Question",
-          details: anwsered,
-        };
       }
+      const points = input?.time_elapsed
+        ? 0
+        : question.answer === option?.value
+          ? question.points
+          : 0;
+      const data = input?.time_elapsed
+        ? {
+            user_id: ctx.user.id,
+            game_id: input.game_id,
+            question_id: input.question_id,
+            points: 0,
+            status: HistoryType.answered,
+          }
+        : {
+            user_id: ctx.user.id,
+            game_id: input.game_id,
+            question_id: input.question_id,
+            option_id: input.option_id,
+            points,
+            status: HistoryType.answered,
+          };
+      const answered = await ctx.db.profileHistory.create({
+        data,
+      });
+      return {
+        success: true,
+        message: "Answered Question",
+        details: answered,
+      };
     }),
   get_answered: protectedProcedure
     .input(
@@ -300,6 +298,7 @@ export const playerRouter = createTRPCRouter({
           options: true,
           duration: true,
           game_id: true,
+          answer: false,
         },
         orderBy: {
           created_at: "asc",
