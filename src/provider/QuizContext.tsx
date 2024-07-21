@@ -5,7 +5,7 @@ interface Distribution {
   percentage: number;
 }
 
-interface Question {
+export interface Question {
   questionNumber?: number;
   question: string;
   type: "text" | "image" | "video";
