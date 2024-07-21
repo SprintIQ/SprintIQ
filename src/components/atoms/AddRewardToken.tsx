@@ -41,11 +41,15 @@ const AddRewardToken: NextPage = () => {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const createGame = api.game.full_game_create.useMutation<any>();
+  const loadingGame = createGame.isLoading;
   const {
     setAmountGlobal,
     setDistributionGlobal,
+    setQuestionsGlobal,
+    setQuizTitleGlobal,
     quizTitleGlobal,
     questionsGlobal,
+    
   } = useQuizContext();
   const [distribution, setDistribution] = useState<Distribution[]>([
     { position: 1, percentage: 0 },
@@ -143,7 +147,6 @@ const AddRewardToken: NextPage = () => {
         )
           .then(() => {
             toast("You have successfully deposited");
-            setIsLoading(false);
             setAmountGlobal(amount);
             setDistributionGlobal(distribution);
 
@@ -159,6 +162,11 @@ const AddRewardToken: NextPage = () => {
               .then(res => {
                 console.log("Game created response", res);
                 toast("You game has been sucessfully created");
+                setQuizTitleGlobal("");
+                setQuestionsGlobal([]);
+                setAmountGlobal('0');
+                setDistributionGlobal([]);
+                setIsLoading(false);
                 void router.push(`/dashboard/get-code?param=${gameCode}`);
               })
               .catch(err => {
@@ -173,46 +181,6 @@ const AddRewardToken: NextPage = () => {
             setIsLoading(false);
           });
       }
-
-      // if (publickey && anchor_wallet) {
-      //   setIsLoading(true);
-      //   const gameCode = generateGameCode(6);
-      //   void createGame
-      //     .mutateAsync({
-      //       title: quizTitleGlobal,
-      //       description: quizTitleGlobal,
-      //       game_code: gameCode,
-      //       reward: parseInt(amount, 10),
-      //       percentages: distribution,
-      //       questions: questionsGlobal,
-      //     })
-      //     .then(res => {
-      //       console.log("Game created response", res);
-      //       const gameId = res.game?.id;
-      //       if (!gameId) {
-      //         throw new Error("Game Id not provided");
-      //       }
-      //       sendFunds(publickey, anchor_wallet, connection, gameId, amount)
-      //         .then(() => {
-      //           toast("You have successfully deposited");
-      //           setIsLoading(false);
-      //           setAmountGlobal(amount);
-      //           setDistributionGlobal(distribution);
-      //           toast("You game has been sucessfully created");
-      //           void router.push(`/dashboard/get-code?param=${gameCode}`);
-      //         })
-      //         .catch(err => {
-      //           console.error(err);
-      //           toast("Depositing the funds failed pls try again");
-      //           setIsLoading(false);
-      //         });
-      //     })
-      //     .catch(err => {
-      //       console.error("Error creating game", err);
-      //       toast("Creating the game failed pls try again");
-      //       setIsLoading(false);
-      //     });
-      // }
     }
   }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
 
@@ -279,7 +247,7 @@ const AddRewardToken: NextPage = () => {
             onClick={onDepositForGameButtonPress}
           >
             <div className="font-inter   min-w-[128px] text-center text-[16px] text-white">
-              {loading ? <BeatLoader color="white" /> : "Deposit for Game"}
+              {loading  ? <BeatLoader color="white" /> : "Deposit for Game"}
             </div>
           </button>
         </div>
