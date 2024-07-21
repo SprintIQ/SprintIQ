@@ -19,7 +19,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
 import { BeatLoader } from "react-spinners";
 import { toast, Toaster } from "sonner";
-import * as crypto from 'crypto';
 
 export interface Distribution {
   position: number;
