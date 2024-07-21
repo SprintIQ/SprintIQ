@@ -47,7 +47,7 @@ const QuestionForm: React.FC<IQuestionFormProps> = ({
     React.useState<number>();
   return (
     <div>
-      <div className="-ml-20 mt-7 flex w-full max-w-full flex-col items-center justify-start gap-[29px] self-stretch lg:ml-0 lg:flex-row">
+      <div className="ml-1 mt-7 flex w-full max-w-full flex-row items-center justify-start gap-[29px] self-stretch">
         <div className="flex w-full flex-row items-center justify-start">
           <p className="relative self-stretch text-[2rem] leading-[23px]">
             {index + 1}
@@ -66,7 +66,7 @@ const QuestionForm: React.FC<IQuestionFormProps> = ({
           </div>
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-y-[20px] lg:flex-row lg:items-center">
+      <div className="ml:1 mt-4 flex flex-col gap-y-[20px] lg:flex-row lg:items-center">
         <div className="mr-6">
           {question.options.map((option: string, optionIndex: number) => (
             <div key={optionIndex} className="flex items-center">
@@ -86,7 +86,7 @@ const QuestionForm: React.FC<IQuestionFormProps> = ({
             </div>
           ))}
         </div>
-        <div className="z-[1] box-border flex w-full flex-1 flex-col justify-between gap-[34.8px] rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-[33px] pb-[26px] pt-[23px] text-[20px] text-[#373737] lg:w-fit lg:flex-row lg:items-center">
+        <div className="z-[1] box-border flex w-full flex-1 flex-col justify-between  gap-8 rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-8 pb-[26px] pt-[23px] text-[20px] text-[#373737] lg:w-fit lg:flex-row lg:items-center">
           <div className="flex flex-row items-center justify-start hover:text-[#1FC04D]">
             <button onClick={() => handleAddOption(index)}>Add Option</button>
           </div>
