@@ -4,7 +4,7 @@ import Link from "next/link";
 import * as React from "react";
 
 export interface I404Props {
-  isRoot: boolean;
+  isRoot?: boolean;
 }
 
 const Page404: React.FC<I404Props> = ({ isRoot }) => {
