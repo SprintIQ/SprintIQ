@@ -49,7 +49,6 @@ const AddRewardToken: NextPage = () => {
     setQuizTitleGlobal,
     quizTitleGlobal,
     questionsGlobal,
-    
   } = useQuizContext();
   const [distribution, setDistribution] = useState<Distribution[]>([
     { position: 1, percentage: 0 },
@@ -164,7 +163,7 @@ const AddRewardToken: NextPage = () => {
                 toast("You game has been sucessfully created");
                 setQuizTitleGlobal("");
                 setQuestionsGlobal([]);
-                setAmountGlobal('0');
+                setAmountGlobal("0");
                 setDistributionGlobal([]);
                 setIsLoading(false);
                 void router.push(`/dashboard/get-code?param=${gameCode}`);
@@ -247,7 +246,7 @@ const AddRewardToken: NextPage = () => {
             onClick={onDepositForGameButtonPress}
           >
             <div className="font-inter   min-w-[128px] text-center text-[16px] text-white">
-              {loading  ? <BeatLoader color="white" /> : "Deposit for Game"}
+              {loading ? <BeatLoader color="white" /> : "Deposit for Game"}
             </div>
           </button>
         </div>

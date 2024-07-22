@@ -4,11 +4,7 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: [
-    "@typescript-eslint",
-    "simple-import-sort",
-    "prettier",
-  ],
+  plugins: ["@typescript-eslint", "simple-import-sort", "prettier"],
   extends: [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",

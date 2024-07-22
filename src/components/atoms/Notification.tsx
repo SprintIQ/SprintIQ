@@ -82,7 +82,7 @@ const Notification: React.FC<INotificationProps> = props => {
           <div className="hidden h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent lg:block" />
         </Link>
         <div className="mx-auto w-10/12 rounded-xl border border-secondary-700 bg-secondary-300/10">
-          <div className="flex items-center justify-center space-x-2 border-b border-b-secondary-700 py-16 px-2 text-center text-3xl font-bold text-secondary-700">
+          <div className="flex items-center justify-center space-x-2 border-b border-b-secondary-700 px-2 py-16 text-center text-3xl font-bold text-secondary-700">
             <h1>Notification</h1>
             <TfiReload
               className="h-6 w-auto cursor-pointer"
@@ -92,7 +92,7 @@ const Notification: React.FC<INotificationProps> = props => {
               }}
             />
           </div>
-          <div className="min-h-screen flex flex-col px-2 py-12">{content}</div>
+          <div className="flex min-h-screen flex-col px-2 py-12">{content}</div>
         </div>
       </section>
     </main>
