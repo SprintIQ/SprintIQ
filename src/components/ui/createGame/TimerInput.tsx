@@ -13,7 +13,7 @@ const TimerInput: React.FC<{
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }> = ({ value, onChange }) => {
   const [showTimerOverlay, setShowTimerOverlay] = useState<boolean>(false);
-  const [selectedTime, setSelectedTime] = useState<string>("00:00:00");
+  const [selectedTime, setSelectedTime] = useState<string>("00:00:10");
 
   // Function to convert time string (HH:MM:SS) to seconds
   const timeStringToSeconds = (timeString: string): number => {

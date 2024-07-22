@@ -32,8 +32,8 @@ const defaultQuestions = [
     type: "text",
     options: [""],
     answer: "",
-    points: 0,
-    duration: 0,
+    points: 1,
+    duration: 10,
   },
 ];
 
