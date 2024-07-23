@@ -196,7 +196,15 @@ export const sendFundsToPlayers = async (
     }
     console.log("percentages", Buffer.from(percentages));
     toast("Now we are sending to funds to all the winners account");
+
     //send funds to winners transaction
+
+    const vaultTokenAccountInfo = await getAccount(connection, tokenVault);
+    const vaultAccountAmount = vaultTokenAccountInfo.amount / BigInt(mintDecimals)
+
+    if (Number(vaultAccountAmount) === 0 ){
+      toast("The vault account is empty");
+    } else {
     const txHash = await program.methods
       .sendFundsToPlayers(gameId, Buffer.from(percentages))
       .accounts({
@@ -225,6 +233,7 @@ export const sendFundsToPlayers = async (
         `${account.address.toString()}, ${account.amount / BigInt(mintDecimals)}`,
       );
     });
+  }
   }
 };
 
