@@ -6,13 +6,14 @@ import { api } from "@src/utils/api";
 import { LABELS, Routes } from "@src/utils/constants/constants";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo } from "react";
+import { toast } from "sonner";
 
 import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 import Spinner from "../components/ui/Spinner";
 export default function Page() {
   const createUser = api.auth.create.useMutation();
-  const { login } = useContext(ProfileContext);
+  const { login, isLoggingIn } = useContext(ProfileContext);
   const { push } = useRouter();
   const { setVisible: setModalVisible } = useWalletModal();
   const [isFirstConnect, setIsFirstConnect] = React.useState(false);
@@ -44,6 +45,8 @@ export default function Page() {
           void login(res.user!.wallet_address).then(res => {
             if (res.success) {
               void push(`/dashboard/${Routes.HOME}?state=connected`);
+            } else {
+              toast("An unexpected error occurred please try again");
             }
           });
         });
@@ -64,17 +67,13 @@ export default function Page() {
     }
   }, [buttonState, publicKey]);
   const handleSignIn = () => {
-    console.log("signin in....", buttonState);
     switch (buttonState) {
       case "no-wallet":
-        console.log("no wallet");
         onSelectWallet?.();
         handleRedirect();
         break;
       case "has-wallet":
-        console.log("has wallet");
         if (onConnect) {
-          console.log("has wallet connect");
           onConnect();
           handleRedirect();
         }
@@ -90,7 +89,7 @@ export default function Page() {
       <Navbar />
       <section className="mx-auto mt-16 flex h-full w-full flex-col items-center justify-center">
         <Hero />
-        {false ? (
+        {buttonState === "connecting" || createUser.isLoading || isLoggingIn ? (
           <div className="mt-16 w-36">
             <Spinner />
           </div>
