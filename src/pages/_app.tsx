@@ -50,6 +50,7 @@ import { ProfileProvider } from "@src/provider/ProfileProvider";
 import { QuizProvider } from "@src/provider/QuizContext";
 import { api } from "@src/utils/api";
 import { COOKIE_KEY } from "@src/utils/constants/constants";
+import { TipLinkWalletAdapter } from "@tiplink/wallet-adapter";
 import { type AppType } from "next/app";
 import { Inter } from "next/font/google";
 import { useMemo } from "react";
@@ -101,6 +102,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       new KeystoneWalletAdapter(),
       new TrezorWalletAdapter(),
       new CoinhubWalletAdapter(),
+      new TipLinkWalletAdapter({
+        title: "Sprint IQ",
+        clientId: "d4fa2823-8404-417a-a5ad-4419e0d6c418",
+        theme: "dark", // pick between "dark"/"light"/"system"
+      }),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [network],
