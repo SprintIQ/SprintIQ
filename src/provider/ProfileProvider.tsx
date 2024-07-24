@@ -17,6 +17,7 @@ interface IProfileContext {
   login: (address: string) => Promise<{ success?: boolean; user?: Profile }>;
   logout: (address?: string) => void;
   loginIn: boolean;
+  isLoggingIn: boolean;
 }
 
 const DEFAULT_STATE: IProfileContext = {
@@ -24,6 +25,7 @@ const DEFAULT_STATE: IProfileContext = {
   login: () => Promise.resolve({}),
   logout: (_address?: string) => null,
   loginIn: false,
+  isLoggingIn: false,
 };
 
 const ProfileContext = React.createContext<IProfileContext>(DEFAULT_STATE);
@@ -39,7 +41,7 @@ const ProfileProvider: React.FC<ProfileProviderProps> = ({
     ...DEFAULT_STATE,
     currentProfile,
   });
-  const { mutateAsync: handleLogin } = api.auth.login.useMutation();
+  const { mutateAsync: handleLogin, isLoading } = api.auth.login.useMutation();
 
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const { disconnecting, disconnect } = useWallet();
@@ -75,6 +77,7 @@ const ProfileProvider: React.FC<ProfileProviderProps> = ({
     setLoginIn,
     logout,
     login,
+    isLoggingIn: isLoading,
   };
   return (
     <ProfileContext.Provider value={context}>
