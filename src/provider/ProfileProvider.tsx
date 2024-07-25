@@ -2,6 +2,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { type PrismaProfile } from "@src/server/api/routers/auth";
 import { api } from "@src/utils/api";
 import { COOKIE_KEY } from "@src/utils/constants/constants";
+import { useRouter } from "next/router";
 import * as React from "react";
 import { useCookies } from "react-cookie";
 interface Profile {
@@ -42,7 +43,7 @@ const ProfileProvider: React.FC<ProfileProviderProps> = ({
     currentProfile,
   });
   const { mutateAsync: handleLogin, isLoading } = api.auth.login.useMutation();
-
+  const { push } = useRouter();
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const { disconnecting, disconnect } = useWallet();
 
@@ -70,6 +71,7 @@ const ProfileProvider: React.FC<ProfileProviderProps> = ({
       ...userContext,
       currentProfile: null,
     }));
+    void push("/");
   };
   const context = {
     ...userContext,
