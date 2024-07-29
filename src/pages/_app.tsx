@@ -1,8 +1,6 @@
 import "@src/styles/globals.css";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { Helmet } from 'react-helmet';
-
-
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
