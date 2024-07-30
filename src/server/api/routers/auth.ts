@@ -129,4 +129,7 @@ export const authRouter = createTRPCRouter({
       };
     });
   }),
+  is_signed_in: publicProcedure.query(async ({ ctx }) => {
+    return !!ctx.user;
+  })
 });
