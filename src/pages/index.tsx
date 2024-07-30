@@ -86,7 +86,6 @@ export default function Page() {
                 {buttonState === "connecting" || createUser.isLoading || isLoggingIn ? (
                     <div className="mt-16 w-36">
                         <Spinner/>
-                        {buttonState}
                     </div>
                 ) : (
                     <button onClick={handleSignIn}>
