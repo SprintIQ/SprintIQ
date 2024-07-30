@@ -118,6 +118,7 @@ const MyApp: AppType = ({Component, pageProps}) => {
                 title: "Sprint IQ",
                 clientId: "d4fa2823-8404-417a-a5ad-4419e0d6c418",
                 theme: "dark", // pick between "dark"/"light"/"system"
+
             }),
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,6 +127,7 @@ const MyApp: AppType = ({Component, pageProps}) => {
 
     const connectionErrorHandler = () => {
         // add toast here
+        console.log('error error error!!')
     };
     return (
         <>

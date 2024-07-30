@@ -58,24 +58,13 @@ export default function Page() {
     }
   }, [buttonState, publicKey]);
   const handleSignIn = () => {
-    console.log("signin in....", buttonState);
     switch (buttonState) {
-      case "no-wallet":
-        console.log("no wallet");
-        onSelectWallet?.();
-        handleRedirect();
-        break;
-      case "has-wallet":
-        console.log("has wallet");
-        if (onConnect) {
-          console.log("has wallet connect");
-          onConnect();
-          handleRedirect();
-        }
-        break;
       case "connected":
         handleRedirect();
-        // redirect user to dashboard
+        break;
+      default:
+        onSelectWallet?.();
+        handleRedirect();
         break;
     }
   };

@@ -78,6 +78,7 @@ export default function Page() {
                 break;
         }
     };
+    console.log(buttonState)
     return (
         <div className="relative  flex w-full flex-col  tracking-[normal]">
             <Navbar/>
