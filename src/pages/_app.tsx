@@ -52,11 +52,24 @@ import {type AppType} from "next/app";
 import {Inter} from "next/font/google";
 import {useMemo} from "react";
 import {Helmet} from "react-helmet";
+import {Metadata} from "next";
 
 const inter = Inter({
     subsets: ["latin"],
     variable: "--font-sans",
 });
+export const metadata: Metadata = {
+    title: `SprintIQ`,
+    metadataBase: new URL('https://staging.sprintiq.fun'),
+    description: 'SprintIQ, Conquer Quizzes, Expand Knowledge, and Thrive in the Blockchain Revolution.',
+    openGraph: {
+        images: [
+            {
+                url: 'https://staging.sprintiq.fun/_next/image?url=%2Flogo.png&w=640&q=75'
+            },
+        ],
+    }
+};
 const MyApp: AppType = ({Component, pageProps}) => {
     // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
     const network = WalletAdapterNetwork.Devnet;
