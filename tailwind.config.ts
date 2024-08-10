@@ -35,6 +35,7 @@ export default {
           200: "#787676",
           100: "#373737",
         },
+        darkGreen: "#116629",
       },
       keyframes: {
         "accordion-down": {
