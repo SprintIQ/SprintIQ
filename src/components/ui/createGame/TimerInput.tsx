@@ -18,7 +18,7 @@ const TimerInput: React.FC<{
   // Function to convert time string (HH:MM:SS) to seconds
   const timeStringToSeconds = (timeString: string): number => {
     const [hours, minutes, seconds] = timeString.split(":").map(Number);
-    return hours * 3600 + minutes * 60 + seconds;
+    return (hours * 3600 + minutes * 60 + seconds) * 1000; // Convert seconds to milliseconds
   };
 
   // Function to handle overlay done click
@@ -36,7 +36,7 @@ const TimerInput: React.FC<{
       <input
         type="text"
         placeholder="Set Timer"
-        value={value.toString() + "secs"} // Convert number to string for input value
+        value={(value / 1000).toString() + "secs"} // Convert number to string for input value
         onChange={onChange}
         onFocus={() => setShowTimerOverlay(true)} // Show the timer overlay when input is focused
         className="relative flex w-auto items-center justify-center bg-transparent text-[1.25rem] leading-[22.53px] text-secondary-700 placeholder-[#373737] outline-none hover:text-[#1FC04D] hover:placeholder-[#1FC04D]"

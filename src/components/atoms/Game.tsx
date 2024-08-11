@@ -1,12 +1,12 @@
+import Button from "@src/components/ui/Button";
 import Spinner from "@src/components/ui/Spinner";
+import Timer from "@src/components/ui/Timer";
 import { api } from "@src/utils/api";
-import { Routes } from "@src/utils/constants/constants";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import * as React from "react";
 
-import Button from "../ui/Button";
 import Option from "./Option";
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IGameProps {
   gameId: string;
@@ -28,6 +28,15 @@ const Game: React.FC<IGameProps> = props => {
   const [count, setCount] = React.useState(-1);
   const [answers, setAnswered] = React.useState(false);
   const { push } = useRouter();
+  const totalPoints = data?.score ?? 0;
+  React.useEffect(() => {
+    void getQuestions({
+      game_id: props.gameId,
+      page: parseInt(props.page),
+    });
+  }, [props]);
+  const answeredPoints = answered?.details?.points ?? 0;
+  const answerPoints = answer?.details?.points ?? 0;
   const handleAnswer = async (option_id: string, time_elapsed?: boolean) => {
     if (!data) return;
     const res = await mutateAsync({
@@ -48,109 +57,42 @@ const Game: React.FC<IGameProps> = props => {
       }, 5000);
     }
   };
-  React.useEffect(() => {
-    setAnswered(false);
-    setCount(-1);
-  }, [props.page]);
-  React.useEffect(() => {
-    void getQuestions({
-      game_id: props.gameId,
-      page: parseInt(props.page),
-    });
-  }, [props]);
-  const handleAnswered = async () => {
-    if (!(data?.current_question?.id && props.gameId)) return;
-    const res = await getAnswered({
-      game_id: props.gameId,
-      question_id: data?.current_question?.id,
-    });
-    if (res.success && parseInt(props.page) < data?.questions.length) {
-      setTimeout(() => {
-        void push(
-          `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
-        ).then(() => setCount(-1));
-      }, 3000);
-    }
-  };
-  const handleTimer = () => {
-    const duration = data?.current_question?.duration ?? 0;
-    if (duration > 0) {
-      setCount(prevCount => {
-        if (prevCount - 1 === 0) {
-          void handleAnswer("", true);
-        }
-        return prevCount === -1 ? duration : prevCount > 0 ? prevCount - 1 : 0;
-      });
-    }
-  };
-  React.useEffect(() => {
-    if (isLoading) return;
-    void handleAnswered();
-    const timerId = setInterval(handleTimer, 1000);
-
-    return () => clearInterval(timerId); // cleanup on unmount
-  }, [data?.current_question, isLoading]);
-  const answeredPoints = answered?.details?.points ?? 0;
-  const answerPoints = answer?.details?.points ?? 0;
-  return isLoading ? (
+  return isLoading || userDataIsLoading ? (
     <section className="grid min-h-screen items-center">
       <Spinner />
     </section>
   ) : (
-    <section className="font-inter relative flex flex-col items-start justify-start self-stretch py-4 text-center text-sm text-white">
-      {
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        (answers || answered?.success) && (
-          <div
-            data-wrong={answerPoints === 0 || answeredPoints === 0}
-            data-correct={answerPoints > 0 || answeredPoints > 0}
-            className="data-wrong: fixed inset-0 grid place-content-center bg-black/60 text-7xl font-bold text-red-700 data-correct:text-secondary-700"
-          >
-            {answered?.success
-              ? answeredPoints === 0
-                ? `-${answeredPoints}`
-                : `+${answeredPoints}`
-              : answerPoints === 0
-                ? `-${answerPoints}`
-                : `+${answerPoints}`}
-            {parseInt(props.page) === data?.questions.length && (
-              <Button
-                text="Finish"
-                className="mx-auto mt-4 px-6 py-2 text-lg text-white"
-                onClick={() =>
-                  push(`/dashboard/${Routes.REWARD}?gameId=${props.gameId}`)
-                }
-              />
-            )}
-          </div>
-        )
-      }
-      <div className="mb-4 flex flex-row items-start justify-center self-stretch px-5 py-0">
-        <div className="relative flex flex-row items-start justify-start rounded-full border-[1px] border-solid border-secondary-700 px-9 py-0">
-          <div className="relative z-[0] box-border hidden h-[27px] w-[123px] rounded-full border-[1px] border-solid border-secondary-700" />
-          <div className="relative z-[1] inline-block rounded-full border-secondary-700 px-8 py-4 leading-[23px]">
-            {userDataIsLoading ? "Loading..." : userData?.username}
-          </div>
-          <div className="absolute bottom-[0px] left-[0px] right-[0px] top-[0px] z-[2] !m-[0] box-border h-full w-full rounded-3xl border-[1px] border-solid border-secondary-700" />
+    <section className="font-inter relative flex flex-col items-start justify-start self-stretch px-11 py-4 text-center text-sm">
+      <nav className="flex w-full items-center justify-between  text-base font-semibold">
+        <div className="flex items-center space-x-4">
+          <Image
+            src={userData?.avatar_url!}
+            width={300}
+            height={300}
+            alt={userData?.username ?? "User"}
+            className="h-11 w-11 rounded-full"
+          />
+          <span className={"text-secondary-500"}>{userData?.username}</span>
         </div>
+        <span>
+          {totalPoints} point {totalPoints > 0 && "s"}
+        </span>
+      </nav>
+      <div className="mt-9 flex w-full items-center justify-between  text-base font-semibold">
+        <span>
+          Question {props.page}/{data?.questions.length}
+        </span>
+        <Timer
+          expiryTimeOffset={data?.current_question?.duration ?? 0}
+          onExpire={() => setAnswered(true)}
+        />
       </div>
-      <div className="h-full w-full border-y-2 border-secondary-700 px-12 py-4 text-lg">
-        <div className="flex justify-between">
-          <div className="flex flex-col space-y-2">
-            <h1 className="w-20 rounded-full border-2 border-secondary-100 bg-secondary-700 px-3 py-1 text-right">
-              {props.page}/{data?.questions.length}
-            </h1>
-            <span>Score: {data?.score ?? 0}</span>
-          </div>
-          <span className="flex h-12 w-28 items-center justify-center rounded-full  border border-secondary-100 text-secondary-700">
-            {count === -1 ? 0 : count}secs
+      <div className="mt-16 w-full px-4 py-3 shadow-md">
+        <div className="bg bg-grey-500 flex w-full items-center justify-center px-4 py-8 text-center">
+          <span className="text-2xl font-bold">
+            Who is the Superteam Nigeria Lead?
           </span>
         </div>
-      </div>
-      <div className="mx-auto w-9/12 py-12">
-        <h2 className="text-center text-3xl font-medium">
-          {data?.current_question?.question}
-        </h2>
         <div className="mx-auto mt-6 flex flex-wrap space-y-4">
           {data?.current_question?.options.map(option => (
             <Option
@@ -168,6 +110,9 @@ const Game: React.FC<IGameProps> = props => {
           ))}
         </div>
       </div>
+      <button className="bg-secondary-500 ml-auto mt-4 rounded px-8 py-3 text-white lg:py-4">
+        Next
+      </button>
     </section>
   );
 };
