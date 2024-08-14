@@ -65,6 +65,7 @@ export default {
       data: {
         correct: 'correct="true"',
         wrong: 'wrong="true"',
+        selected: 'selected="true"'
       },
     },
   },
