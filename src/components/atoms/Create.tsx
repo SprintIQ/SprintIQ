@@ -9,11 +9,11 @@ import SideBar from "../molecule/SideBar";
 import TimerInput from "../molecule/TimerInput";
 import QuizForm from "../ui/createGame/QuizForm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const CreateGame: NextPage = () => {
   const router = useRouter();
-   const [selectedTime, setSelectedTime] = useState<number>(10);
+  const [selectedTime, setSelectedTime] = useState<number>(10);
   const {
     quizTitleGlobal,
     setQuizTitleGlobal,
@@ -65,14 +65,19 @@ const CreateGame: NextPage = () => {
     setQuestionsGlobal(newQuestions);
   };
 
-  const handleDurationChange = (
-    questionIndex: number,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newQuestions = [...questionsGlobal];
-    newQuestions[questionIndex].duration = Number(e.target.value);
+  const handleSelectedTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTime = Number(e.target.value); // Convert the input value to a number
+    setSelectedTime(newTime);
+  
+    // Optionally, update all existing questions' durations if you want them to sync
+    const newQuestions = questionsGlobal.map(question => ({
+      ...question,
+      duration: newTime,
+    }));
     setQuestionsGlobal(newQuestions);
   };
+  
+
 
   const addQuestion = () => {
     setQuestionsGlobal([
@@ -83,7 +88,7 @@ const CreateGame: NextPage = () => {
         options: [""],
         answer: "",
         points: 1,
-        duration: 10,
+        duration: selectedTime,
       },
     ]);
   };
@@ -127,10 +132,9 @@ const CreateGame: NextPage = () => {
     router,
   ]);
 
-  console.log("timer value",selectedTime)
+  console.log("timer value", selectedTime)
   //console.log("This are the questions:", questions);
   return (
-    // <div className="w-full h-full bg-white p-4 sm:p-[2rem]  lg:p-[3.75rem]">
     <div className="flex bg-white " >
       <SideBar />
       <Toaster />
@@ -142,7 +146,22 @@ const CreateGame: NextPage = () => {
           </button>
           <TimerInput
             value={selectedTime}
-            onChange={(e) => setSelectedTime(Number(e.target.value))}
+            onChange={handleSelectedTimeChange}
+          />
+        </div>
+        <div>
+          <QuizForm
+            quizTitleGlobal={quizTitleGlobal}
+            questionsGlobal={questionsGlobal}
+            handleQuizTitleChange={handleQuizTitleChange}
+            handleQuestionChange={handleQuestionChange}
+            handleOptionChange={handleOptionChange}
+            handleAddOption={handleAddOption}
+            handleAnswerChange={handleAnswerChange}
+            addQuestion={addQuestion}
+            handleRemoveOption={handleRemoveOption}
+            handleRemoveQuestion={handleRemoveQuestion}
+            onContinue={onContinue}
           />
         </div>
       </div>
@@ -152,54 +171,3 @@ const CreateGame: NextPage = () => {
 
 export default CreateGame;
 
-
-{/* <div className="relative flex w-full flex-col items-start justify-start overflow-hidden rounded-[1.25rem] border border-[#373737] px-2  pt-[1.25rem] tracking-[normal] [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] lg:gap-[30px] lg:pl-[57px] lg:pr-[57px]  ">
-<section className="  lg:text-41xl font-inter flex max-w-full flex-col items-end justify-start text-center  text-white lg:w-[1456px]  ">
-  <header className="font-inter flex h-[70px] flex-row items-center justify-between  self-stretch text-center text-[#1FC04D]">
-    <div className="flex h-[20px] w-full flex-row items-center justify-start gap-2 sm:w-[314px] lg:gap-[30px]">
-      <div className="flex flex-col items-center justify-start  px-0 pb-0 lg:pt-[3px]">
-        <div className="relative h-[1.875rem] w-[1.875rem] cursor-pointer object-contain">
-          <Image
-            fill
-            loading="lazy"
-            alt=""
-            src="/polygon-4.svg"
-            onClick={onBackPress}
-            className="hidden lg:block"
-          />
-        </div>
-      </div>
-      <div className="flex h-[40.1px] flex-1 flex-row items-center justify-start ">
-        <div className="relative h-[22px] w-[22px] object-contain lg:h-[40.1px] lg:w-[40.6px]">
-          <Image
-            fill
-            loading="lazy"
-            alt=""
-            src="/group-1124@2x.png"
-            onClick={onBackPress}
-          />
-        </div>
-        <div className="box-border flex h-[20px] flex-1 flex-col items-center px-0 pt-0 lg:h-[31.1px] lg:justify-end lg:pb-[1.1px]">
-          <div className="relative -ml-5 h-[20px] max-w-full shrink-0 self-stretch overflow-hidden sm:-ml-12 lg:ml-0 lg:h-[30px] ">
-            <Image fill loading="lazy" alt="" src="/sprint-iq.svg" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-</section>
-<QuizForm
-  quizTitleGlobal={quizTitleGlobal}
-  questionsGlobal={questionsGlobal}
-  handleQuizTitleChange={handleQuizTitleChange}
-  handleQuestionChange={handleQuestionChange}
-  handleOptionChange={handleOptionChange}
-  handleAddOption={handleAddOption}
-  handleAnswerChange={handleAnswerChange}
-  handleDurationChange={handleDurationChange}
-  addQuestion={addQuestion}
-  handleRemoveOption={handleRemoveOption}
-  handleRemoveQuestion={handleRemoveQuestion}
-  onContinue={onContinue}
-/>
-</div> */}
