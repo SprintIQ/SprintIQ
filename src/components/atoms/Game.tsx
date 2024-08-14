@@ -52,9 +52,8 @@ const Game: React.FC<IGameProps> = props => {
             option_id: selectedOption,
             time_elapsed,
         });
-        await wait(2000)
         if (res.success && parseInt(props.page) < data?.questions.length) {
-            await wait(5000);
+            await wait(5000); // build up suspense for the next question
             void push(
                 `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
             );
@@ -68,7 +67,7 @@ const Game: React.FC<IGameProps> = props => {
             question_id: data?.current_question?.id,
         });
         if (res.success && parseInt(props.page) < data?.questions.length) {
-            await wait(3000)
+            await wait(3000) // wait to display score
             void push(
                 `/dashboard/game?gameId=${props.gameId}&page=${parseInt(props.page) + 1}`,
             )
