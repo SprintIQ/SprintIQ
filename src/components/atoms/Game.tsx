@@ -149,7 +149,7 @@ const Game: React.FC<IGameProps> = props => {
             <div className="mt-16 w-full px-4 py-3 shadow-md">
                 <div className="bg bg-grey-500 flex w-full items-center justify-center px-4 py-8 text-center">
           <span className="text-2xl font-bold">
-            Who is the Superteam Nigeria Lead?
+            {data?.current_question?.question}
           </span>
                 </div>
                 <div className="mx-auto mt-6 flex flex-wrap space-y-4">
