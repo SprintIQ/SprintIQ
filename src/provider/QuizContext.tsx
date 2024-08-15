@@ -64,7 +64,7 @@ export const QuizProvider: React.FC<{ children: React.ReactNode }> = ({
         options: [""],
         answer: "",
         points: 1,
-        duration: 10,
+        duration: 10000,
       },
     ]),
   );

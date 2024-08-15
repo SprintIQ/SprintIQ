@@ -76,7 +76,7 @@ const CreateGame: NextPage = () => {
         options: [""],
         answer: "",
         points: 1,
-        duration: 10,
+        duration: 10000,
       },
     ]);
   };

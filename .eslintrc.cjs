@@ -12,7 +12,7 @@ const config = {
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "plugin:json/recommended",
-    "prettier",
+    // "prettier",
   ],
   rules: {
     "@typescript-eslint/array-type": "off",
