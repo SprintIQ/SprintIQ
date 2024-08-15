@@ -16,7 +16,7 @@ interface Profile {
 interface IProfileContext {
   currentProfile?: Profile | null;
   login: (address: string) => Promise<{ success?: boolean; user?: Profile }>;
-  logout: (address?: string) => void;
+  logout: () => void;
   loginIn: boolean;
   isLoggingIn: boolean;
 }
@@ -24,7 +24,7 @@ interface IProfileContext {
 const DEFAULT_STATE: IProfileContext = {
   currentProfile: null,
   login: () => Promise.resolve({}),
-  logout: (_address?: string) => null,
+  logout: () => null,
   loginIn: false,
   isLoggingIn: false,
 };

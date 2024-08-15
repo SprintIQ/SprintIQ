@@ -12,7 +12,7 @@ const Button: React.FC<IButtonProps> = ({ text, ...props }) => {
     <button
       {...props}
       className={cn(
-        "rounded-full bg-secondary-700 px-8 py-2 lg:py-4",
+        "rounded-full bg-secondary-500 text-white px-8 py-2 lg:py-4",
         props.className,
       )}
     >
