@@ -190,7 +190,7 @@ const AddRewardToken: NextPage = () => {
   // console.log("questions global", questionsGlobal);
   // console.log("quiz global", quizTitleGlobal);
   return (
-    <div className="flex bg-white w-full  ">
+    <div className="flex bg-white w-full min-h-screen ">
       <Toaster />
       <SideBar />
       <div className="flex-grow py-10 px-12 text-black ">

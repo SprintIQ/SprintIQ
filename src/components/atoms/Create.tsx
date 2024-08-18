@@ -135,11 +135,11 @@ const CreateGame: NextPage = () => {
   console.log("timer value", selectedTime)
   //console.log("This are the questions:", questions);
   return (
-    <div className="flex bg-white " >
+    <div className="flex  bg-white min-h-screen " >
       <SideBar />
       <Toaster />
       <div className="flex-grow py-10 px-12 text-black ">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-5">
           {/* Back Arrow Icon */}
           <button className="text-black" onClick={onBackPress}>
             <FontAwesomeIcon icon={faArrowLeft} size="lg" color="#116629" />
@@ -149,7 +149,7 @@ const CreateGame: NextPage = () => {
             onChange={handleSelectedTimeChange}
           />
         </div>
-        <div>
+        <div className=" px-[100px] " >
           <QuizForm
             quizTitleGlobal={quizTitleGlobal}
             questionsGlobal={questionsGlobal}

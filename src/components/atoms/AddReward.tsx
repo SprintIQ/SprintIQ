@@ -22,7 +22,7 @@ const AddReward: NextPage = () => {
   }, [router]);
 
   return (
-    <div className="flex bg-white w-full h-screen ">
+    <div className="flex bg-white w-full min-h-screen ">
       <SideBar />
       <div className="flex-grow py-10 px-12 text-black ">
         <div className="flex justify-between items-center mb-8">
@@ -32,8 +32,10 @@ const AddReward: NextPage = () => {
           </button>
         </div>
 
-        <div className="z-[1] font-inter m-auto box-border flex w-[527px] max-w-full flex-col items-center justify-start gap-[20px] rounded-[2.5rem] border-solid px-5 py-[100px] md:border-[1px] ">
-          <img className=" w-10 h-10 " />
+        <div className="z-[1] font-inter m-auto box-border flex w-[527px] max-w-full flex-col items-center justify-start gap-[10px] rounded-[2.5rem] border-solid px-5 py-[50px] md:border-[1px] ">
+          <div className=" lg:w-[100px] lg:h-[100px] relative " >
+            <Image fill={true} src="/rewards/add-rewards.png" alt="" />
+          </div>
           <h1 className="font-inherit relative font-semiBold z-[2] m-0 flex  max-w-full items-center justify-center text-md leading-[35px] text-inherit">
             Proceed to add rewards
           </h1>
