@@ -1,7 +1,7 @@
 import {type Winners} from "@src/server/api/routers/player";
 import {api} from "@src/utils/api";
 import * as React from "react";
-import Winner from "@src/components/molecule/Winner";
+import Winner from "@src/components/molecule/winner";
 import Loser from "@src/components/molecule/Loser";
 import ResultIncoming from "@src/components/molecule/ResultIncoming";
 

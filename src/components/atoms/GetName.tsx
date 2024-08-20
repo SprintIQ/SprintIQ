@@ -1,42 +1,72 @@
-import type { NextPage } from "next";
+"use client";
+
+import SideBar from "@src/components/SideBar";
+import { RiArrowLeftLine } from "@remixicon/react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
-const GetName: NextPage = () => {
+const UniqueName = () => {
   return (
-    <div className="font-inter relative flex h-[100vh] w-full items-center justify-center overflow-hidden px-10 text-center text-2xl tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] md:text-[35px]">
-      <div className=" z-[1] m-auto box-border flex w-[200px] max-w-full flex-col items-center justify-start gap-[20px] rounded-[2.5rem] border-solid py-[100px] md:w-[527px] md:border-[1px] md:border-[#175611] md:bg-[#0a2913] md:px-5 ">
-        <h1 className="font-inherit inline-block items-center justify-center font-normal  leading-[30px] text-inherit">
-          This is your unique gamer identity
-        </h1>
-        <div className="flex flex-row justify-center  md:w-[300px]">
-          <button className="z-[2]  flex  w-full flex-row items-center  justify-center rounded-[2.5rem] bg-[#1FC04D] px-3 py-3  [border:none]">
-            <div className="font-inter w-52  min-w-[128px] text-center text-[22px] text-white">
-              Jaylove
-            </div>
+    <div className="flex flex-col sm:flex-row h-screen overflow-y-auto sm:overflow-y-hidden">
+      <div className="sm:hidden w-full p-4">
+        <button className="text-primary-green">
+          <RiArrowLeftLine size={24} />
+        </button>
+      </div>
+      <div className="hidden sm:block">
+        <SideBar />
+      </div>
+      <div className="w-full p-4 sm:p-10 pb-20">
+        <div className="hidden sm:flex w-full justify-between">
+          <button className="text-primary-green">
+            <RiArrowLeftLine size={24} />
           </button>
         </div>
 
-        <h1 className="font-inherit relative z-[2] m-0 flex max-w-full items-center justify-center px-5 text-[12px] font-normal leading-snug text-inherit md:px-0 md:text-[1rem]">
-          it will be visible to admins and other gamers
-        </h1>
-        <div className="flex flex-row justify-center  md:w-[300px]">
-          <button className="z-[2]  flex  w-full flex-row items-center  justify-center rounded-[2.5rem] bg-[#1FC04D] px-3 py-3  [border:none]">
-            <div className="font-inter w-32  min-w-[128px] text-center text-[22px] text-white">
+        <div className="w-full flex flex-col gap-8 justify-center items-center min-h-[calc(100vh-200px)]">
+          <div className="w-full max-w-[500px] mx-auto flex flex-col justify-center items-center py-6 sm:py-10 px-4 sm:px-20 gap-5">
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+                delay: 0.2,
+              }}
+            >
+              <Image
+                src={"/Zuko.png"}
+                alt="Game Identity"
+                width={80}
+                height={80}
+                className="sm:w-[100px] sm:h-[100px]"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="text-center"
+            >
+              <h3 className="text-base sm:text-lg font-bold">JayLove</h3>
+              <p className="text-xs sm:text-sm text-neutral-400 mt-2">
+                Unique gamer identity
+              </p>
+            </motion.div>
+            <motion.button
+              className="text-white bg-primary-green py-3 px-10 active:scale-95 duration-200 text-sm sm:text-base"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Continue
-            </div>
-          </button>
-        </div>
-      </div>
-      <div className="absolute bottom-[0px] left-[109px] top-[0px] h-full w-[1509.4px]">
-        <div className="absolute left-[7px] top-[-140px] h-[1100px] w-[1009.4px] object-cover">
-          <Image fill alt="" src="/group-1143@2x.png" />
-        </div>
-        <div className="absolute left-[7px] top-[117px] z-[1] hidden h-[48.1px] w-[48.1px] cursor-pointer object-contain lg:block">
-          <Image fill loading="lazy" alt="" src="/polygon-4.svg" />
+            </motion.button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default GetName;
+export default UniqueName;

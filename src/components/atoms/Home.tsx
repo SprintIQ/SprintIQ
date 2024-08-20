@@ -16,6 +16,10 @@ import Button from "../ui/Button";
 import Spinner from "../ui/Spinner";
 import {MdLogout} from "react-icons/md";
 import {ProfileContext} from "@src/provider/ProfileProvider";
+import SideBar from "@src/components/SideBar";
+import { RiArrowLeftLine } from "@remixicon/react";
+import { motion } from "framer-motion";
+
 
 const Home: NextPage<{ state: string }> = ({state}) => {
     const [page, setPage] = useState(0);
@@ -107,23 +111,70 @@ const Home: NextPage<{ state: string }> = ({state}) => {
         <main>
             <Toaster/>
             {state === "connected" && (
-                <section className="fixed inset-0  z-50 flex flex-col items-center justify-center gap-3 bg-black">
-                    <h3 className="w-3/4 text-center text-lg md:text-3xl">
-                        This is your unique gamer identity
-                    </h3>
-                    <span className="rounded-full border border-secondary-900 bg-secondary-700 px-6 py-1 text-white">
-            {userDataIsLoading ? "Loading..." : data?.username}
-          </span>
-                    <p className="w-3/5 text-center text-sm text-grey-300">
-                        It will be visible to the admin and other gamers
-                    </p>
-                    <Link
-                        href={`/dashboard/${Routes.HOME}`}
-                        className="mt-4 rounded-full bg-secondary-700 px-8 py-2 lg:py-2.5"
-                    >
-                        Continue
-                    </Link>
-                </section>
+      <div className="flex flex-col sm:flex-row h-screen overflow-y-auto sm:overflow-y-hidden">
+      <div className="sm:hidden w-full p-4">
+        <button className="text-primary-green">
+          <RiArrowLeftLine size={24} />
+        </button>
+      </div>
+      <div className="hidden sm:block">
+        <SideBar />
+      </div>
+      <div className="w-full p-4 sm:p-10 pb-20">
+        <div className="hidden sm:flex w-full justify-between">
+          <button className="text-primary-green">
+            <RiArrowLeftLine size={24} />
+          </button>
+        </div>
+        <div className="w-full flex flex-col gap-8 justify-center items-center min-h-[calc(100vh-200px)]">
+          <div className="w-full max-w-[500px] mx-auto flex flex-col justify-center items-center py-6 sm:py-10 px-4 sm:px-20 gap-5">
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+                delay: 0.2,
+              }}
+            >
+              <Image
+                src={"/Zuko.png"}
+                alt="Game Identity"
+                width={80}
+                height={80}
+                className="sm:w-[100px] sm:h-[100px]"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="text-center"
+            >
+              <h3 className="text-base sm:text-lg font-bold">
+                {userDataIsLoading ? "Loading..." : data?.username}
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-400 mt-2">
+                Unique gamer identity
+              </p>
+            </motion.div>
+           <motion.button
+              className="text-white bg-primary-green py-3 px-10 active:scale-95 duration-200 text-sm sm:text-base"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+           <Link
+              href={`/dashboard/${Routes.HOME}`}
+            >
+             Continue
+           </Link>
+           </motion.button>
+          </div>
+        </div>
+      </div>
+    </div>
             )}
             <header className="flex w-full items-center justify-between bg-white px-6 py-12">
                 <Image

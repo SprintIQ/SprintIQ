@@ -44,7 +44,7 @@ import {
   XDEFIWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
-import ModalWrapper from "@src/components/ui/ModalWrapper";
+import ModalWrapper from "@src/components/ModalWrapper";
 import { Toaster } from "@src/components/ui/sonner";
 import { ProfileProvider } from "@src/provider/ProfileProvider";
 import { QuizProvider } from "@src/provider/QuizContext";
