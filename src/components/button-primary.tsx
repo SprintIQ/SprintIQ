@@ -45,28 +45,28 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
 
   return (
     <div
-      className=" my-6 box-border flex w-fit flex-row items-start justify-start px-5 py-0"
+      className="mx-auto my-10 box-border flex w-fit flex-row items-start justify-center px-5 py-0"
       style={buttonPrimaryStyle}
     >
       <div className=" flex w-full flex-row flex-wrap items-start justify-start gap-[20px] md:gap-[38px]">
         <button
-          className="  flex border border-green-500  w-full flex-1 cursor-pointer flex-row items-start justify-center whitespace-nowrap rounded-md  px-5 py-4 lg:w-1/3"
+          className="hover:bg-forestgreen box-border flex  w-full flex-1 cursor-pointer flex-row items-start justify-center whitespace-nowrap rounded-[2.5rem] bg-[#1FC04D] px-5 py-4 [border:none] lg:w-[300px]"
           style={buttonPrimary1Style}
           onClick={onButtonPrimaryClick}
         >
           <div
-            className="text-11xl font-inter relative inline-block w-[193px] text-center text-green-500"
+            className="text-11xl font-inter relative inline-block w-[193px] text-center text-white"
             style={addQuestionStyle}
           >
             {addQuestion}
           </div>
         </button>
         <button
-          className="hover:bg-forestgreen box-border flex w-full cursor-pointer flex-row items-start justify-center rounded-md bg-[#1FC04D] px-5 py-4 [border:none] lg:w-1/3"
+          className="hover:bg-forestgreen box-border flex w-full cursor-pointer flex-row items-start justify-center rounded-[40px] bg-[#1FC04D] px-5 py-4 [border:none] lg:w-[300px]"
           onClick={onButtonPrimary1Click}
         >
           <div className="text-11xl font-inter mq450:text-lg mq1050:text-5xl relative inline-block w-[83px] min-w-[83px] text-center text-white">
-            Finish
+            Continue
           </div>
         </button>
       </div>

@@ -59,6 +59,6 @@ const DashboardContainer: React.FC<IDashboardContainerProps> = ({
         return <Page404 />;
     }
   };
-  return <section className="h-full w-full  ">{renderSelected()}</section>;
+  return <section className="h-full w-full">{renderSelected()}</section>;
 };
 export default DashboardContainer;

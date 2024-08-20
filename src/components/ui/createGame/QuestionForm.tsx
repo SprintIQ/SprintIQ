@@ -1,11 +1,12 @@
 import { type Question } from "@src/provider/QuizContext";
-import React, { useState } from "react";
+import * as React from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { RiCloseCircleLine } from "react-icons/ri";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
+import CorrectOptionInput from "./CorrectOptionInput";
+import OptionInput from "./OptionInput";
 import QuestionInput from "./QuestionInput";
+import TimerInput from "./TimerInput";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IQuestionFormProps {
@@ -21,6 +22,10 @@ export interface IQuestionFormProps {
   ) => void;
   handleAddOption: (questionIndex: number) => void;
   handleAnswerChange: (questionIndex: number, value: string) => void;
+  handleDurationChange: (
+    questionIndex: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => void;
   handleRemoveOption: (questionIndex: number, optionIndex: number) => void;
   handleRemoveQuestion: (index: number) => void;
   question: Question;
@@ -30,6 +35,7 @@ export interface IQuestionFormProps {
 const QuestionForm: React.FC<IQuestionFormProps> = ({
   handleAddOption,
   handleAnswerChange,
+  handleDurationChange,
   handleOptionChange,
   handleQuestionChange,
   handleRemoveOption,
@@ -41,10 +47,10 @@ const QuestionForm: React.FC<IQuestionFormProps> = ({
     React.useState<number>();
   return (
     <div>
-      <div className="ml-1 mt-7 text-[#000000] flex w-full max-w-full flex-row  justify-start gap-[29px] self-stretch">
-        <div className="flex w-full flex-col ">
-          <p className="relative self-stretch text-[1.2rem] leading-[23px]">
-            Question text
+      <div className="ml-1 mt-7 flex w-full max-w-full flex-row items-center justify-start gap-[29px] self-stretch">
+        <div className="flex w-full flex-row items-center justify-start">
+          <p className="relative self-stretch text-[2rem] leading-[23px]">
+            {index + 1}
           </p>
           <QuestionInput
             value={question.question}
@@ -60,50 +66,42 @@ const QuestionForm: React.FC<IQuestionFormProps> = ({
           </div>
         </div>
       </div>
-      <div className="ml:1 mt-4 text-[#000000]  flex flex-col gap-y-[20px] ">
-        <p className="relative self-stretch text-[1rem] leading-[23px]">
-          Question options
-        </p>
-        {question.options.map((option: string, optionIndex: number) => (
-          <div key={optionIndex} className="flex items-center gap-4  ">
-            <input
-              type="text"
-              placeholder=""
-              value={option}
-              onChange={e => handleOptionChange(index, optionIndex, e)}
-              className="w-2/3 p-2 border border-gray-300 rounded"
-            />
-            <div className=" flex flex-row " >
-              <input
-                type="checkbox"
-                checked={selectedOptionIndex === optionIndex}
-                onChange={() => {
-                  setSelectedOptionIndex(optionIndex);
-                  handleAnswerChange(index, option);
-                }}
-                className="cursor-pointer w-6 h-6"
+      <div className="ml:1 mt-4 flex flex-col gap-y-[20px] lg:flex-row lg:items-center">
+        <div className="mr-6">
+          {question.options.map((option: string, optionIndex: number) => (
+            <div key={optionIndex} className="flex items-center">
+              <OptionInput
+                key={optionIndex}
+                value={option}
+                onChange={e =>
+                  handleOptionChange(index, optionIndex, e, selectedOptionIndex)
+                }
               />
-              <p className="relative self-stretch text-[0.9rem] font-light leading-[23px] ml-2 ">
-                Correct
-              </p>
+              <div
+                className="-mt-2 cursor-pointer"
+                onClick={() => handleRemoveOption(index, optionIndex)}
+              >
+                <AiOutlineDelete />
+              </div>
             </div>
-            <button
-              onClick={() => handleRemoveOption(index, optionIndex)}
-              className="text-red-500 flex items-center gap-1 border-[1px] rounded-md border-red-500 p-2 "
-            >
-              <AiOutlineDelete />
-              Remove
-            </button>
+          ))}
+        </div>
+        <div className="z-[1] box-border flex w-full flex-1 flex-col justify-between  gap-8 rounded-[1.25rem] border-[1px] border-solid border-[#373737] px-8 pb-[26px] pt-[23px] text-[20px] text-[#373737] lg:w-fit lg:flex-row lg:items-center">
+          <div className="flex flex-row items-center justify-start hover:text-[#1FC04D]">
+            <button onClick={() => handleAddOption(index)}>Add Option</button>
           </div>
-        ))}
-
-        <button
-          onClick={() => handleAddOption(index)}
-          className=" bg-transparent text-green-500 px-4 py-2   flex items-center gap-2"
-        >
-          Add Option
-          <FontAwesomeIcon icon={faPlus} />
-        </button>
+          <CorrectOptionInput
+            questionIndex={index}
+            options={question.options}
+            selectedOptionIndex={selectedOptionIndex}
+            setSelectedOptionIndex={setSelectedOptionIndex}
+            onChange={handleAnswerChange}
+          />
+          <TimerInput
+            value={question.duration}
+            onChange={e => handleDurationChange(index, e)}
+          />
+        </div>
       </div>
     </div>
   );
