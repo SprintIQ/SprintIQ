@@ -26,13 +26,19 @@ export default {
         secondary: {
           900: "#28FF15",
           700: "#1FC04D",
+          600: '#006809',
+          500: "#116629",
           300: "#175611",
           200: "#BBF3D5",
           100: "#96C4CE",
+          50: "#F1F9EA",
         },
         grey: {
+          500: "#E7E4E4",
           300: "#D9D9D9",
+          800: "#595959",
           200: "#787676",
+          150: "#F2F2F2",
           100: "#373737",
         },
         darkGreen: "#116629",
@@ -64,6 +70,8 @@ export default {
       data: {
         correct: 'correct="true"',
         wrong: 'wrong="true"',
+        selected: 'selected="true"',
+        true: 'true="true"'
       },
     },
   },
