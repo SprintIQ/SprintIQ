@@ -26,7 +26,7 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
   const [firstFetch, setFirstFetch] = useState(true);
   const [games, setGames] = useState<Array<Game>>([]);
   const { mutateAsync, isLoading } = api.game.get_created_games.useMutation();
-  const { data, isLoading: userDataIsLoading } = api.auth.get_details.useQuery();
+  const { data: userData, isLoading: userDataIsLoading } = api.auth.get_details.useQuery();
   const { logout } = useContext(ProfileContext);
 
   const { push } = useRouter();
@@ -139,8 +139,8 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
                   }}
                 >
                   <Image
-                    src={"/Zuko.png"}
-                    alt={userDataIsLoading ? "Loading..." : data?.username || "Unknown"}
+                    src={userData?.avatar_url || "/zuko.png"}
+                    alt={userDataIsLoading ? "Loading..." : userData?.username || "Unknown"}
                     width={80}
                     height={80}
                     className="sm:w-[100px] sm:h-[100px]"
@@ -154,7 +154,7 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
                   className="text-center"
                 >
                   <h3 className="text-base sm:text-lg font-bold">
-                    {userDataIsLoading ? "Loading..." : data?.username}
+                    {userDataIsLoading ? "Loading..." : userData?.username}
                   </h3>
                   <p className="text-xs sm:text-sm text-neutral-400 mt-2">
                     Unique gamer identity
