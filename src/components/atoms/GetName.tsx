@@ -1,5 +1,3 @@
-"use client";
-
 import SideBar from "@src/components/SideBar";
 import { RiArrowLeftLine } from "@remixicon/react";
 import Image from "next/image";

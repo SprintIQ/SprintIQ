@@ -104,7 +104,7 @@ const Modal = () => {
 
                                 {tipLinkWallet && (
                                     <button 
-                                        className="flex justify-center gap-2 items-center w-full bg-warmgray-100 py-3 font-semibold"
+                                        className="flex justify-center gap-2 items-center w-full bg-grey-700 py-3 font-semibold"
                                         onClick={(e) => handleWalletClick(e, tipLinkWallet.adapter.name)}
                                     >
                                         <Image src="/Google.png" alt="Google" width={30} height={30} />

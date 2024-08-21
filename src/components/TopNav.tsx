@@ -1,9 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import GetStartedButton from "./GetStartedButton";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import {
   RiArrowLeftLine,
   RiLogoutBoxRLine,
@@ -14,12 +11,26 @@ interface TopNavOptions {
   setConnectWalletModalIsOpen?: (ConnectWalletModalIsOpen: boolean) => void;
 }
 
+enum Routes {
+  Home = "/",
+  Dashboard = "/dashboard",
+  Notification = "/notification",
+}
+
+const isRoute = (path: string): path is Routes => {
+  return Object.values(Routes).includes(path as Routes);
+};
+
 const TopNav = ({ setConnectWalletModalIsOpen }: TopNavOptions) => {
   const pathname = usePathname();
 
+  if (!isRoute(pathname)) {
+    return null; // or handle the case where the pathname is not a valid route
+  }
+
   const renderRightContent = () => {
     switch (pathname) {
-      case "/":
+      case Routes.Home:
         return (
           setConnectWalletModalIsOpen && (
             <GetStartedButton
@@ -27,7 +38,7 @@ const TopNav = ({ setConnectWalletModalIsOpen }: TopNavOptions) => {
             />
           )
         );
-      case "/dashboard":
+      case Routes.Dashboard:
         return (
           <div className="flex gap-3">
             <button>
@@ -38,7 +49,7 @@ const TopNav = ({ setConnectWalletModalIsOpen }: TopNavOptions) => {
             </button>
           </div>
         );
-        case "/notification":
+      case Routes.Notification:
         return (
           <div className="flex gap-3">
             <button className="text-white bg-primary-green px-4 py-2">
@@ -55,9 +66,15 @@ const TopNav = ({ setConnectWalletModalIsOpen }: TopNavOptions) => {
   };
 
   return (
-    <nav className={`${['/', '/notification'].includes(pathname) ? "bg-mint-50": ""} flex justify-between items-center px-5 md:px-10 py-5 relative z-[99]`}>
+    <nav
+      className={`${
+        [Routes.Home, Routes.Notification].includes(pathname)
+          ? "bg-mint-50"
+          : ""
+      } flex justify-between items-center px-5 md:px-10 py-5 relative z-[99]`}
+    >
       <div className="flex items-center gap-3">
-        {["/dashboard", "/leaderboard"].includes(pathname) ? (
+        {[Routes.Dashboard, "/leaderboard"].includes(pathname) ? (
           <button className="hidden md:block">
             <RiArrowLeftLine />
           </button>
@@ -73,7 +90,11 @@ const TopNav = ({ setConnectWalletModalIsOpen }: TopNavOptions) => {
           />
         </div>
       </div>
-      <div className={` ${pathname === '/' ? "hidden" : "block"} md:block`}>{renderRightContent()}</div>
+      <div
+        className={` ${pathname === Routes.Home ? "hidden" : "block"} md:block`}
+      >
+        {renderRightContent()}
+      </div>
     </nav>
   );
 };

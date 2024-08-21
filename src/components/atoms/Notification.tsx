@@ -8,7 +8,6 @@ import moment from "moment";
 
 import TopNav from "@src/components/TopNav";
 import Button from "../ui/Button";
-import Spinner from "../ui/Spinner";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface INotificationProps {
@@ -50,7 +49,6 @@ const Notification: React.FC<INotificationProps> = (props) => {
   if (firstFetch) {
     content = (
       <div className="my-8 flex flex-col items-center">
-        <Spinner />
         <h2>Checking for notifications...</h2>
       </div>
     );
