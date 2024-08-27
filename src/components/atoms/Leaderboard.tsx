@@ -1,17 +1,37 @@
 import { api } from "@src/utils/api";
 import { Routes } from "@src/utils/constants/constants";
-// import { sendFundsToPlayers } from "@src/utils/helpers/sol_program_helpers";
 import Link from "next/link";
+import Image from "next/image";
 import * as React from "react";
 import { Toaster } from "sonner";
-
-import LeaderBoardItem from "../molecule/LeaderBoardItem";
+import TopNav from "@src/components/TopNav";
 import Spinner from "../ui/Spinner";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ILeaderboardProps {
   gameId: string;
 }
+
+interface LeaderboardEntry {
+  user_id: string;
+  _sum: {
+    points: number | null;
+  };
+  _max: {
+    created_at: Date | null;
+  };
+  id?: string;
+  wallet_address?: string;
+  username?: string;
+  nonce?: number;
+  avatar_url?: string | null;
+  created_at?: Date;
+}
+
+interface LeaderboardApiResponse {
+  success: boolean;
+  history: LeaderboardEntry[];
+}
+
 const Leaderboard: React.FC<ILeaderboardProps> = props => {
   const { data, isLoading } = api.player.query_leader_board.useQuery(
     {
@@ -23,6 +43,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
       refetchInterval: 2000,
     },
   );
+
   let content: React.ReactNode;
   if (isLoading) {
     content = (
@@ -31,7 +52,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
         <h2>Checking for scores...</h2>
       </div>
     );
-  } else if ((data?.history ?? []).length === 0) {
+  } else if (!data || !data.success || data.history.length === 0) {
     content = (
       <div className="flex flex-col items-center text-center">
         <h2 className="text-2xl font-medium">No Scores Yet</h2>
@@ -40,28 +61,97 @@ const Leaderboard: React.FC<ILeaderboardProps> = props => {
     );
   } else {
     content = (
-      <div className="flex flex-col items-center space-y-8">
-        {(data?.history ?? [])?.map((val, index) => (
-          <LeaderBoardItem key={val.id} {...val} position={index + 1} />
+      <div className="flex flex-col items-center space-y-8 w-full">
+        {data.history.map((val: LeaderboardEntry, index: number) => (
+          <LeaderBoardItem
+            key={val.id || val.user_id}
+            user_id={val.user_id}
+            _sum={val._sum}
+            username={val.username}
+            avatar_url={val.avatar_url}
+            position={index + 1}
+          />
         ))}
       </div>
     );
   }
+
   return (
-    <main>
-      <section className="flex flex-col justify-center px-4 py-8 lg:py-24">
-        <Toaster />
-        <Link href={`/dashboard/${Routes.HOME}`} className="cursor-pointer ">
-          <div className="hidden h-0 w-0 border-b-[25px] border-r-[50px] border-t-[25px] border-b-transparent border-r-white border-t-transparent lg:block" />
+    <div className="w-full">
+      <div className="sm:hidden p-4">
+        <Link href={`/dashboard/${Routes.HOME}`} className="cursor-pointer">
+          <button className="text-2xl">&larr;</button>
         </Link>
-        <div className="mx-auto mt-8 w-10/12 rounded-xl border border-secondary-700 bg-secondary-300/10 lg:mt-16">
-          <div className="flex items-center justify-center space-x-2 border-b border-b-secondary-700 py-4 text-center text-2xl font-bold text-secondary-700">
-            <h1>Leaderboard</h1>
+      </div>
+
+      <div className="hidden sm:block">
+        <TopNav />
+      </div>
+
+      <div className="w-full px-10">
+        <div className="relative border border-neutral-200 p-4 sm:p-10 mt-8 sm:mt-20 pt-16 w-full sm:w-[500px] mx-auto">
+          <div className="flex items-center absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2">
+            <div className="w-0 h-0 border-t-[50px] border-t-transparent border-r-[86.6px] border-r-primary-green border-b-[50px] border-b-transparent scale-[0.45] md:scale-[0.58] -mr-7 md:-mr-6"></div>
+            <div className="bg-radial-green px-4 sm:px-8 py-2 sm:py-3 text-white font-bold rounded-md z-10 text-sm sm:text-base">
+              Leaderboard
+            </div>
+            <div className="w-0 h-0 border-t-[50px] border-t-transparent border-l-[86.6px] border-l-primary-green border-b-[50px] border-b-transparent scale-[0.45] md:scale-[0.58] -ml-7 md:-ml-6"></div>
           </div>
-          <div className="px-4 py-8">{content}</div>
+
+          <Toaster />
+          {content}
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 };
+
+interface ILeaderBoardItemProps {
+  user_id: string;
+  _sum: {
+    points: number | null;
+  };
+  username?: string;
+  avatar_url?: string | null;
+  position: number;
+}
+
+const LeaderBoardItem: React.FC<ILeaderBoardItemProps> = props => {
+  const renderPositionClassName = (position: number) => {
+    switch (position) {
+      case 1:
+        return "bg-gradient-first";
+      case 2:
+        return "bg-gradient-second";
+      case 3:
+        return "bg-gradient-third";
+      default:
+        return "bg-gray-400";
+    }
+  };
+
+  return (
+    <section className="flex w-full items-center justify-between text-center py-2">
+      <div className="flex space-x-4 items-center">
+        <span
+          className={`${renderPositionClassName(props.position)} grid h-8 w-8 place-content-center rounded-full text-white font-bold`}
+        >
+          {props.position}
+        </span>
+        <div className="flex items-center space-x-4 text-center">
+          <Image
+            src={props.avatar_url || "/Zuko.png"}
+            alt={props.username || "User avatar"}
+            width={32}
+            height={32}
+            className="rounded-full"
+          />
+          <span className="font-semibold">{props.username || "Anonymous"}</span>
+        </div>
+      </div>
+      <span className="ml-auto w-fit text-lg font-bold">{props._sum.points || 0} Points</span>
+    </section>
+  );
+};
+
 export default Leaderboard;

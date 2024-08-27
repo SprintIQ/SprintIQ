@@ -1,6 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background: white;
+}
+
+@keyframes oval-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-oval {
+  animation: oval-animation 2s forwards;
+  animation-iteration-count: 1;
+}
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }

@@ -17,7 +17,7 @@ const ButtonContinue: NextPage = () => {
         Game Token
       </h1>
       <button
-        className="bg-limegreen rounded-81xl hover:bg-forestgreen absolute left-[295px] top-[517px] z-[3] box-border flex w-[335px] cursor-pointer flex-col items-center justify-start px-8 py-4 [border:none]"
+        className="bg-limegreen rounded-81xl hover:bg-secondary-150 absolute left-[295px] top-[517px] z-[3] box-border flex w-[335px] cursor-pointer flex-col items-center justify-start px-8 py-4 [border:none]"
         onClick={onButtonPrimaryClick}
       >
         <div className="text-11xl font-inter mq450:text-lg mq750:text-5xl relative inline-block w-32 min-w-[128px] text-center text-white">

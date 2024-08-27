@@ -19,6 +19,7 @@
     "@coral-xyz/anchor": "^0.29.0",
     "@multiavatar/multiavatar": "^1.0.7",
     "@prisma/client": "^5.12.0",
+    "@remixicon/react": "^4.2.0",
     "@sentry/nextjs": "^7.83.0",
     "@solana/spl-token": "^0.4.6",
     "@solana/wallet-adapter-base": "^0.9.23",

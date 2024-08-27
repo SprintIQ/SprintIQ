@@ -1,7 +1,11 @@
 import { type Config } from "tailwindcss";
 
-export default {
-  content: ["./src/**/*.tsx"],
+const config: Config = {
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -12,6 +16,7 @@ export default {
         "2xs": "10px",
       },
       backgroundImage: {
+        'radial-green': 'radial-gradient(circle, #017422 0%, #1FC04D 100%)',
         "gradient-radial": "radial-gradient(#013E0A,#007205)",
         "gradient-first": "radial-gradient(#B78F00,rgba(218,105,0,0.65))",
         "gradient-second":
@@ -22,6 +27,7 @@ export default {
       colors: {
         primary: {
           700: "#0F0F0F",
+          900: "#116629",
         },
         secondary: {
           900: "#28FF15",
@@ -29,11 +35,17 @@ export default {
           600: '#006809',
           500: "#116629",
           300: "#175611",
+          250: "#006809",
           200: "#BBF3D5",
+          150: "#1DAA45",
           100: "#96C4CE",
           50: "#F1F9EA",
         },
+        mint: {
+          50: "#F1F9EA",
+        },
         grey: {
+          700: "#E7E4E4",
           500: "#E7E4E4",
           300: "#D9D9D9",
           800: "#595959",
@@ -41,6 +53,7 @@ export default {
           150: "#F2F2F2",
           100: "#373737",
         },
+        offwhite: "#F2F2F2",
       },
       keyframes: {
         "accordion-down": {
@@ -65,6 +78,8 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "correct-flash": "correct-flash 1s ease-in-out infinite",
         "wrong-flash": "wrong-flash 1s ease-in-out infinite",
+        'oval': 'oval-animation 2s forwards',
+
       },
       data: {
         correct: 'correct="true"',
@@ -75,4 +90,6 @@ export default {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+};
+
+export default config;
