@@ -21,7 +21,7 @@ export default {
       },
       colors: {
         primary: {
-          700: "#0F0F0F",
+          700: "#0F0F0F"
         },
         secondary: {
           900: "#28FF15",
