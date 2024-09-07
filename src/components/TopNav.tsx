@@ -52,7 +52,7 @@ const TopNav = ({ setConnectWalletModalIsOpen }: TopNavOptions) => {
       case Routes.Notification:
         return (
           <div className="flex gap-3">
-            <button className="text-white bg-primary-green px-4 py-2">
+            <button className="text-white bg-primary-900 px-4 py-2">
               Logout
             </button>
             <button>

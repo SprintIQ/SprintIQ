@@ -4,7 +4,7 @@ interface GetStartedButtonOptions{
 
 const GetStartedButton = ({setConnectWalletModalIsOpen}: GetStartedButtonOptions) => {
   return (
-    <button className="bg-primary-green text-white px-3 py-2 rounded active:scale-90 duration-200 font-semibold"
+    <button className="bg-primary-900 text-white px-3 py-2 rounded active:scale-90 duration-200 font-semibold"
         onClick={()=>{
             setConnectWalletModalIsOpen(true)
         }}

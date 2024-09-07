@@ -30,7 +30,12 @@ const Home = () => {
       setModalVisible(true);
     },
   });
-
+console.log({  buttonState,
+  onConnect,
+  publicKey,
+  onSelectWallet,
+  walletIcon,
+  walletName})
   const handleRedirect = () => {
     if (publicKey) {
       void createUser
@@ -39,10 +44,12 @@ const Home = () => {
         })
         .then(res => {
           if (!res.success) {
+            console.log({res})
             // TODO implement an error toast
             return;
           }
           void login(res.user!.wallet_address).then(res => {
+            console.log(res)
             if (res.success) {
               void push(`/dashboard/${Routes.HOME}?state=connected`);
             } else {
