@@ -1,11 +1,7 @@
 import { type Config } from "tailwindcss";
 
-const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+export default {
+  content: ["./src/**/*.tsx"],
   theme: {
     extend: {
       fontFamily: {
@@ -53,6 +49,7 @@ const config: Config = {
           150: "#F2F2F2",
           100: "#373737",
         },
+        darkGreen: "#116629",
         offwhite: "#F2F2F2",
       },
       keyframes: {
@@ -90,6 +87,4 @@ const config: Config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-};
-
-export default config;
+} satisfies Config;

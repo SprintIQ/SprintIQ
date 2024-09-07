@@ -19,6 +19,9 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
 import { BeatLoader } from "react-spinners";
 import { toast, Toaster } from "sonner";
+import SideBar from "../molecule/SideBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export interface Distribution {
   position: number;
@@ -88,7 +91,7 @@ const AddRewardToken: NextPage = () => {
     });
   };
 
-  const onPolygonIconClick = useCallback(() => {
+  const onBackPress = useCallback(() => {
     void router.push("/dashboard/add-reward");
   }, [router]);
 
@@ -187,82 +190,77 @@ const AddRewardToken: NextPage = () => {
   // console.log("questions global", questionsGlobal);
   // console.log("quiz global", quizTitleGlobal);
   return (
-    <div className="font-inter relative flex h-[100vh] w-full items-center justify-center overflow-hidden text-center text-2xl tracking-[normal] text-white [background:linear-gradient(180deg,_#0e2615,_#0f0f0f)] md:text-[35px]">
+    <div className="flex bg-white w-full min-h-screen ">
       <Toaster />
-      <div className=" relative z-10 m-auto box-border flex w-[527px] max-w-full flex-col items-center justify-start  rounded-[2.5rem] border-solid px-5 py-[100px] md:border-[1px] md:border-[#175611] md:bg-[#0a2913]">
-        {/* <div className="rounded-11xl bg-darkgreen border-limegreen relative box-border hidden h-[663px] w-[927px] max-w-full border-[1px] border-solid" /> */}
-        <h1 className="font-inherit relative z-[2] m-0 flex w-[635px] max-w-full items-center justify-center font-normal  leading-[35px] text-white">
-          Set up Reward
-        </h1>
-        <div className=" text-left text-[16px] ">
-          <div className="mt-5">
-            <label className=" text-sm font-semibold">Add amount</label>
-            <input
-              type="text"
-              placeholder="USDC$"
-              className="w-full rounded-md border border-[#175611] bg-transparent p-2 text-white placeholder-gray-600 outline-none"
-              value={amount}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setAmount(e.target.value);
-              }}
-            />
-          </div>
-          <div className="mt-4">
-            <p className="text-lg font-semibold">Distribution Percentage</p>
-            {distribution.map((item, index) => (
-              <div key={index} className="mt-2">
-                <label className=" text-sm font-semibold">
-                  {item.position}
-                </label>
-                <div className="flex w-full flex-row items-center justify-start  rounded-md  border border-[#175611] bg-transparent p-2 text-white outline-none ">
-                  <input
-                    type="text"
-                    placeholder="Percentage"
-                    value={item.percentage || ""}
-                    onChange={e =>
-                      handlePercentageChange(index, e.target.value)
-                    }
-                    className=" bg-transparent outline-none placeholder:text-gray-600 "
-                  />
-                  <p>%</p>
-                  <div onClick={() => handleRemovePercentage(index)}>
-                    <AiOutlineDelete className="ml-2 cursor-pointer text-[#175611]" />
-                  </div>
-                </div>
-              </div>
-            ))}
-            <button
-              className="my-4 flex items-center text-sm text-gray-600 hover:text-gray-900"
-              onClick={handleAddMore}
-            >
-              <IoMdAdd className="mr-1" />
-              Add More
-            </button>
-          </div>
-        </div>
-        <div className="flex w-[300px]  flex-row  justify-center">
-          <button
-            className="z-[2]  flex  w-full flex-row items-center  justify-center rounded-[2.5rem] bg-[#1FC04D] px-3 py-3  [border:none]"
-            onClick={onDepositForGameButtonPress}
-          >
-            <div className="font-inter   min-w-[128px] text-center text-[16px] text-white">
-              {loading ? <BeatLoader color="white" /> : "Deposit for Game"}
-            </div>
+      <SideBar />
+      <div className="flex-grow py-10 px-12 text-black ">
+        <div className="flex justify-between items-center mb-8">
+          {/* Back Arrow Icon */}
+          <button className="text-black" onClick={onBackPress}>
+            <FontAwesomeIcon icon={faArrowLeft} size="lg" color="#116629" />
           </button>
         </div>
-      </div>
-      <div className="absolute bottom-[0px] left-[109px] top-[0px] z-0 h-full w-[1509.4px]">
-        <div className="absolute left-[7px] top-[-140px] h-[1100px] w-[1009.4px] object-cover">
-          <Image fill alt="" src="/group-1143@2x.png" />
-        </div>
-        <div className="absolute left-[7px] top-[117px] z-[1] hidden h-[48.1px] w-[48.1px] cursor-pointer object-contain lg:block">
-          <Image
-            fill
-            loading="lazy"
-            alt=""
-            src="/polygon-4.svg"
-            onClick={onPolygonIconClick}
-          />
+        <div className=" relative z-10 m-auto box-border flex w-[400px]  flex-col items-center justify-start  rounded-md border-solid px-2 py-5 md:border-[1px] ">
+
+          <h1 className="font-inherit relative z-[2] m-0 flex   items-center justify-center font-normal  leading-[35px]">
+            Set up Reward
+          </h1>
+          <div className=" text-left text-[16px] ">
+            <div className="mt-5">
+              <label className=" text-sm font-semibold">Add amount</label>
+              <input
+                type="text"
+                placeholder="USDC$"
+                className="w-full rounded-md border border-[#E7E4E4] bg-transparent p-2 text-black placeholder-gray-600 outline-none"
+                value={amount}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setAmount(e.target.value);
+                }}
+              />
+            </div>
+            <div className="mt-4">
+              <p className="text-sm font-semibold">Distribution Percentage</p>
+              {distribution.map((item, index) => (
+                <div key={index} className="mt-2">
+                  <label className=" text-sm font-semibold">
+                    {item.position}
+                  </label>
+                  <div className="flex w-full flex-row items-center justify-start  rounded-md  border border-[#E7E4E4] bg-transparent p-2 text-black outline-none ">
+                    <input
+                      type="text"
+                      placeholder="Percentage"
+                      value={item.percentage || ""}
+                      onChange={e =>
+                        handlePercentageChange(index, e.target.value)
+                      }
+                      className=" bg-transparent outline-none placeholder:text-gray-600 "
+                    />
+                    <p>%</p>
+                    <div onClick={() => handleRemovePercentage(index)}>
+                      <AiOutlineDelete className="ml-2 w-5 h-5 cursor-pointer text-[#D74040]" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <button
+                className="my-4 flex items-center text-sm text-green-500 hover:text-gray-900"
+                onClick={handleAddMore}
+              >
+                Add More
+                <IoMdAdd className="ml-1" />
+              </button>
+            </div>
+          </div>
+          <div className="flex  flex-row  justify-center">
+            <button
+              className="z-[2]  flex  w-full flex-row items-center  justify-center rounded-md bg-[#1FC04D] p-3  [border:none]"
+              onClick={onDepositForGameButtonPress}
+            >
+              <div className="font-inter  min-w-[128px] text-center text-[16px] text-white">
+                {loading ? <BeatLoader color="white" /> : "Make deposit"}
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </div>
