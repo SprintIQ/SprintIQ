@@ -2,7 +2,6 @@ import { Routes } from "@src/utils/constants/constants";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
 import { toast, Toaster } from "sonner";
 import SideBar from "../molecule/SideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,11 +10,11 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 const GetCode: NextPage = () => {
   const router = useRouter();
   const { param, gameId } = router.query;
-  const onBackPress = useCallback(() => {
+  const onBackPress = () => {
     void router.push("/dashboard/add-reward-token");
-  }, [router]);
+  }
 
-  const onContinue = useCallback(() => {
+  const onContinue = () => {
     if (gameId) {
       void router.push(
         `/dashboard/${Routes.LEADER_BOARD}?gameId=${gameId as string}`,
@@ -23,7 +22,7 @@ const GetCode: NextPage = () => {
     } else {
       void router.push("/dashboard/home");
     }
-  }, [router]);
+  };
 
   return (
     <div className="flex bg-white w-full min-h-screen  ">

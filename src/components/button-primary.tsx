@@ -55,7 +55,7 @@ const ButtonPrimary: NextPage<ButtonPrimaryType> = ({
           onClick={onButtonPrimaryClick}
         >
           <div
-            className="text-11xl font-inter relative inline-block w-[193px] text-center text-green-500"
+            className="text-11xl font-inter relative inline-block w-[193px] text-center text-white"
             style={addQuestionStyle}
           >
             {addQuestion}

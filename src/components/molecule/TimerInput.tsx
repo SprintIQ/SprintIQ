@@ -5,7 +5,7 @@ import { faClock, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 interface TimerInputProps {
   value: number; // Duration in seconds
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (seconds: number) => void;
 }
 
 const TimerInput: React.FC<TimerInputProps> = ({ value, onChange }) => {
@@ -16,12 +16,7 @@ const TimerInput: React.FC<TimerInputProps> = ({ value, onChange }) => {
   // Convert minutes and seconds to total seconds
   const handleOverlayDoneClick = () => {
     const totalSeconds = minutes * 60 + seconds;
-
-    const syntheticEvent = {
-      target: { value: totalSeconds },
-    };
-
-    onChange(syntheticEvent as unknown as React.ChangeEvent<HTMLInputElement>); // Update the timer value in the parent component
+    onChange(totalSeconds); // Pass totalSeconds directly
     setShowOverlay(false); // Hide the timer overlay
   };
 
@@ -33,7 +28,7 @@ const TimerInput: React.FC<TimerInputProps> = ({ value, onChange }) => {
   return (
     <div>
       <button
-        className="bg-darkGreen text-white px-4 py-2 rounded-md flex items-center space-x-2"
+        className="bg-secondary-500 text-white px-4 py-2 rounded-md flex items-center space-x-2"
         onClick={() => setShowOverlay(true)}
       >
         <FontAwesomeIcon icon={faClock} />

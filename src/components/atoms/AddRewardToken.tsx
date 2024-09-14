@@ -13,7 +13,6 @@ import * as crypto from "crypto";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
 import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
@@ -91,9 +90,9 @@ const AddRewardToken: NextPage = () => {
     });
   };
 
-  const onBackPress = useCallback(() => {
+  const onBackPress = () => {
     void router.push("/dashboard/add-reward");
-  }, [router]);
+  }
 
   const checkPercentages = () => {
     const totalPercentage = distribution.reduce(
@@ -107,7 +106,7 @@ const AddRewardToken: NextPage = () => {
     return true;
   };
 
-  const onDepositForGameButtonPress = useCallback(() => {
+  const onDepositForGameButtonPress = () => {
     if (
       amount.trim() === "" ||
       distribution.some(d => d.percentage === 0) ||
@@ -184,7 +183,7 @@ const AddRewardToken: NextPage = () => {
           });
       }
     }
-  }, [amount, distribution, setAmountGlobal, setDistributionGlobal, router]);
+  }
 
   // console.log("percentages", distribution);
   // console.log("questions global", questionsGlobal);

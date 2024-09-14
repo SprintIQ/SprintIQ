@@ -1,25 +1,24 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import SideBar from "../molecule/SideBar";
 
 const AddReward: NextPage = () => {
   const router = useRouter();
 
-  const onButtonPrimaryClick = useCallback(() => {
+  const onButtonPrimaryClick = () => {
     // Please sync "get code" to the project
-  }, []);
+  }
 
-  const onBackPress = useCallback(() => {
+  const onBackPress = () =>  {
     void router.push("/dashboard/create");
-  }, [router]);
+  }
 
-  const onContinue = useCallback(() => {
+  const onContinue = () => {
     void router.push("/dashboard/add-reward-token");
-  }, [router]);
+  }
 
   return (
     <div className="flex bg-white w-full min-h-screen ">
@@ -28,7 +27,7 @@ const AddReward: NextPage = () => {
         <div className="flex justify-between items-center mb-8">
           {/* Back Arrow Icon */}
           <button className="text-black" onClick={onBackPress}>
-            {/*<FontAwesomeIcon icon={faArrowLeft} size="lg" color="#116629" />*/}
+            <FontAwesomeIcon icon={faArrowLeft} size="lg" color="#116629" />
           </button>
         </div>
 

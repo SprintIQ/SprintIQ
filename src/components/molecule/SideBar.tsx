@@ -4,7 +4,7 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 const SideBar: FC = () => {
   return (
-    <div className="hidden sm:flex flex-col items-center w-20  bg-darkGreen pt-8  ">
+    <div className="hidden sm:flex flex-col items-center w-20  bg-secondary-500 pt-8  ">
       <div className="mb-8 mt-10 cursor-pointer">
         <img src="/logo_half.svg" alt="Logo" className="w-10 h-10" />
       </div>

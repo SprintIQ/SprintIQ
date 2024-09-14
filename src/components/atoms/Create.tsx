@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { toast, Toaster } from "sonner";
 
 import { useQuizContext } from "../../provider/QuizContext";
@@ -20,9 +20,10 @@ const CreateGame: NextPage = () => {
     questionsGlobal,
     setQuestionsGlobal,
   } = useQuizContext();
-  const onBackPress = useCallback(() => {
+
+  const onBackPress = () => {
     void router.push("/dashboard/home");
-  }, [router]);
+  }
 
 
 
@@ -65,14 +66,13 @@ const CreateGame: NextPage = () => {
     setQuestionsGlobal(newQuestions);
   };
 
-  const handleSelectedTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTime = Number(e.target.value); // Convert the input value to a number
+  const handleSelectedTimeChange = (newTime: number) => {
     setSelectedTime(newTime);
   
     // Optionally, update all existing questions' durations if you want them to sync
     const newQuestions = questionsGlobal.map(question => ({
       ...question,
-      duration: newTime,
+      duration: newTime * 1000,
     }));
     setQuestionsGlobal(newQuestions);
   };
@@ -88,7 +88,7 @@ const CreateGame: NextPage = () => {
         options: [""],
         answer: "",
         points: 1,
-        duration: selectedTime,
+        duration: selectedTime * 1000,
       },
     ]);
   };
@@ -109,7 +109,7 @@ const CreateGame: NextPage = () => {
     });
   };
 
-  const onContinue = useCallback(() => {
+  const onContinue = () => {
     if (
       quizTitleGlobal.trim() === "" ||
       questionsGlobal.some(q => q.question.trim() === "")
@@ -124,13 +124,7 @@ const CreateGame: NextPage = () => {
       setQuestionsGlobal(questionsGlobal);
       void router.push("/dashboard/add-reward");
     }
-  }, [
-    quizTitleGlobal,
-    questionsGlobal,
-    setQuizTitleGlobal,
-    setQuestionsGlobal,
-    router,
-  ]);
+  };
 
   console.log("timer value", selectedTime)
   //console.log("This are the questions:", questions);
