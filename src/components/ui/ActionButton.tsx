@@ -19,7 +19,7 @@ const ActionButton: React.FC<IActionButtonProps> = ({
         <button
             {...props}
             className={twMerge(
-                "flex flex-col w-fit py-5 shadow-xl px-6 shrink-0 grow-0 items-center lg:space-x-3 bg-white",
+                "flex flex-col w-fit py-5 shadow-xl px-6 shrink-0 grow-0 items-center lg:space-x-3 bg-white text-white",
                 className,
             )}
         >

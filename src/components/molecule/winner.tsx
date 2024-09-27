@@ -36,7 +36,7 @@ export default function Winner(props: IWinnerProps) {
                 />
             </div>
             <div className="w-fit mx-auto">You
-                finished <b>{positionHelperShort(props.position)}</b> with {props.points} points
+                finished <b>{positionHelperShort(props.position)}</b> with {props.points} point{props.points > 1 && 's'}
             </div>
             <div className="flex flex-col space-y-4">
                 <button

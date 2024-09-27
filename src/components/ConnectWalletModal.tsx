@@ -131,7 +131,7 @@ interface RecommendedWalletOption {
 
 const RecommendedWallet = ({ image, walletName, onClick }: RecommendedWalletOption) => {
     return (
-        <div className="flex gap-3 items-center p-2 border border-neutral-200" onClick={onClick}>
+        <div className="flex gap-3 items-center p-2 border cursor-pointer border-neutral-200 hover:bg-neutral-200 transition-colors duration-1000" onClick={onClick}>
             <Image
                 src={image}
                 alt={walletName}

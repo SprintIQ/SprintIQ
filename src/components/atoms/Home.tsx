@@ -111,20 +111,17 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
     <main>
       <Toaster />
       {state === "connected" && (
-        <div className="flex flex-col sm:flex-row h-screen overflow-y-auto sm:overflow-y-hidden">
+        <div className="flex flex-col sm:flex-row h-screen overflow-y-auto sm:overflow-y-hidden fixed inset-0 z-50 bg-white">
           <div className="sm:hidden w-full p-4">
             <button className="text-primary-green">
               <RiArrowLeftLine size={24} />
             </button>
           </div>
-          <div className="hidden sm:block">
-            <SideBar />
-          </div>
           <div className="w-full p-4 sm:p-10 pb-20">
             <div className="hidden sm:flex w-full justify-between">
-              <button className="text-primary-green">
+              <Link href={`/dashboard/${Routes.HOME}`}>
                 <RiArrowLeftLine size={24} />
-              </button>
+              </Link>
             </div>
             <div className="w-full flex flex-col gap-8 justify-center items-center min-h-[calc(100vh-200px)]">
               <div className="w-full max-w-[500px] mx-auto flex flex-col justify-center items-center py-6 sm:py-10 px-4 sm:px-20 gap-5">
@@ -161,7 +158,7 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
                   </p>
                 </motion.div>
                 <motion.button
-                  className="text-white bg-primary-green py-3 px-10 active:scale-95 duration-200 text-sm sm:text-base"
+                  className="text-white bg-primary-900 rounded-md py-3 px-10 active:scale-95 duration-200 text-sm sm:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -172,7 +169,7 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
           </div>
         </div>
       )}
-      <header className="flex w-full items-center justify-between bg-white px-6 py-12">
+      <header className="flex w-full items-center justify-between bg-white px-6 py-12 -z-10">
         <Image
           className="relative h-7 w-auto lg:h-8"
           loading="lazy"

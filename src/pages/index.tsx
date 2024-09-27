@@ -7,7 +7,7 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { ProfileContext } from "@src/provider/ProfileProvider";
 import { api } from "@src/utils/api";
 import { LABELS, Routes } from "@src/utils/constants/constants";
-import Modal from "@src/components/ConnectWalletModal"; 
+import Modal from "@src/components/ConnectWalletModal";
 import GetStartedButton from "@src/components/GetStartedButton";
 import OvalAnimation from "@src/components/OvalAnimation";
 import TopNav from "@src/components/TopNav";
@@ -30,13 +30,16 @@ const Home = () => {
       setModalVisible(true);
     },
   });
-console.log({  buttonState,
-  onConnect,
-  publicKey,
-  onSelectWallet,
-  walletIcon,
-  walletName})
+  console.log({
+    buttonState,
+    onConnect,
+    publicKey,
+    onSelectWallet,
+    walletIcon,
+    walletName
+  })
   const handleRedirect = () => {
+    console.log({ publicKey })
     if (publicKey) {
       void createUser
         .mutateAsync({
@@ -44,7 +47,7 @@ console.log({  buttonState,
         })
         .then(res => {
           if (!res.success) {
-            console.log({res})
+            console.log({ res })
             // TODO implement an error toast
             return;
           }
@@ -87,18 +90,18 @@ console.log({  buttonState,
   };
 
   return (
-<main className="relative max-w-[100vw] overflow-x-hidden md:overflow-clip select-none">
+    <main className="relative max-w-[100vw] overflow-x-hidden md:overflow-clip select-none">
       <TopNav setConnectWalletModalIsOpen={setModalVisible} />
 
       <div className="relative w-full flex justify-center items-center">
         <div className="absolute md:-top-40 w-full">
           <div className="max-w-fit scale-125 md:scale-100 mx-auto">
-          <OvalAnimation/>
+            <OvalAnimation />
           </div>
         </div>
 
         <div className="py-36 mt-10 md:py-48 max-w-fit relative">
-        <h1 className="text-3xl md:text-6xl font-extrabold max-w-[250px] md:max-w-[500px] text-center relative z-[2]">
+          <h1 className="text-3xl md:text-6xl font-extrabold max-w-[250px] md:max-w-[500px] text-center relative z-[2]">
             Dynamic Interactions meets Rewards
           </h1>
           <div className="w-full h-3 md:h-6 bg-lime-500 opacity-20 -mt-3 md:-mt-4 relative z-[1]"></div>
