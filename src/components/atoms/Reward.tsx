@@ -52,11 +52,11 @@ const Reward: React.FC<IRewardProps> = props => {
         );
     } else if (gameEnded && isWinner) {
         content = (
-            <Winner avatar={userData?.avatar_url} position={position} points={points}/>
+            <Winner gameId={props?.gameId} avatar={userData?.avatar_url} position={position} points={points}/>
         );
     } else if (gameEnded && !isWinner) {
         content = (
-            <Loser avatar={userData?.avatar_url}/>
+            <Loser gameId={props?.gameId} avatar={userData?.avatar_url}/>
         );
     }
     return (

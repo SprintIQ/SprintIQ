@@ -8,12 +8,13 @@ interface IWinnerProps {
     avatar?: string | null;
     position: number;
     points: number;
+    gameId?: string;
 
 }
 
 export default function Winner(props: IWinnerProps) {
     const {push} = useRouter()
-    const handleClick = (route: Routes) => push(`/dashboard/${route}`)
+    const handleClick = (route: Routes) => push(`/dashboard/${route}?gameId=${props.gameId}`)
     return (
         <div className="flex flex-col space-y-10">
             <div>
@@ -40,13 +41,13 @@ export default function Winner(props: IWinnerProps) {
             </div>
             <div className="flex flex-col space-y-4">
                 <button
-                    className="text-right font-medium text-center flex items-center justify-center text-xs md:text-base bg-secondary-500 text-white px-4 md:px-6 lg:px-8 py-3 rounded text-nowrap data-wrong:bg-white data-wrong:text-black"
+                    className="font-medium text-center flex items-center justify-center text-xs md:text-base bg-secondary-500 text-white px-4 md:px-6 lg:px-8 py-3 rounded text-nowrap data-wrong:bg-white data-wrong:text-black"
                     onClick={() => handleClick(Routes.LEADER_BOARD)}
                 >
                     View Leaderboard
                 </button>
                 <button
-                    className="text-right font-medium text-center flex items-center justify-center text-xs md:text-base bg-secondary-500 text-white px-4 md:px-6 lg:px-8 py-3 rounded text-nowrap data-wrong:bg-white data-wrong:text-black"
+                    className="font-medium text-center flex items-center justify-center text-xs md:text-base bg-secondary-500 text-white px-4 md:px-6 lg:px-8 py-3 rounded text-nowrap data-wrong:bg-white data-wrong:text-black"
                     onClick={() => handleClick(Routes.HOME)}
 
                 >
