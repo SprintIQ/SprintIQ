@@ -94,7 +94,7 @@ const Notification: React.FC<INotificationProps> = (props) => {
           }}
         />
       </div>
-      <div className="w-full md:w-[550px] mx-auto py-10 shadow px-5 space-y-5 min-h-screen">
+      <div className="w-full md:w-10/12 mx-auto py-10 shadow px-5 space-y-5 min-h-screen">
         {content}
       </div>
     </main>
@@ -102,21 +102,19 @@ const Notification: React.FC<INotificationProps> = (props) => {
 };
 
 interface INotificationItemProps extends NotificationType {
-  action?: string;
   actionLink?: string;
 }
 
 const NotificationItem: React.FC<INotificationItemProps> = (props) => {
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-200 pb-4 mb-4 md:pb-0 md:mb-0 md:border-none">
-      <div className="flex items-center gap-3 mb-2 md:mb-0">
-        <div className="w-2 h-2 md:w-4 md:h-4 bg-primary-green rounded-full" />
+    <div className="flex border-b border-gray-200 pb-4 gap-2 md:border-none items-start">
+
+      <div className="w-3 basis-3 h-3 md:w-4 md:h-4 bg-primary-900 rounded-full" />
+
+      <div className="flex flex-col md:flex-row items-start gap-3">
         <span className="text-lg sm:text-2xl font-medium">{props.message}</span>
-      </div>
-      <div className="flex flex-col md:items-end">
-        <p className="text-gray-500 text-sm">{moment(props.created_at).fromNow()}</p>
-        {props.actionLink && (
-          <Link href={props.actionLink} className="bg-neutral-200 px-3 py-2 active:scale-90 duration-200 inline-block mt-2 md:mt-0 max-w-fit">
+        {props.action === "leaderboard" && (
+          <Link href={`/dashboard/${Routes.LEADER_BOARD}?gameId=${props.ref_id}`} className="bg-neutral-200 px-3 py-2 active:scale-90 duration-200 inline-block mt-2 md:mt-0 max-w-fit">
             {props.action || "View"}
           </Link>
         )}

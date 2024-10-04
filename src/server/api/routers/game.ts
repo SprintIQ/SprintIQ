@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { HistoryType, Status } from "@prisma/client";
+import { HistoryType, NotificationAction, Status } from "@prisma/client";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -581,6 +581,7 @@ export const gameRouter = createTRPCRouter({
               user_id: data.user_id,
               message: `Thank you for joining ${gameStarted?.title}`,
               ref_id: input.game_id,
+              action: NotificationAction.leaderboard,
             },
           });
         }
@@ -596,6 +597,7 @@ export const gameRouter = createTRPCRouter({
             user_id: ctx.user?.id,
             message: `Rewards have been successfully distributed to winners of ${gameStarted?.title}`,
             ref_id: input.game_id,
+            action: NotificationAction.reward,
           },
         });
       }

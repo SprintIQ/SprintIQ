@@ -108,10 +108,10 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
   }
 
   return (
-    <main>
+    <main className="">
       <Toaster />
       {state === "connected" && (
-        <div className="flex flex-col sm:flex-row h-screen overflow-y-auto sm:overflow-y-hidden fixed inset-0 z-50 bg-white">
+        <div className="flex flex-col min-h-screen overflow-y-auto fixed inset-0 z-50 bg-white">
           <div className="sm:hidden w-full p-4">
             <button className="text-primary-green">
               <RiArrowLeftLine size={24} />
@@ -187,8 +187,8 @@ const Home: NextPage<{ state: string }> = ({ state }) => {
       </header>
       <section className="mt-8 bg bg-secondary-50 w-11/12 lg:w-3/4 mx-auto">
         <div>
-          <div className="py-8">
-            <div className="mx-auto flex gap-3.5 w-fit justify-between rounded-3xl px-6 py-3 lg:space-x-4">
+          <div className="md:py-8 py-6">
+            <div className="mx-auto flex gap-3.5 w-fit justify-between rounded-3xl md:px-6 px-3 lg:py-3 py-1.5 lg:space-x-4">
               {elements.map(data => (
                 <ActionButton
                   className=""

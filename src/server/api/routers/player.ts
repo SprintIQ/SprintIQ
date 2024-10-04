@@ -1,4 +1,4 @@
-import { HistoryType, Status } from "@prisma/client";
+import { HistoryType, NotificationAction, Status } from "@prisma/client";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -605,6 +605,7 @@ export const playerRouter = createTRPCRouter({
           return { ...user, ...val };
         }),
       );
+      const sortedPosition = positions.sort((a, b) => a.percentage - b.percentage);
       await Promise.all(
         winners.map(async (val, index) => {
           const exists = await ctx.db.notification.findFirst({
@@ -613,22 +614,17 @@ export const playerRouter = createTRPCRouter({
               ref_id: input.game_id,
             },
           });
-          if (exists) {
-            return;
-          }
+           if (exists) {
+             return;
+           }
+          const reward =  (game?.reward || 0) * sortedPosition[index].percentage / 100;
           // send notification
           await ctx.db.notification.create({
             data: {
               user_id: val.user_id,
-              message: `Congratulations! You just claimed ${positionHelper(index + 1)} position for ${game?.title}`,
+              message: `You have successfully claim ${reward} USDC as reward for finishing at ${positionHelper(index + 1)} position in ${game?.title}`,
               ref_id: input.game_id,
-            },
-          });
-          await ctx.db.notification.create({
-            data: {
-              user_id: val.user_id,
-              message: `You have received your reward for ${game?.title}`,
-              ref_id: input.game_id,
+              action: NotificationAction.reward,
             },
           });
         }),
@@ -639,7 +635,7 @@ export const playerRouter = createTRPCRouter({
         winners: winners.map((val, index) => {
           return {
             ...val,
-            position: positions[index],
+            position: sortedPosition[index],
           };
         }),
       };
