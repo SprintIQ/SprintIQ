@@ -35,7 +35,7 @@ const Modal = () => {
 
         return installed.length
             ? [installed, notInstalled, tipLinkWallet]
-            : [notInstalled, [], tipLinkWallet];
+            : [[tipLinkWallet], [], tipLinkWallet];
     }, [wallets]);
 
     const hideModal = useCallback(() => {
@@ -89,10 +89,10 @@ const Modal = () => {
                                     <h3 className="text-sm font-semibold mb-3">Recommended</h3>
                                     {listedWallets.map(wallet => (
                                         <RecommendedWallet
-                                            key={wallet.adapter.name}
-                                            image={wallet.adapter.icon}
-                                            walletName={wallet.adapter.name}
-                                            onClick={(event) => handleWalletClick(event, wallet.adapter.name)}
+                                            key={wallet?.adapter.name}
+                                            image={wallet!.adapter.icon}
+                                            walletName={wallet!.adapter.name}
+                                            onClick={(event) => handleWalletClick(event, wallet!.adapter.name)}
                                         />
                                     ))}
                                 </div>

@@ -57,7 +57,7 @@ import { Inter, Montserrat } from "next/font/google";
 import { useMemo } from "react";
 import { Helmet } from "react-helmet";
 
-const montserrat = Montserrat({
+export const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-sans",
 });

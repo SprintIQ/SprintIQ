@@ -3,10 +3,15 @@ import { createPortal } from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import { montserrat } from '@src/pages/_app';
+
 interface TimerInputProps {
   value: number; // Duration in seconds
   onChange: (seconds: number) => void;
 }
+
+
+
 
 const TimerInput: React.FC<TimerInputProps> = ({ value, onChange }) => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
@@ -36,7 +41,9 @@ const TimerInput: React.FC<TimerInputProps> = ({ value, onChange }) => {
       </button>
       {showOverlay &&
         createPortal(
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+          <div style={{
+            fontFamily: montserrat.style.fontFamily,
+          }} className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
             <div className="bg-[#E7E4E4] py-10 px-12 rounded-md shadow-lg w-full max-w-sm relative">
               <h2 className="text-s font-normal mb-4 text-center">
                 Set timer duration for each question
